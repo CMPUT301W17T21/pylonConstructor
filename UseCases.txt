@@ -1,0 +1,77 @@
+Name: Create new Mood Event
+Scenerio: A user wants to create a new mood entry, for there mood history.
+Trigger Event: Button press signifying intent.
+Brief Description: The user signifies intent to create a new mood entry. The user is then guided through the process through a new interface.
+Actors: User
+Precondition: The user has an account.
+Postcondition: The user can view the event in their history.
+Flow of Activities:
+	1. User has hit a button to create new event.
+	2. The user must choose an emotional state from an exhasutive list.
+	3. The user may enter a trigger. (20 charcters or 3 words)
+	4. The user may enter a photo.
+	5. The user may link their current location.
+	6. The user will commit the change.
+	7. The user will be returned to their previous view.
+Expected Condition:
+	avialable local space for entry.
+	internet connection to post new entry.
+	if location- avaiable GPS
+
+Name: Modify Mood Entry
+Scenerio: User wants to edit a previous mood entry.
+Trigger Event: A user has signified intent to change a mood entry.
+Brief Description: The user wants to change something about a previous entry.
+Actors: User
+Precondition: The user has an account.
+Postcondition: The user can view the changed entry.
+Flow of Activities:
+	1. User has choosen an event to modify.
+	2. The user must choose an emotional state from an exhasutive list.
+	3. The user may enter or modify a trigger. (20 charcters or 3 words)
+	4. The user may enter/change/delete photo.
+	5. The user may  not change the date or link their current location.
+	6. The user will commit the change.
+	7. The user will be returned to their previous view.
+Expected Condition:
+	avialable local space for entry.
+	internet connection to post new entry.
+	if location- avaiable GPS
+
+
+Name: Delete Mood Entry
+Scenerio: User wants to delete a previous mood entry.
+Trigger Event: A user has signified intent to delete a mood entry.
+Brief Description: The user has hit delete from the menu of a mood entry.
+Precondition: The user has an account.
+Postcondition: The user can view the lack of the entry.
+Flow of Activities:
+	1. User has choosen an event to delete.
+	2. The user has confirmed deletion from popup window.
+Expected Condition:
+	The entry exists.
+
+Name: View filtered history
+Scenerio: User would like to filter their history, or the history of feed.
+Trigger event: user has hit any one of the filter options.
+Brief Description: The user is currently in either personal or feed history
+and would like to filter the results.
+Precondition: 
+There are results to filter
+the user has an account
+The user is in a view
+Postcondition: The results are filtered.
+Flow of Activities:
+	1. User is in a history view.
+	2. User selects, in any combination, from below:
+		a. most recent week
+		b. emotional state
+		c. contains word "my_word"
+	3. as any combination of the above are selected, the user will be presented
+	with a history filted by the restrictions.
+Expected condition:
+	There is stuff to sort.
+
+
+
+
