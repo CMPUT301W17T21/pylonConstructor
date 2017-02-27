@@ -1,13 +1,9 @@
 package team21.pylonconstructor;
 
 import org.junit.Test;
-
-import java.io.IOError;
-import java.io.IOException;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
