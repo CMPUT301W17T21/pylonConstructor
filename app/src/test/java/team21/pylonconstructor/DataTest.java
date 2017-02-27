@@ -48,12 +48,47 @@ public class DataTest {
         assertEquals(mood.getTrigger(), moodList.getMood(1).getTrigger());
         assertEquals(mood.getSituation(), moodList.getMood(1).getSituation());
 
-        //TODO: Test case for extra details (US 02)
+        //Test the different mood states
+        moodStateTest("Anger");
+        moodStateTest("Confusion");
+        moodStateTest("Disgust");
+        moodStateTest("Fear");
+        moodStateTest("Happiness");
+        moodStateTest("Sadness");
+        moodStateTest("Sahme");
+        moodStateTest("Suprise");
+
+        //Test consistent icons
+        Mood mood1 = new Mood();
+        Mood mood2 = new Mood();
+        assertEquals(mood1.getEmoji(), mood2.getEmoji());
+
+        mood1.setEmoji("Sadness");
+        assertNotEquals(mood1.getEmoji(), mood2.getEmoji()); //Should not have same emoji
+        mood2.setEmoji("Sadness");
+        assertEquals(mood1.getEmoji(), mood2.getEmoji());
+
+        //TODO: Test case for extra details (US 02 and US 05)
 
 
         //Test if mood event has been removed
         moodList.remove(moood);
         assertFalse(moodList.has(mood));
+    }
+
+    /**
+     * Tests the mood states
+     *
+     * @throws Exception
+     */
+    @Test
+    public void moodStateTest(String state) throws Exception{
+        MoodList moodList = new MoodList();
+        Mood mood = new Mood();
+
+        mood.setEmoji(state);
+        moodList.add(mood);
+        assertEquals(mood.getEmoji(), moodList.getMood(0).getEmoji());
     }
 
     /**
@@ -89,6 +124,16 @@ public class DataTest {
      */
     @Test
     public void offlineTest() throws Exception{
-        //TODO: Test cases for being offline
+        //TODO: Test cases for being offline (US 07)
+
+        MoodList moodList = new MoodList();
+        Mood mood = new Mood();
+
+        //TODO: Set state to offline mode
+        //TODO: Get information from database
+
+        //Add
+        moodList.add(mood);
+        assertFalse();
     }
 }
