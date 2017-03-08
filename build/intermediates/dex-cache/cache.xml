@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/Users/ryanp/.android/build-cache/0bdba3e642cdd177b29f482c6d477bac179cd27b/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="cd7951e04cfb9a8bf008d544a478d9a8d8192d38">
+        <dex dex="/Users/ryanp/Desktop/untitled folder/pylonConstructor/app/build/intermediates/pre-dexed/debug/classes_88cb0f70df95f579c4142b475987f0bcc1b103c9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/ryanp/.android/build-cache/abc1128010a5b74bd7e920208f012c3df354a77a/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c9649557905bf7a80fca9e0d54cbcb7662627860">
+        <dex dex="/Users/ryanp/Desktop/untitled folder/pylonConstructor/app/build/intermediates/pre-dexed/debug/classes_9065809ccc2258b495101eb42028f177b39fc46e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/ryanp/.android/build-cache/420e3204527b8725a30ebd132f9a5dc780d77efa/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="15b049fedbd8e3926bf99d9e45dfc9b2a1043bb9">
+        <dex dex="/Users/ryanp/Desktop/untitled folder/pylonConstructor/app/build/intermediates/pre-dexed/debug/classes_b0a4f50446578b6a03d114f05b1f153e566dd348.jar" />
+    </item>
+
+</items>
