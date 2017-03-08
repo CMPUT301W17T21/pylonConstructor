@@ -15,6 +15,7 @@ class Mood {
     private ArrayList<String> trigger; //TODO: initialize in constructor
     private Date date;
     private Profile user;
+    private int imageSize;
 
 
     public Mood() {
@@ -29,13 +30,17 @@ class Mood {
     }
 
     public void setDate(String date) {
-        DateFormat dateformat = new SimpleDateFormat("dd.MM.yyyy");  //TODO: decide on date format.
+        DateFormat dateformat = new SimpleDateFormat("DD MM YYYY");  //TODO: decide on date format.
 
         try {
             this.date = dateformat.parse(date);
         } catch (ParseException e) {
             e.printStackTrace(); //TODO: Actually handle this.
         }
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Date getDate() {
@@ -80,5 +85,9 @@ class Mood {
     public void setLocation() {
     }
     public void getLocation() {
+    }
+
+    public int getImageSize() {
+        return 0;
     }
 }

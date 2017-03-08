@@ -26,4 +26,8 @@ class MoodList {
     public boolean has(Mood mood) {
         return moodList.contains(mood);
     }
+
+    public void remove(Mood mood) {
+        moodList.remove(mood);
+    }
 }
