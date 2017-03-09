@@ -4,7 +4,7 @@
 
     <!-- FAB animations from https://www.youtube.com/watch?v=orcpzMo7igQ accessed 03/08/2017-->
     <scale
-        android:duration="300"
+        android:duration="200"
         android:fromXScale="0.0"
         android:fromYScale="0.0"
         android:toXScale="0.8"

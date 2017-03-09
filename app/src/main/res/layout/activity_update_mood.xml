@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    >
+
+    <!--Dummy view, prevents cursor automatically focusing
+     on Name textbox upon opening activity.
+     Taken from http://stackoverflow.com/questions/1555109/stop-edittext-from-gaining-focus-at-activity-startup-->
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0px"
+        android:layout_height="0px"/>
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footerView">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:textSize="30sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_mood_header"
+                    android:textStyle="bold"
+                    android:id="@+id/name_lbl" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+
+                <Button
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_weight="0.25"
+                    android:layout_margin="5dp"
+                    android:layout_height="60dp"
+                    android:drawableTop="@drawable/ic_happy_263a"
+                    android:id="@+id/happy_button"
+                    android:text="@string/happy_button_label"
+                    android:layout_width="wrap_content" />
+                <Button
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_weight="0.25"
+                    android:layout_margin="5dp"
+                    android:layout_height="60dp"
+                    android:drawableTop="@drawable/ic_sad_2639"
+                    android:id="@+id/sad_button"
+                    android:text="@string/sad_button_label"
+                    android:layout_width="wrap_content" />
+                <Button
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_weight="0.25"
+                    android:layout_margin="5dp"
+                    android:layout_height="60dp"
+                    android:drawableTop="@drawable/ic_angry_1f620"
+                    android:id="@+id/angry_button"
+                    android:text="@string/angry_button_label"
+                    android:layout_width="wrap_content" />
+                <Button
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_weight="0.25"
+                    android:layout_margin="5dp"
+                    android:layout_height="60dp"
+                    android:drawableTop="@drawable/ic_confused_1f615_1"
+                    android:id="@+id/confused_button"
+                    android:text="@string/confused_button_label"
+                    android:layout_width="wrap_content" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <Button
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_weight="0.25"
+                    android:layout_margin="5dp"
+                    android:layout_height="60dp"
+                    android:drawableTop="@drawable/ic_disgusted_1f616"
+                    android:id="@+id/disgusted_button"
+                    android:text="@string/disgusted_button_label"
+
+                    android:layout_width="wrap_content" />
+                <Button
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_weight="0.25"
+                    android:layout_margin="5dp"
+                    android:layout_height="60dp"
+                    android:drawableTop="@drawable/ic_scared_1f631"
+                    android:id="@+id/scared_button"
+                    android:text="@string/scared_button_label"
+                    android:layout_width="wrap_content" />
+                <Button
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_weight="0.25"
+                    android:layout_margin="5dp"
+                    android:layout_height="60dp"
+                    android:drawableTop="@drawable/ic_surprised_1f632"
+                    android:id="@+id/surprised_button"
+                    android:text="@string/surprised_button_label"
+                    android:layout_width="wrap_content" />
+                <Button
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_weight="0.25"
+                    android:layout_margin="5dp"
+                    android:layout_height="60dp"
+                    android:drawableTop="@drawable/ic_shameful_1f612"
+                    android:id="@+id/shameful_button"
+                    android:text="@string/shameful_button_label"
+                    android:layout_width="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:textSize="30sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_message_header"
+                    android:textStyle="bold"
+                    android:id="@+id/date_label" />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:ems="10"
+                    android:id="@+id/message" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:textSize="30sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="@string/add_photo_header"
+                    android:id="@+id/total_records" />
+                <ImageButton
+                    android:layout_margin="10dp"
+                    android:layout_width="60dp"
+                    android:contentDescription="HELLO"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_camera_alt_black_24dp"
+                    android:id="@+id/take_photo_button"
+                    />
+                <ImageButton
+                    android:layout_margin="10dp"
+                    android:layout_width="60dp"
+                    android:contentDescription="HELLO"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_photo_library_black_24dp"
+                    android:id="@+id/browse_device_for_image_button"
+                    />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:textSize="30sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="@string/add_social_situation_header"
+                    android:id="@+id/bust_label" />
+                <ImageButton
+                    android:layout_margin="10dp"
+                    android:layout_width="60dp"
+                    android:contentDescription="HELLO"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_group_add_black_24dp"
+                    android:id="@+id/add_social_situation"
+                    />
+            </LinearLayout>
+
+            <CheckBox
+                android:layout_marginTop="10dp"
+                android:id="@+id/checkBox3"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/include_location_checkbox_message" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/footerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+        <Button
+            android:text="CANCEL"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/record_add_button" />
+
+        <Button
+            android:text="ADD MOOD EVENT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/record_delete_button" />
+
+    </LinearLayout>
+
+</RelativeLayout>

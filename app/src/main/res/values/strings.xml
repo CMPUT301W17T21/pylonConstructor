@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">Pylon Constructor</string>
+    <string name="mood_feed_title">Mood Feed</string>
+    <string name="mood_history_title">My Mood History</string>
+    <string name="update_mood">Update Mood</string>
+    <string name="add_mood_header">How are you feeling?</string>
+    <string name="add_message_header">Why?</string>
+    <string name="add_photo_header">Add a Photo</string>
+    <string name="add_social_situation_header">With Who?</string>
+    <string name="include_location_checkbox_message">Include my current location</string>
+    <string name="happy_button_label">HAPPY</string>
+    <string name="sad_button_label">SAD</string>
+    <string name="angry_button_label">ANGRY</string>
+    <string name="confused_button_label">CONFUSED</string>
+    <string name="disgusted_button_label">DISGUSTED</string>
+    <string name="scared_button_label">SCARED</string>
+    <string name="surprised_button_label">SURPRISED</string>
+    <string name="shameful_button_label">SHAMEFUL</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </resources>

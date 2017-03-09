@@ -1,6 +1,12 @@
+//ryan p: DONE: EXPANDING FLOATING ACTION BUTTON, addmood FAB already redirects to a mood
+// editor.
+//TODO: implement other FAB, CREATE MOODSLIST LISTVIEW.
+
 package team21.pylonconstructor;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +23,10 @@ public class MoodFeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
+
+        /* Set Custom App bar title, centered */
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.mood_history_layout);
 
         fab_plus = (FloatingActionButton) findViewById(R.id.fab_plus);
         fab_updateMood = (FloatingActionButton) findViewById(R.id.fab_updateMood);
@@ -58,6 +68,14 @@ public class MoodFeedActivity extends AppCompatActivity {
                     fab_updateMood.setClickable(true);
                     isOpen = true;
 
+
+                    fab_updateMood.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            setResult(RESULT_OK);
+                            Intent intent = new Intent(MoodFeedActivity.this, UpdateMoodActivity.class);
+                            startActivity(intent);
+                        }
+                    });
                 }
 
             }
