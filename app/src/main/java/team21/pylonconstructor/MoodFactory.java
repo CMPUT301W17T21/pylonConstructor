@@ -11,7 +11,7 @@ public class MoodFactory {
 
     public Mood newMood() {
         Mood mood = new Mood();
-
+        return mood;
     }
 
     private void setSituation(Mood mood) {

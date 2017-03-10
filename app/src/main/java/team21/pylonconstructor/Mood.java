@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by joshuarobertson on 2017-03-03.
  */
@@ -16,15 +18,26 @@ class Mood {
     private Date date;
     private Profile user;
     private int imageSize;
+    @JestId
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
 
     public Mood() {
         trigger = new ArrayList<>();
     }
+
     public void setEmoji(String emoji) {
         this.emoji = emoji;
     }
-
     public String getEmoji() {
         return emoji;
     }
@@ -42,29 +55,29 @@ class Mood {
     public void setDate(Date date) {
         this.date = date;
     }
-
     public Date getDate() {
         return date;
     }
+
 
     public void setTrigger(String... trigger) {
         //TODO: check for valid input
         this.trigger.clear();
         for (String s : trigger) this.trigger.add(s);
     }
-
     public ArrayList<String> getTrigger() {
         return this.trigger;
     }
+
 
     public void setSituation(String situation) {
         //TODO: check for valid input
         this.situation = situation;
     }
-
     public String getSituation() {
         return situation;
     }
+
 
     //TODO: USER PROFILE
     public void setUser(Profile user) {
@@ -81,6 +94,7 @@ class Mood {
     }
     public void getImage() {
     }
+
     //TODO: LOCATION
     public void setLocation() {
     }
