@@ -14,10 +14,11 @@ import io.searchbox.annotations.JestId;
 
 class Mood {
     private String emoji, situation;
-    private ArrayList<String> trigger; //TODO: initialize in constructor
+    private String trigger;
     private Date date;
     private Profile user;
     private int imageSize;
+
     @JestId
     private String id;
 
@@ -32,7 +33,7 @@ class Mood {
 
 
     public Mood() {
-        trigger = new ArrayList<>();
+        this.date = new Date();
     }
 
     public void setEmoji(String emoji) {
@@ -42,7 +43,7 @@ class Mood {
         return emoji;
     }
 
-    public void setDate(String date) {
+    /*public void setDate(String date) {
         DateFormat dateformat = new SimpleDateFormat("DD MM YYYY");  //TODO: decide on date format.
 
         try {
@@ -50,7 +51,7 @@ class Mood {
         } catch (ParseException e) {
             e.printStackTrace(); //TODO: Actually handle this.
         }
-    }
+    }*/
 
     public void setDate(Date date) {
         this.date = date;
@@ -60,12 +61,18 @@ class Mood {
     }
 
 
-    public void setTrigger(String... trigger) {
-        //TODO: check for valid input
-        this.trigger.clear();
-        for (String s : trigger) this.trigger.add(s);
+    public void setTrigger(String trigger) throws ReasonTooLongException{
+        /**This snippet was taken from
+        * http://stackoverflow.com/questions/8924599/how-to-count-the-exact-number-of-words-in-a-string-that-has-empty-spaces-between
+        * on 10th March, 2017 **/
+        String trimmed = trigger.trim();
+        int words = trimmed.isEmpty() ? 0 : trimmed.split("\\s+").length;
+        if(trigger.length() > 20 || words > 3){
+            throw new ReasonTooLongException();
+        }
+        this.trigger = trigger;
     }
-    public ArrayList<String> getTrigger() {
+    public String getTrigger() {
         return this.trigger;
     }
 

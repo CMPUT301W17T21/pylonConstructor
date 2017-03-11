@@ -1,5 +1,7 @@
 package team21.pylonconstructor;
 
+import android.util.Log;
+
 import java.util.Random;
 
 /**
@@ -28,11 +30,25 @@ public class MoodFactory {
 
     private void setTrigger(Mood mood) {
         switch(rand.nextInt(3)) {
-            case(0): mood.setTrigger("Random");
-                     break;
-            case(1): mood.setTrigger("Random", "Random");
-                     break;
-            case(2): mood.setTrigger("Random", "Random", "Random");
+            case (0):try {
+                mood.setTrigger("Random");
+                break;
+                }
+                catch (Exception e) {
+                    Log.i("Error", "Reason exceeds limit");
+                }
+                case (1):try {
+                    mood.setTrigger("Random Random");
+                    break;
+                }
+                catch (Exception e) {
+                    Log.i("Error", "Reason exceeds limit");
+                }
+                case (2):try {
+                    mood.setTrigger("Random Random Random");
+                } catch (Exception e) {
+                Log.i("Error", "Reason exceeds limit");
+                }
         }
     }
 
