@@ -22,7 +22,7 @@ public class MoodFeedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mood_feed);
+        setContentView(R.layout.activity_main);
 
         /* Set Custom App bar title, centered */
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
