@@ -4,25 +4,47 @@
 
 package team21.pylonconstructor;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class MoodFeedActivity extends AppCompatActivity {
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
     boolean isOpen = false;
+    private ListView oldMoodsList;
+    private ArrayAdapter<Mood> adapter;
+    Context context = this;
+
+    //TODO: JOSH, send an instance of moodList to this instance
+    private MoodList moodList;
+
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
+        oldMoodsList = (ListView) findViewById(R.id.feed_list);
+
+
 
         /* Set Custom App bar title, centered */
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -81,5 +103,75 @@ public class MoodFeedActivity extends AppCompatActivity {
             }
         });
 
+        fab_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 * https://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+                 */
+                LayoutInflater li = LayoutInflater.from(context);
+                View promptsView = li.inflate(R.layout.promt_search_user, null);
+
+
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        context);
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        String result = userInput.getText().toString();
+                                        //TODO: JOSH, find users using result
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+
+
+
+            }
+        });
+
+        fab_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                Intent intent = new Intent(MoodFeedActivity.this, FilterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //TODO: JOSH, SEND ME AN UPDATED/REFRESHED/FILTERED MOODLIST control.get(moodList)
+
+        //TODO: HALP, implementation of moodList, 'Cannot resolve constructor"??
+        //adapter = new ArrayAdapter<Mood>(this, R.layout.list_item, moodList);
+        oldMoodsList.setAdapter(adapter);
+    }
+
 }
