@@ -12,60 +12,6 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/8149c5d49646a75775a18a2eab5e9a46d9eec52a/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_f22ea3e3ab3b5eda058e605210d13f2aa9efde96/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.1.1/support-annotations-25.1.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="b59b6ee8d6ecc03e672d253800430343493a6ed8">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.1.1_e5f275ae10a930c182d2daaf0cb00fc40674e50d/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/487967f52910d7523c78e09820191d4cb1ee770a/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="02741d05d4b697fba5e279e9881aaa1da0ca7c7f">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_347423fb27fffb0a89b2fa23b7f9b8b3c7a08446/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/src/include/jest-droid-2.0.1-SNAPSHOT.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e1199e84d8d3907b8262330dd6976ce04d37f6de">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/2/jest-droid-2.0.1-SNAPSHOT_53a07ada7184bdb9913ac49ef9ac4f978e0d9968/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/41b45ddc73d64acead8735e786fb5a57d6a91264/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c6b1b1f108532fe72eb1671906c542d0c6452e2b/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/Library/Android/sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/constraint-layout-solver-1.0.2_97ad56ccd5b4418e1f20c53dcf5f9b3aac780cf7/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/jeffreyroutledge/.android/build-cache/c960d0c0cb7d55e432964014871621190370fe42/output/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -108,6 +54,24 @@
         revision="25.0.2"
         sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
         <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_e7cb0a29d00fcef4c389c8773f8ba7383e89c9ac/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/jeffreyroutledge/.android/build-cache/8149c5d49646a75775a18a2eab5e9a46d9eec52a/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
+        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_f22ea3e3ab3b5eda058e605210d13f2aa9efde96/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/jeffreyroutledge/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.1.1/support-annotations-25.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b59b6ee8d6ecc03e672d253800430343493a6ed8">
+        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.1.1_e5f275ae10a930c182d2daaf0cb00fc40674e50d/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -156,12 +120,48 @@
     </item>
     <item
         is-multidex="true"
+        jar="/Users/jeffreyroutledge/.android/build-cache/487967f52910d7523c78e09820191d4cb1ee770a/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="02741d05d4b697fba5e279e9881aaa1da0ca7c7f">
+        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_347423fb27fffb0a89b2fa23b7f9b8b3c7a08446/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="b37b533c2142050027bdec5814dd9fcdaac66961">
+        sha1="4742c295ba63b1f4798362239c96e1a6d238eb96">
         <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_e85aa1b95538e02ef7fc855b7ff5596ccc2e7b70/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/src/include/jest-droid-2.0.1-SNAPSHOT.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e1199e84d8d3907b8262330dd6976ce04d37f6de">
+        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/2/jest-droid-2.0.1-SNAPSHOT_53a07ada7184bdb9913ac49ef9ac4f978e0d9968/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/jeffreyroutledge/.android/build-cache/41b45ddc73d64acead8735e786fb5a57d6a91264/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
+        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c6b1b1f108532fe72eb1671906c542d0c6452e2b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/jeffreyroutledge/Library/Android/sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/constraint-layout-solver-1.0.2_97ad56ccd5b4418e1f20c53dcf5f9b3aac780cf7/classes.dex" />
     </item>
 
 </items>

@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button saveButton = (Button) findViewById(R.id.save);
+        /*Button saveButton = (Button) findViewById(R.id.fab_plus);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
 
@@ -36,12 +36,13 @@ public class MainActivity extends AppCompatActivity {
                 elasticSearch.addMood(mood1);*/
                /* Profile user = new Profile("Username");
                 ElasticSearch elasticSearch = new ElasticSearch();
-                mymoods = elasticSearch.getmymoods(user);*/
+                mymoods = elasticSearch.getmymoods(user);
                 Profile user = new Profile("person3");
                 ElasticSearch elasticSearch = new ElasticSearch();
                 mymoods = elasticSearch.emotionalstatefilteredmoods(user,"Angry");
                 Log.i("mood object",mymoods.get(0).getEmoji()+mymoods.get(0).getTrigger()+mymoods.get(0).getId());
+
             }
-        });
+        });*/
     }
 }
