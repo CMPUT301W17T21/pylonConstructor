@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -14,8 +15,12 @@ public class UpdateMoodActivity extends AppCompatActivity {
     Button confusedButton;
     Button disgustedButton;
     Button scaredButton;
-    Button surpriseButton;
+    Button surprisedButton;
     Button shamefulButton;
+    EditText reasonText;
+    ImageButton addPhotoButton;
+    ImageButton browseDeviceForImageButton;
+    Mood myMood = new Mood();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
         happyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                myMood.setEmoji("happy");
             }
         });
 
@@ -35,7 +41,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
         sadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                myMood.setEmoji("sad");
             }
         });
 
@@ -43,7 +49,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
         angryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                myMood.setEmoji("angry");
             }
         });
 
@@ -51,7 +57,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
         confusedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                myMood.setEmoji("confused");
             }
         });
 
@@ -59,7 +65,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
         disgustedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                myMood.setEmoji("disgusted");
             }
         });
 
@@ -67,20 +73,44 @@ public class UpdateMoodActivity extends AppCompatActivity {
         scaredButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                myMood.setEmoji("scared");
             }
         });
 
-        surpriseButton=(Button) findViewById(R.id.surprised_button);
-        surpriseButton.setOnClickListener(new View.OnClickListener() {
+        surprisedButton=(Button) findViewById(R.id.surprised_button);
+        surprisedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myMood.setEmoji("surprised");
+            }
+        });
+
+        shamefulButton=(Button) findViewById(R.id.shameful_button);
+        shamefulButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myMood.setEmoji("shameful");
+            }
+        });
+
+        reasonText=(EditText) findViewById(R.id.message);
+        reasonText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
 
-        shamefulButton=(Button) findViewById(R.id.shameful_button);
-        shamefulButton.setOnClickListener(new View.OnClickListener() {
+        addPhotoButton=(ImageButton) findViewById(R.id.take_photo_button);
+        addPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        browseDeviceForImageButton=(ImageButton) findViewById(R.id.browse_device_for_image_button);
+        browseDeviceForImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
