@@ -22,25 +22,37 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View v) {
                 /*Mood mood1 = new Mood();
-                mood1.setEmoji("Angry");
+                mood1.setEmoji("sleepy");
                 mood1.setSituation("With Two Persons");
                 try {
-                    mood1.setTrigger("Bear Cat");
+                    mood1.setTrigger("Bear garden");
                 }
                 catch (Exception e){
                     Log.i("Error", "Reason exceeds limit");
                 }
-                mood1.setUser(new Profile("person3"));
+                mood1.setUser(new Profile("Username"));
 
                 ElasticSearch elasticSearch = new ElasticSearch();
                 elasticSearch.addMood(mood1);*/
-               /* Profile user = new Profile("Username");
+                Profile user = new Profile("Username");
                 ElasticSearch elasticSearch = new ElasticSearch();
-                mymoods = elasticSearch.getmymoods(user);*/
-                Profile user = new Profile("person3");
+                //mymoods = elasticSearch.emotionalstatefilteredmoods(user,"Happy");
+                mymoods = elasticSearch.triggerfilteredmoods(user,"Bear");
+                //mymoods = elasticSearch.getmymoods(user);
+                for (Mood mood: mymoods){
+                    Log.i("Mood Date", mood.getDate().toString());
+                }
+                /*Profile user = new Profile("Username");
                 ElasticSearch elasticSearch = new ElasticSearch();
-                mymoods = elasticSearch.emotionalstatefilteredmoods(user,"Angry");
+                //mymoods = elasticSearch.emotionalstatefilteredmoods(user,"Angry");
+                mymoods = elasticSearch.triggerfilteredmoods(user,"Bear");
                 Log.i("mood object",mymoods.get(0).getEmoji()+mymoods.get(0).getTrigger()+mymoods.get(0).getId());
+                //elasticSearch.deleteMood(mymoods.get(0));
+                mymoods.get(0).setEmoji("Confused");
+                mymoods.get(0).setUser(new Profile("user1"));
+                elasticSearch.editMood(mymoods.get(0));
+                Log.i("mood object",mymoods.get(0).getEmoji()+mymoods.get(0).getTrigger()+mymoods.get(0).getId());*/
+
             }
         });
     }
