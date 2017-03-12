@@ -34,21 +34,28 @@ public class MainActivity extends AppCompatActivity {
 
                 ElasticSearch elasticSearch = new ElasticSearch();
                 elasticSearch.addMood(mood1);*/
-                Profile user = new Profile("Username");
+                Profile user = new Profile("person3");
+                Profile user2 = new Profile("Username2");
+                Profile user3 = new Profile("Username3");
                 ElasticSearch elasticSearch = new ElasticSearch();
                 //mymoods = elasticSearch.emotionalstatefilteredmoods(user,"Happy");
-                mymoods = elasticSearch.triggerfilteredmoods(user,"Bear");
+                elasticSearch.addProfile(user);
+                elasticSearch.addProfile(user2);
+                elasticSearch.addProfile(user3);
+                //Profile user4 = elasticSearch.getProfile("person3");
+                elasticSearch.deleteProfile(elasticSearch.getProfile("person3"));
+                //mymoods = elasticSearch.triggerfilteredmoods(user,"Bear");
                 //mymoods = elasticSearch.getmymoods(user);
-                for (Mood mood: mymoods){
+                /*for (Mood mood: mymoods){
                     Log.i("Mood Date", mood.getDate().toString());
-                }
+                }*/
                 /*Profile user = new Profile("Username");
-                ElasticSearch elasticSearch = new ElasticSearch();
-                //mymoods = elasticSearch.emotionalstatefilteredmoods(user,"Angry");
-                mymoods = elasticSearch.triggerfilteredmoods(user,"Bear");
+                ElasticSearch elasticSearch = new ElasticSearch();*/
+                /*mymoods = elasticSearch.emotionalstatefilteredmoods(user,"Angry");
+                //mymoods = elasticSearch.triggerfilteredmoods(user,"Bear");
                 Log.i("mood object",mymoods.get(0).getEmoji()+mymoods.get(0).getTrigger()+mymoods.get(0).getId());
-                //elasticSearch.deleteMood(mymoods.get(0));
-                mymoods.get(0).setEmoji("Confused");
+                elasticSearch.deleteMood(mymoods.get(0));
+                /*mymoods.get(0).setEmoji("Confused");
                 mymoods.get(0).setUser(new Profile("user1"));
                 elasticSearch.editMood(mymoods.get(0));
                 Log.i("mood object",mymoods.get(0).getEmoji()+mymoods.get(0).getTrigger()+mymoods.get(0).getId());*/

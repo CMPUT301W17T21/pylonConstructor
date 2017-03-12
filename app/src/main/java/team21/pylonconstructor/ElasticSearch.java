@@ -102,4 +102,63 @@ public class ElasticSearch {
         return mymoodsList;
     }
 
+
+    /**
+     * Adds a Profile to the Elastic Search Database only if it doesn't already exist
+     * @param profile
+     * @return true if the profile was successfully added
+     * false if profile already exists
+     */
+    public boolean addProfile(Profile profile){
+
+        Profile p = new Profile();
+        p = getProfile(profile.getUserName());
+        if(p == null) {
+            ElasticSearchController.AddProfileTask addProfileTask = new ElasticSearchController.AddProfileTask();
+            addProfileTask.execute(profile);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     *  Deletes a given Profile from Elastic Search Database
+     * @param profile
+     * @return true if the profile was successfully deleted
+     * false if profile was not deleted because it didn't exist
+     */
+    public boolean deleteProfile(Profile profile){
+        Profile p = new Profile();
+        p = getProfile(profile.getUserName());
+        if(p != null) {
+            ElasticSearchController.DeleteProfileTask deleteProfileTask = new ElasticSearchController.DeleteProfileTask();
+            deleteProfileTask.execute(profile);
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    /**
+     *  Gets a profile from the Elastic Search Database from a given username
+     * @param username
+     * @return Profile object
+     */
+    public Profile getProfile(String username){
+        ElasticSearchController.GetProfileTask getProfileTask = new ElasticSearchController.GetProfileTask();
+        getProfileTask.execute(username);
+        try{
+            return getProfileTask.get();
+        }
+        catch (Exception e){
+            Log.i("Error", "Failed to Filter Moods objects for emotional state!");
+            return null;
+        }
+
+    }
+
 }

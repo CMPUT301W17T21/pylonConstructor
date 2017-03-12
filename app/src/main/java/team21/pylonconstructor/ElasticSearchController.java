@@ -103,21 +103,20 @@ public class ElasticSearchController {
             //Edit the mood
             Index index = new Index.Builder(moods[0]).index("g21testing").type("Mood").id(moods[0].getId()).build();
 
-                try {
-                    // Execute the query
-                    DocumentResult result = client.execute(index);
-                    if(result.isSucceeded()){
-                        Log.i("Success", "Edited your mood!");
+            try {
+                // Execute the query
+                DocumentResult result = client.execute(index);
+                if(result.isSucceeded()){
+                    Log.i("Success", "Edited your mood!");
 
-                    }
-                    else{
-                        Log.i("Error", "Elastic search was not able to edit mood!");
-                    }
                 }
-                catch (Exception e) {
-                    Log.i("Error", "The application failed to build and edit the mood");
+                else{
+                    Log.i("Error", "Elastic search was not able to edit mood!");
                 }
-
+            }
+            catch (Exception e) {
+                Log.i("Error", "The application failed to build and edit the mood");
+            }
             return null;
         }
     }
@@ -227,6 +226,92 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     *  A function which adds profiles to elastic search
+     */
+    public static class AddProfileTask extends AsyncTask<Profile, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Profile... profiles) {
+            verifySettings();
+            Index index = new Index.Builder(profiles[0]).index("g21testing").type("Profile").build();
+            try {
+                // Execute the query
+                DocumentResult result = client.execute(index);
+                if(result.isSucceeded()){
+                    profiles[0].setId(result.getId());
+                    Log.i("Success", "Added your Profile!");
+
+                }
+                else{
+                    Log.i("Error", "Elastic search was not able to add the profile!");
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "The application failed to build and send the Profile");
+            }
+            return null;
+        }
+    }
+
+
+    /**
+     * Removes a Profile from the DB
+     */
+    public static class DeleteProfileTask extends AsyncTask<Profile, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Profile... profiles) {
+            verifySettings();
+            // Delete the Profile
+            Delete delete = new Delete.Builder(profiles[0].getId()).index("g21testing").type("Profile").build();
+            try {
+                DocumentResult result = client.execute(delete);
+                if (result.isSucceeded()) {
+                    Log.i("Success", "Deleted your Profile!");
+                }
+                else {
+                    Log.i("Error", "Elasticsearch failed to delete Profile");
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Elasticsearch failed to delete Profile");
+            }
+            return null;
+        }
+    }
+
+    /**
+     * A function which gets a profile from elastic search
+     */
+    public static class GetProfileTask extends AsyncTask<String, Void, Profile> {
+        @Override
+        protected Profile doInBackground(String... search_parameters) {
+            verifySettings();
+            Profile profile = new Profile();
+            // Search for given Username
+            String query = "{\"query\":{\"query_string\" :{\"fields\" : [\"userName\"],\"query\" :\""+ search_parameters[0]+"\"}}}";
+            Search search = new Search.Builder(query)
+                    .addIndex("g21testing").addType("Profile").build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if(result.isSucceeded()){
+                    profile = result.getSourceAsObject(Profile.class);
+                    Log.i("Found", "Profile matched!");
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any Profiles that matched!");
+
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+
+            return profile;
+        }
+    }
 
     /**
      * A function that sets up the communication with CMPUT 301 server

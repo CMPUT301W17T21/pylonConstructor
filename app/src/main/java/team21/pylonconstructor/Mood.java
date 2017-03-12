@@ -21,16 +21,12 @@ class Mood {
 
     @JestId
     private String id;
-
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
-
-
 
     public Mood() {
         this.date = new Date();
