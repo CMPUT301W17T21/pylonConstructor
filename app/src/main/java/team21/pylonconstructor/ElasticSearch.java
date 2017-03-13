@@ -24,10 +24,20 @@ public class ElasticSearch {
     /**
      * Adds Moods to the Elastic Search Database
      * @param mood
+     * @return true if mood successfully added
+     * false otherwise
      */
-    public void addMood(Mood mood){
+    public boolean addMood(Mood mood){
         ElasticSearchController.AddMoodsTask addMoodsTask = new ElasticSearchController.AddMoodsTask();
         addMoodsTask.execute(mood);
+        try {
+            addMoodsTask.get();
+            return true;
+        }
+        catch (Exception e){
+            Log.i("Error", "Failed to add mood");
+            return false;
+        }
     }
 
     /**
@@ -50,10 +60,19 @@ public class ElasticSearch {
     /**
      *  Deletes a given Mood from Elastic Search Database
      * @param mood
+     * @return true if mood successfully deleted
+     * false otherwise
      */
-    public void deleteMood(Mood mood){
+    public boolean deleteMood(Mood mood){
         ElasticSearchController.DeleteMoodTask deleteMoodTask = new ElasticSearchController.DeleteMoodTask();
         deleteMoodTask.execute(mood);
+        try {
+            deleteMoodTask.get();
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
     /**
@@ -116,7 +135,13 @@ public class ElasticSearch {
         if(p == null) {
             ElasticSearchController.AddProfileTask addProfileTask = new ElasticSearchController.AddProfileTask();
             addProfileTask.execute(profile);
-            return true;
+            try{
+                addProfileTask.get();
+                return true;
+            }
+            catch (Exception e){
+                return false;
+            }
         }
         else {
             return false;
@@ -130,17 +155,27 @@ public class ElasticSearch {
      * false if profile was not deleted because it didn't exist
      */
     public boolean deleteProfile(Profile profile){
-        Profile p = new Profile();
-        p = getProfile(profile.getUserName());
-        if(p != null) {
-            ElasticSearchController.DeleteProfileTask deleteProfileTask = new ElasticSearchController.DeleteProfileTask();
-            deleteProfileTask.execute(profile);
-            return true;
+        if(profile != null) {
+            Profile p = new Profile();
+            p = getProfile(profile.getUserName());
+            if (p != null) {
+                ElasticSearchController.DeleteProfileTask deleteProfileTask = new ElasticSearchController.DeleteProfileTask();
+                deleteProfileTask.execute(profile);
+                try {
+                    deleteProfileTask.get();
+                    return true;
+                } catch (Exception e) {
+                    return false;
+                }
+            } else {
+                Log.i("Error","No such profile exists in the database");
+                return false;
+            }
         }
-        else {
+        else{
+            Log.i("Error", "Invalid Profile entered");
             return false;
         }
-
     }
 
     /**
