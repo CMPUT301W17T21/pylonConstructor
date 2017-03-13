@@ -6,8 +6,11 @@ import java.util.Random;
 
 /**
  * Created by joshuarobertson on 2017-03-09.
+ *
+ * This is currently on hold. In the future this may be adapted to create fake data to populate
+ * the database in case all database data is lost.
+ *
  */
-
 public class MoodFactory {
     Random rand = new Random();
 

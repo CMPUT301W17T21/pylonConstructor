@@ -9,9 +9,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-
-//TODO: logic of how to check if user is logged in...
-
+/**
+ * This is the login activity.
+ *
+ * The app always starts here. There is very simple control flow:
+ * -If the user attempts to login with an invalid username, an error message will be displayed.
+ * -If the user attempts to login with a valid username, they will progress to MoodFeedActivity.
+ * -If the user attempts to register an existing username an error message will be displayed.
+ * -If the user creates a new valid username (appropriate characters, etc.), they will progress
+ * to the MoodFeedActivity.
+ *
+ *
+ * @see Mood
+ * @see MoodFeedActivity
+ *
+ * @version 1.0
+ *
+ */
 public class LoginActivity extends AppCompatActivity {
 
     @Override
@@ -21,11 +35,10 @@ public class LoginActivity extends AppCompatActivity {
 
         final ElasticSearch elasticSearch = new ElasticSearch();
 
-
         Button register = (Button) findViewById(R.id.register_user_button);
         Button login = (Button) findViewById(R.id.login_button);
 
-
+        //TODO: ensure the username doesn't exist.
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

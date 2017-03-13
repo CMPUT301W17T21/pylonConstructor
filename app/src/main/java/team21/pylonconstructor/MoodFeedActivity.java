@@ -32,6 +32,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This is the main view activity. All mood entries for a logged in user are displayed as a list
+ * here.
+ *
+ * From this activity the user can create, edit and delete moods.
+ * The user can also search for other users, filter the history, and eventually navigate to other
+ * views.
+ *
+ * @version 1.0
+ */
 public class MoodFeedActivity extends AppCompatActivity {
 
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
@@ -45,7 +55,6 @@ public class MoodFeedActivity extends AppCompatActivity {
     ElasticSearch elasticSearch;
     Profile profile;
 
-    //TODO: JOSH, send an instance of moodList to this instance
     private RecyclerView recyclerView;
 
     @Override
@@ -60,7 +69,6 @@ public class MoodFeedActivity extends AppCompatActivity {
         moodList = elasticSearch.getmymoods(this.profile);
         adapter = new MoodAdapter(this, moodList);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -143,8 +151,6 @@ public class MoodFeedActivity extends AppCompatActivity {
                 LayoutInflater li = LayoutInflater.from(context);
                 View promptsView = li.inflate(R.layout.promt_search_user, null);
 
-
-
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         context);
                 // set prompts.xml to alertdialog builder
@@ -175,10 +181,6 @@ public class MoodFeedActivity extends AppCompatActivity {
 
                 // show it
                 alertDialog.show();
-
-
-
-
             }
         });
 
@@ -190,17 +192,12 @@ public class MoodFeedActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         moodList = elasticSearch.getmymoods(this.profile);
-
-        //TODO: JOSH, SEND ME AN UPDATED/REFRESHED/FILTERED MOODLIST control.get(moodList)
         adapter = new MoodAdapter(this, moodList);
         oldMoodsList.setAdapter(adapter);
     }
@@ -211,5 +208,4 @@ public class MoodFeedActivity extends AppCompatActivity {
         moodList = elasticSearch.getmymoods(this.profile);
         adapter.notifyDataSetChanged();
     }
-
 }
