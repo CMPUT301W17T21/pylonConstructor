@@ -163,7 +163,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
+                Intent intent = new Intent(MoodHistoryActivity.this, FilterActivity.class);
                 intent.putExtra("Username", profile.getUserName());
                 startActivity(intent);
             }
@@ -193,6 +193,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
         moodList = elasticSearch.getmymoods(this.profile);
         adapter = new MoodAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
