@@ -32,7 +32,10 @@ class Mood {
 
 
 
+    // RYAN added null default values
     public Mood() {
+        this.emoji = null;
+        this.trigger = null;
         this.date = new Date();
     }
 
@@ -97,7 +100,8 @@ class Mood {
 
 
     //TODO: IMAGES
-    public void setImage() {
+    public void setImage()  throws ImageTooLargeException{
+        throw new ImageTooLargeException();
     }
     public void getImage() {
     }
@@ -105,6 +109,7 @@ class Mood {
     //TODO: LOCATION
     public void setLocation() {
     }
+
     public void getLocation() {
     }
 

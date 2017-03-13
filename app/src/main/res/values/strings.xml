@@ -16,21 +16,7 @@
     <string name="scared_button_label">SCARED</string>
     <string name="surprised_button_label">SURPRISED</string>
     <string name="shameful_button_label">SHAMEFUL</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <string name="empty_mood">(Please select a mood)</string>
 
 
 </resources>

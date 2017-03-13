@@ -46,6 +46,11 @@
                     android:id="@+id/name_lbl" />
 
             </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/empty_mood"
+                android:id="@+id/selected_mood" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -169,20 +174,23 @@
                     android:id="@+id/message" />
             </LinearLayout>
 
-
+            <TextView
+                android:textSize="30sp"
+                android:fontFamily="sans-serif-condensed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/add_photo_header"
+                android:id="@+id/total_records" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/selected_photo"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
-                <TextView
-                    android:textSize="30sp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="@string/add_photo_header"
-                    android:id="@+id/total_records" />
                 <ImageButton
                     android:layout_margin="10dp"
                     android:layout_width="60dp"
@@ -191,6 +199,7 @@
                     android:src="@drawable/ic_camera_alt_black_24dp"
                     android:id="@+id/take_photo_button"
                     />
+
                 <ImageButton
                     android:layout_margin="10dp"
                     android:layout_width="60dp"
@@ -200,6 +209,7 @@
                     android:id="@+id/browse_device_for_image_button"
                     />
             </LinearLayout>
+
 
 
             <LinearLayout
@@ -249,13 +259,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
-            android:id="@+id/record_add_button" />
+            android:id="@+id/cancel" />
 
         <Button
             android:text="ADD MOOD EVENT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/record_delete_button" />
+            android:id="@+id/add_mood_event" />
 
     </LinearLayout>
 

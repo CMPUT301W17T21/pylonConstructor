@@ -75,6 +75,15 @@
     </item>
     <item
         is-multidex="true"
+        jar="/Users/jeffreyroutledge/.android/build-cache/fdaa642760fee1bc489bb20bf73da48087e712b8/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
+        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_2311383610e3bedb7c6ecfe6b31381092c5a2fb4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/jeffreyroutledge/.android/build-cache/b5884ba9fa86b44121e50a726a6b5ac1dc603557/output/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -133,7 +142,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="4742c295ba63b1f4798362239c96e1a6d238eb96">
+        sha1="68a244d5d7de36df5ca2563a5b82f8788cba8ba6">
         <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_e85aa1b95538e02ef7fc855b7ff5596ccc2e7b70/classes.dex" />
     </item>
     <item

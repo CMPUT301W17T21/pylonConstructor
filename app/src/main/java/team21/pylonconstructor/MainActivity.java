@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_mood_feed);
         /*Button saveButton = (Button) findViewById(R.id.fab_plus);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
