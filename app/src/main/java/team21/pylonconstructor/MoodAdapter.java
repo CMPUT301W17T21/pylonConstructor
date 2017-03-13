@@ -6,6 +6,7 @@ package team21.pylonconstructor;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -128,27 +131,48 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
 
     /**
      * Click listener for popup menu items
+     * http://stackoverflow.com/questions/41836938/saving-card-position-in-adapter
      */
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
 
+        int pos;
+
         public MyMenuItemClickListener() {
+            this.pos = pos;
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
-                case R.id.action_add_favourite:
+                case R.id.action_delete_mood:
                     Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
                     return true;
-                case R.id.action_play_next:
-                    Toast.makeText(mContext, "Play next", Toast.LENGTH_SHORT).show();
-                    return true;
+
+                case R.id.action_edit_mood:
+                Intent slideStart = new Intent(mContext, UpdateMoodActivity.class);
+
+                super.getClass();
+
+                    slideStart.putExtra("emoj", moodList.get(pos).getEmoji());
+                    slideStart.putExtra("situ", moodList.get(pos).getSituation());
+                    slideStart.putExtra("trig", moodList.get(pos).getTrigger());
+                    slideStart.putExtra("date", moodList.get(pos).getDate().getTime());
+
+
+                    slideStart.putExtra("usr", moodList.get(pos).getUser().getUserName());
+                    slideStart.putExtra("image",  moodList.get(pos).getImage());
+                    slideStart.putExtra("EDIT",  1);
+
+
+
+
+                    mContext.startActivity(slideStart);
+                return true;
                 default:
             }
             return false;
         }
     }
-
     @Override
     public int getItemCount() {
         return moodList.size();

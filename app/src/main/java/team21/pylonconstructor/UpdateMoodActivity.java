@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
+
 
 /**
  * This activity is used to create and modify mood entries.
@@ -73,10 +75,15 @@ public class UpdateMoodActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_mood);
         selectedMoodTextView = (TextView) findViewById(R.id.selected_mood);
         triggerEditText = (EditText) findViewById(R.id.message);
+        Bitmap img;
+        int edt = getIntent().getExtras().getInt("EDIT");
+
 
           /* Set Custom App bar title, centered */
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -86,6 +93,38 @@ public class UpdateMoodActivity extends AppCompatActivity {
         mood = new Mood(elasticSearch.getProfile(username));
 
         //TODO: IMPLEMENT THE MOOD OPTIONS & BUTTONS HERE that are laid out in activity_update_mood.xml
+
+
+        if (edt == 1) {
+            String emoj = getIntent().getExtras().getString("emoj");
+            mood.setEmoji(getIntent().getExtras().getString("emoj"));
+            selectedMoodTextView.setText(emoj);
+            String trig = getIntent().getExtras().getString("trig");
+
+            triggerEditText.setText(trig);
+
+            String situ = getIntent().getExtras().getString("situ");
+            mood.setSituation(situ);
+
+
+            Date dt = new Date();
+            dt.setTime(getIntent().getLongExtra("date",-1));
+            mood.setDate(dt);
+            img = (Bitmap) getIntent().getParcelableExtra("image");
+
+            if (img != null) {
+                try {
+                    mood.setImage(img);
+                } catch (ImageTooLargeException e) {
+                }
+            }
+
+
+
+        }
+
+
+
 
         happyButton = (Button) findViewById(R.id.happy_button);
         happyButton.setOnClickListener(new View.OnClickListener() {
