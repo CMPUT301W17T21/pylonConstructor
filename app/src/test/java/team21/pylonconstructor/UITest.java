@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 
 import org.junit.Test;
 import com.robotium.solo.Solo;
@@ -39,6 +40,12 @@ public class UITest extends ActivityInstrumentationTestCase2<MoodFeedActivity> {
 
         View fab_updateMood = getActivity().findViewById(R.id.fab_updateMood);
         solo.clickOnView(fab_updateMood);
+
+        solo.assertCurrentActivity("Activity Switch didn't work", UpdateMoodActivity.class);
+
+        solo.clickOnButton("HAPPY");
+        solo.enterText((EditText) solo.getView(R.id.message), "Life is good");
+        solo.clickOnButton("ADD MOOD EVENT");
     }
 
     @Override
