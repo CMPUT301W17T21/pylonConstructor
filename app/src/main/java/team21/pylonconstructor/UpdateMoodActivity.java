@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -54,10 +55,10 @@ public class UpdateMoodActivity extends AppCompatActivity {
         selectedMoodTextView = (TextView) findViewById(R.id.selected_mood);
         triggerEditText = (EditText) findViewById(R.id.message);
 
+          /* Set Custom App bar title, centered */
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.update_mood_layout);
 
-
-
-        //TODO: IMPLEMENT THE MOOD OPTIONS & BUTTONS HERE that are laid out in activity_update_mood.xml
 
         happyButton = (Button) findViewById(R.id.happy_button);
         happyButton.setOnClickListener(new View.OnClickListener() {
@@ -218,16 +219,17 @@ public class UpdateMoodActivity extends AppCompatActivity {
                     toast.show();
                 }
 
-                try {
-                    mood.setImage(imageBitmap);
-                } catch (ImageTooLargeException e) {
-                    CharSequence text = "Image is too large..";
-                    int duration = Toast.LENGTH_SHORT;
-                    toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                if (imageBitmap != null) {
+                    try {
+                        mood.setImage(imageBitmap);
+                    } catch (ImageTooLargeException e) {
+                        validMood = false;
+                        CharSequence text = "Image is too large..";
+                        int duration = Toast.LENGTH_SHORT;
+                        toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
                 }
-
-
 
                 if (validMood) {
                     //TODO: JOSH, at this point mood is correct, so controller.add(mood)
@@ -256,6 +258,9 @@ public class UpdateMoodActivity extends AppCompatActivity {
             mImageView = (ImageView) findViewById(R.id.selected_photo);
             Bundle extras = data.getExtras();
             imageBitmap = (Bitmap) extras.get("data");
+
+            mImageView.setImageBitmap(imageBitmap);
+
         }
     }
 }

@@ -1,7 +1,3 @@
-//ryan p: DONE: EXPANDING FLOATING ACTION BUTTON, addmood FAB already redirects to a mood
-// editor.
-//TODO: implement other FAB, CREATE MOODSLIST LISTVIEW.
-
 package team21.pylonconstructor;
 
 import android.content.Context;
@@ -13,29 +9,20 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
 
-import com.bumptech.glide.Glide;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class MoodFeedActivity extends AppCompatActivity {
+public class MoodHistoryActivity extends AppCompatActivity {
 
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
@@ -103,7 +90,7 @@ public class MoodFeedActivity extends AppCompatActivity {
 
         /* Set Custom App bar title, centered */
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.mood_feed_layout);
+        getSupportActionBar().setCustomView(R.layout.mood_history_layout);
 
 
         fab_plus = (FloatingActionButton) findViewById(R.id.fab_plus);
@@ -151,7 +138,7 @@ public class MoodFeedActivity extends AppCompatActivity {
                     fab_updateMood.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             setResult(RESULT_OK);
-                            Intent intent = new Intent(MoodFeedActivity.this, UpdateMoodActivity.class);
+                            Intent intent = new Intent(MoodHistoryActivity.this, UpdateMoodActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -169,6 +156,8 @@ public class MoodFeedActivity extends AppCompatActivity {
                  */
                 LayoutInflater li = LayoutInflater.from(context);
                 View promptsView = li.inflate(R.layout.promt_search_user, null);
+
+
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         context);
@@ -211,7 +200,7 @@ public class MoodFeedActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                Intent intent = new Intent(MoodFeedActivity.this, FilterActivity.class);
+                Intent intent = new Intent(MoodHistoryActivity.this, FilterActivity.class);
                 startActivity(intent);
             }
         });
@@ -232,7 +221,7 @@ public class MoodFeedActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.mybutton) {
-            Intent intent = new Intent(MoodFeedActivity.this, MoodHistoryActivity.class);
+            Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

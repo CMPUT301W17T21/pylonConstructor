@@ -1,6 +1,9 @@
 package team21.pylonconstructor;
 
 import android.graphics.Bitmap;
+import android.util.Log;
+
+import org.apache.commons.lang3.SystemUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -40,6 +43,7 @@ class Mood {
         this.emoji = null;
         this.trigger = null;
         this.date = new Date();
+        this.image = null;
     }
 
     public void setEmoji(String emoji) {
@@ -110,10 +114,16 @@ class Mood {
     //TODO: IMAGES
     public void setImage(Bitmap image)  throws ImageTooLargeException{
         this.image = image;
-        Boolean a = true;
-        if (!a)
+        int bytecount = image.getByteCount();
+        Log.d("STATE", Integer.toString(bytecount));
+        if (bytecount > 66636) {
             throw new ImageTooLargeException();
+        }
+        else {
+            this.image = image;
+        }
     }
+
     public Bitmap getImage() {
         return this.image;
     }

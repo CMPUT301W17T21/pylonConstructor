@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".UpdateMoodActivity" />
         <activity android:name=".MoodFeedActivity" />
-        <activity android:name=".FilterActivity"></activity>
+        <activity android:name=".FilterActivity" />
+        <activity android:name=".MoodHistoryActivity"></activity>
     </application>
 
 </manifest>
