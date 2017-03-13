@@ -2,6 +2,8 @@ package team21.pylonconstructor;
 
 import java.util.ArrayList;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by joshuarobertson on 2017-03-03.
  */
@@ -10,6 +12,15 @@ class Profile {
     String userName;
     ArrayList<Profile> followers;
     ArrayList<Profile> following;
+
+    @JestId
+    private String id;
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Profile () {
         followers = new ArrayList<>();
