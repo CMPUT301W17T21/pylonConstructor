@@ -27,9 +27,7 @@ import io.searchbox.core.SearchResult;
  * on 8th March, 2017 and was initially written during the lab session.
  * This has been modified to suite the needs of our project.
  */
-
 public class ElasticSearchController {
-
     //static means var is shared amongst class objects
     private static JestDroidClient client;
 

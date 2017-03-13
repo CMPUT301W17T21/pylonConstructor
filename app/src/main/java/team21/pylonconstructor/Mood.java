@@ -1,19 +1,21 @@
 package team21.pylonconstructor;
 
 import android.graphics.Bitmap;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import io.searchbox.annotations.JestId;
 
 /**
- * Created by joshuarobertson on 2017-03-03.
+ * This is the main object in use.
+ *
+ * All mood Entries are encapsulated in Mood objects.
+ *
+ * The mood class wil verify internally that any given data is valid, and will throw appropriate
+ * errors if invalid data is presented.
+ *
+ * @version 1.0
+ *
  */
-
 class Mood {
     private String emoji, situation;
     private String trigger;
@@ -39,8 +41,6 @@ class Mood {
     public void setId(String id) {
         this.id = id;
     }
-
-
 
     // RYAN added null default values
     public Mood() {
@@ -111,8 +111,6 @@ class Mood {
     public Profile getUser() {
         return user;
     }
-
-
 
     //TODO: IMAGES
     public void setImage(Bitmap image)  throws ImageTooLargeException{
