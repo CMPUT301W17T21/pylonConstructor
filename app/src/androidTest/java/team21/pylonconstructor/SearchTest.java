@@ -21,7 +21,7 @@ public class SearchTest {
 
     @Rule
     public ActivityTestRule<MoodFeedActivity> rule = new ActivityTestRule<>(MoodFeedActivity.class);
-    
+
     /**
      * Test search
      */
