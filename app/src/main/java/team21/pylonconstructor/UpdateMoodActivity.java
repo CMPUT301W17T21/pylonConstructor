@@ -28,7 +28,11 @@ public class UpdateMoodActivity extends AppCompatActivity {
     Button surpriseButton;
     Button shamefulButton;
     Bitmap imageBitmap;
-    Mood mood = new Mood();
+
+    String username;
+    ElasticSearch elasticSearch = new ElasticSearch();
+    Mood mood;
+
     private TextView selectedMoodTextView;
     private EditText triggerEditText;
     ImageButton goToCameraButton;
@@ -54,8 +58,8 @@ public class UpdateMoodActivity extends AppCompatActivity {
         selectedMoodTextView = (TextView) findViewById(R.id.selected_mood);
         triggerEditText = (EditText) findViewById(R.id.message);
 
-
-
+        username = getIntent().getStringExtra("Username");
+        mood = new Mood(elasticSearch.getProfile(username));
 
         //TODO: IMPLEMENT THE MOOD OPTIONS & BUTTONS HERE that are laid out in activity_update_mood.xml
 
@@ -230,6 +234,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
 
 
                 if (validMood) {
+                    elasticSearch.addMood(mood);
                     //TODO: JOSH, at this point mood is correct, so controller.add(mood)
                     finish();
                 }
