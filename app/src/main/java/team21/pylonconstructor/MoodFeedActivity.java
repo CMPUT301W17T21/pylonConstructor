@@ -190,7 +190,7 @@ public class MoodFeedActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                Intent intent = new Intent(MoodFeedActivity.this, MoodHistoryActivity.class);
+                Intent intent = new Intent(MoodFeedActivity.this, FilterActivity.class);
                 intent.putExtra("Username", profile.getUserName());
                 startActivity(intent);
             }

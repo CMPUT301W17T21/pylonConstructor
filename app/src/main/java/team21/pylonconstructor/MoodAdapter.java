@@ -8,6 +8,7 @@ package team21.pylonconstructor;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,9 +40,12 @@ import java.util.List;
  */
 public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> {
 
+
     private Context mContext;
     private List<Mood> moodList;
+    private MoodAdapter adapter;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa");
+    ElasticSearch elasticSearch = new ElasticSearch();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, trigger, dtView;
@@ -62,6 +66,7 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
     public MoodAdapter(Context mContext, List<Mood> moodList) {
         this.mContext = mContext;
         this.moodList = moodList;
+        this.adapter = this;
     }
 
     @Override
@@ -77,6 +82,9 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
         Mood mood = moodList.get(position);
         holder.title.setText(mood.getUser().getUserName());
         holder.trigger.setText(mood.getTrigger());
+
+
+        holder.thumbnail.setImageBitmap(mood.getImage());
 
         String dateStr = sdf.format(mood.getDate());
         holder.dtView.setText(dateStr);
@@ -157,31 +165,39 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
+            Intent slideStart = new Intent(mContext, UpdateMoodActivity.class);
+
+            boolean delete = false;
             switch (menuItem.getItemId()) {
                 case R.id.action_delete_mood:
-                    Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
-                    return true;
-
+                    delete = true;
                 case R.id.action_edit_mood:
-                Intent slideStart = new Intent(mContext, UpdateMoodActivity.class);
+
 
                 super.getClass();
 
-                    slideStart.putExtra("emoj", moodList.get(pos).getEmoji());
-                    slideStart.putExtra("situ", moodList.get(pos).getSituation());
-                    slideStart.putExtra("trig", moodList.get(pos).getTrigger());
-                    slideStart.putExtra("date", moodList.get(pos).getDate().getTime());
+
+                    if (delete) {
+                        Mood dmood = moodList.get(pos);
+                        elasticSearch.deleteMood(dmood);
+                        Intent intent = new Intent(mContext, MoodHistoryActivity.class);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    else {
+                        slideStart.putExtra("emoj", moodList.get(pos).getEmoji());
+                        slideStart.putExtra("situ", moodList.get(pos).getSituation());
+                        slideStart.putExtra("trig", moodList.get(pos).getTrigger());
+                        slideStart.putExtra("date", moodList.get(pos).getDate().getTime());
 
 
-                    slideStart.putExtra("usr", moodList.get(pos).getUser().getUserName());
-                    slideStart.putExtra("image",  moodList.get(pos).getImage());
-                    slideStart.putExtra("EDIT",  1);
+                        slideStart.putExtra("usr", moodList.get(pos).getUser().getUserName());
+                        slideStart.putExtra("image",  moodList.get(pos).getImage());
+                        slideStart.putExtra("EDIT",  1);
+                        mContext.startActivity(slideStart);
+                    }
 
-
-
-
-                    mContext.startActivity(slideStart);
-                return true;
+                    return true;
                 default:
             }
             return false;
