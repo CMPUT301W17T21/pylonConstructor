@@ -27,6 +27,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
     Button scaredButton;
     Button surpriseButton;
     Button shamefulButton;
+    Bitmap imageBitmap;
     Mood mood = new Mood();
     private TextView selectedMoodTextView;
     private EditText triggerEditText;
@@ -149,8 +150,6 @@ public class UpdateMoodActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dispatchTakePictureIntent();
-                //TODO: goto camera
-
             }
 
         });
@@ -207,6 +206,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
                     toast.show();
                 }
 
+
                 try {
                     mood.setTrigger(trigger);
                 } catch (ReasonTooLongException e) {
@@ -219,14 +219,14 @@ public class UpdateMoodActivity extends AppCompatActivity {
                 }
 
                 try {
-                    mood.setImage();
+                    mood.setImage(imageBitmap);
                 } catch (ImageTooLargeException e) {
-                    context = getApplicationContext();
-                    CharSequence text = "Image is too long..";
+                    CharSequence text = "Image is too large..";
                     int duration = Toast.LENGTH_SHORT;
                     toast = Toast.makeText(context, text, duration);
                     toast.show();
                 }
+
 
 
                 if (validMood) {
@@ -253,23 +253,9 @@ public class UpdateMoodActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-
-            try {
-                //TODO: how to check size of bitmap image??? throw this exception if too large
-                //TODO: should we implement "choose image from device???"
-                mood.setImage();
-            } catch (ImageTooLargeException e) {
-                context = getApplicationContext();
-                CharSequence text = "Image too large in memory size";
-                int duration = Toast.LENGTH_SHORT;
-                toast = Toast.makeText(context, text, duration);
-                toast.show();
-                return;
-            }
             mImageView = (ImageView) findViewById(R.id.selected_photo);
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mImageView.setImageBitmap(imageBitmap);
+            imageBitmap = (Bitmap) extras.get("data");
         }
     }
 }

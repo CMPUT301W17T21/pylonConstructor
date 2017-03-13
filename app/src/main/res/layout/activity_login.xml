@@ -16,7 +16,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:context="team21.pylonconstructor.MoodFeedActivity"
         android:layout_centerInParent="true"
-        >
+        android:id="@+id/relativeLayout">
 
         </RelativeLayout>
 
@@ -24,6 +24,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="bold"
         android:text="WELCOME!"
         android:id="@+id/textView2" />
 
@@ -46,6 +49,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="50dp"
         android:text="Password"
         android:layout_below="@id/userinp"
         android:layout_centerHorizontal="true"
@@ -55,7 +59,30 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/pw"
-        android:layout_alignStart="@+id/userinp" />
+        android:layout_alignStart="@+id/userinp"
+        android:id="@+id/pw_edit"/>
+
+    <LinearLayout
+        android:id="@+id/footerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+        <Button
+            android:text="REGISTER"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/register_user_button" />
+
+        <Button
+            android:text="LOGIN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/login_button" />
+    </LinearLayout>
 
 
 
