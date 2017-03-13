@@ -1,21 +1,29 @@
 package team21.pylonconstructor;
 
 import android.graphics.Bitmap;
+import android.util.Log;
+
+import org.apache.commons.lang3.SystemUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 import java.util.Date;
 
 import io.searchbox.annotations.JestId;
 
 /**
- * Created by joshuarobertson on 2017-03-03.
- */
-
-/**
- * This is the class for our mood objects.
+ * This is the main object in use.
+ *
+ * All mood Entries are encapsulated in Mood objects.
+ *
+ * The mood class wil verify internally that any given data is valid, and will throw appropriate
+ * errors if invalid data is presented.
+ *
+ * @version 1.0
+ *
  */
 
 class Mood {
@@ -29,6 +37,13 @@ class Mood {
     @JestId
     private String id;
 
+    public Mood(Profile profile) {
+        this.user = profile;
+        this.emoji = null;
+        this.trigger = null;
+        this.date = new Date();
+    }
+
     public String getId() {
         return id;
     }
@@ -37,13 +52,12 @@ class Mood {
         this.id = id;
     }
 
-
-
     // RYAN added null default values
     public Mood() {
         this.emoji = null;
         this.trigger = null;
         this.date = new Date();
+        this.image = null;
     }
 
     public void setEmoji(String emoji) {
@@ -109,15 +123,19 @@ class Mood {
         return user;
     }
 
-
-
     //TODO: IMAGES
     public void setImage(Bitmap image)  throws ImageTooLargeException{
         this.image = image;
-        Boolean a = true;
-        if (!a)
+        int bytecount = image.getByteCount();
+        Log.d("STATE", Integer.toString(bytecount));
+        if (bytecount > 66636) {
             throw new ImageTooLargeException();
+        }
+        else {
+            this.image = image;
+        }
     }
+
     public Bitmap getImage() {
         return this.image;
     }

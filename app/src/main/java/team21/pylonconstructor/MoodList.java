@@ -9,8 +9,11 @@ import java.util.ArrayList;
 
 /**
  * This class holds a list of moods.
+ *
+ * @see Mood
+ *
+ * @version 1.0
  */
-//Maybe change to extends ArrayList. If we start using all of the features of an arraylist.
 class MoodList extends ArrayList {
     ArrayList<Mood> moodList;
 

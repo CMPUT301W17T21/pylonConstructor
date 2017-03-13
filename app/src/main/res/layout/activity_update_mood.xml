@@ -243,6 +243,21 @@
                 android:layout_weight="1"
                 android:text="@string/include_location_checkbox_message" />
 
+            <TextView
+                android:paddingTop="20sp"
+                android:textSize="30sp"
+                android:fontFamily="sans-serif-condensed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change Date"
+                android:textStyle="bold"
+                android:id="@+id/date_lbl" />
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:datePickerMode="calendar"/>
+
         </LinearLayout>
     </ScrollView>
 
@@ -266,6 +281,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/add_mood_event" />
+
+
 
     </LinearLayout>
 

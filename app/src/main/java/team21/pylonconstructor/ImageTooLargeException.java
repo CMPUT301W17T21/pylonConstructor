@@ -6,6 +6,7 @@ package team21.pylonconstructor;
 
 /**
  * Will throw an exception if the image the user tries to put in the mood exceeds the maximum size.
+ * Currently on hold while other functionality is implemented.
  */
 class ImageTooLargeException extends Exception {
 }

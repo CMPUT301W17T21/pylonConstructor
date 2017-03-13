@@ -5,7 +5,8 @@ package team21.pylonconstructor;
  */
 
 /**
- * This class is an abstract superclass for all of the synchhronizers.
+ * This class is an abstract superclass for all of the synchronizers.
+ * The synchronizers will be implemented when we handle switching between online and offline.
  */
 abstract class Synchronizer {
     public Synchronizer() {}

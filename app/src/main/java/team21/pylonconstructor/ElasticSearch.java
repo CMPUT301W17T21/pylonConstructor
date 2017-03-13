@@ -14,6 +14,8 @@ import java.util.ArrayList;
  * easily obtain desired information about moods and users and also helps
  * to easily add/edit moods and user profiles.
  *
+ * @see ElasticSearchController
+ * @version 1.0
  */
 public class ElasticSearch {
 

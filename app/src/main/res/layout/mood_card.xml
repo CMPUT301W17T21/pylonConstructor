@@ -29,32 +29,50 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/thumbnail"
                 android:paddingLeft="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
                 android:paddingTop="@dimen/album_title_padding"
                 android:textColor="@color/fab1_color"
-                android:textSize="@dimen/album_title" />
+                android:textSize="@dimen/album_title"
+                android:layout_marginStart="16dp" />
+
 
             <TextView
-                android:id="@+id/count"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/title"
-                android:paddingBottom="@dimen/songs_count_padding_bottom"
-                android:paddingLeft="@dimen/album_title_padding"
-                android:paddingRight="@dimen/album_title_padding"
-                android:textSize="@dimen/songs_count" />
+                android:textSize="27sp"
+                android:id="@+id/trigger"
+                android:layout_below="@+id/overflow"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:id="@+id/dt"
+                android:layout_alignBottom="@+id/thumbnail"
+                android:layout_alignEnd="@+id/overflow"
+                android:layout_marginBottom="12dp" />
 
             <ImageView
                 android:id="@+id/overflow"
                 android:layout_width="@dimen/ic_album_overflow_width"
                 android:layout_height="@dimen/ic_album_overflow_height"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/thumbnail"
-                android:layout_marginTop="@dimen/ic_album_overflow_margin_top"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_action_plus" />
+
+                android:src="@drawable/ic_action_plus"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp" />
+
+            <ImageView android:id="@+id/emoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginStart="22dp"
+                android:layout_alignTop="@+id/trigger"
+                android:layout_alignStart="@+id/title" />
 
         </RelativeLayout>
 
