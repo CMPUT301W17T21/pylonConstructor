@@ -42,17 +42,14 @@ public class MoodFeedActivity extends AppCompatActivity {
     Context context = this;
     private List<Mood> moodList;
 
+    String username;
+
     //TODO: JOSH, send an instance of moodList to this instance
     private RecyclerView recyclerView;
 
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        this.username = getIntent().getStringExtra("Username");
 
 
         super.onCreate(savedInstanceState);

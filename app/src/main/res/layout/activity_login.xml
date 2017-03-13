@@ -16,7 +16,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:context="team21.pylonconstructor.MoodFeedActivity"
         android:layout_centerInParent="true"
-        android:id="@+id/relativeLayout">
+        android:id="@+id/relativeLayout"
+        android:layout_height= "fill_parent"
+        android:layout_width="fill_parent">
 
         </RelativeLayout>
 
