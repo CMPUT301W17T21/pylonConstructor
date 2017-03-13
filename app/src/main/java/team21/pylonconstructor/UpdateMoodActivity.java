@@ -37,8 +37,6 @@ import java.util.Date;
  * @version 1.0
  */
 public class UpdateMoodActivity extends AppCompatActivity {
-    ImageView mImageView;
-
     Button happyButton;
     Button sadButton;
     Button angryButton;
@@ -112,7 +110,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
             Date dt = new Date();
             dt.setTime(getIntent().getLongExtra("date",-1));
             mood.setDate(dt);
-            img = (Bitmap) getIntent().getParcelableExtra("image");
+            img = getIntent().getParcelableExtra("image");
 
             if (img != null) {
                 try {
@@ -326,11 +324,9 @@ public class UpdateMoodActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            mImageView = (ImageView) findViewById(R.id.selected_photo);
             Bundle extras = data.getExtras();
             imageBitmap = (Bitmap) extras.get("data");
 
-            mImageView.setImageBitmap(imageBitmap);
 
         }
     }
