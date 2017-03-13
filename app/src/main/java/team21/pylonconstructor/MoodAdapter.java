@@ -33,7 +33,8 @@ import java.util.List;
 
 /**
  * This class extracts the data from the mood objects and passes it to the views to be displayed.
- *
+ * From https://github.com/CMPUT301W17T21/pylonConstructor/tree/master/doc
+ * accessed 03-13-2017 by rperez
  * @see Mood
  *
  * @version 1.0

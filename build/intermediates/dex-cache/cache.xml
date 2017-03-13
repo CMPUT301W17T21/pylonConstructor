@@ -3,6 +3,7 @@
 
     <item
 <<<<<<< HEAD
+<<<<<<< HEAD
         is-multidex="false"
         jar="C:\Users\Willi_000\.android\build-cache\0f22a24123d106397e176ba6fbe592756879851e\output\jars\classes.jar"
         jumboMode="false"
@@ -214,12 +215,15 @@
         <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/pre-dexed/debug/constraint-layout-solver-1.0.2_97ad56ccd5b4418e1f20c53dcf5f9b3aac780cf7.jar" />
     </item>
     <item
+=======
+>>>>>>> refs/remotes/origin/master
         is-multidex="false"
-        jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/src/include/jest-droid-2.0.1-SNAPSHOT.jar"
+        jar="/Users/ryanp/Desktop/untitled folder 12/pylonConstructor/app/src/include/jest-droid-2.0.1-SNAPSHOT.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="e1199e84d8d3907b8262330dd6976ce04d37f6de">
+<<<<<<< HEAD
         <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/pre-dexed/debug/jest-droid-2.0.1-SNAPSHOT_53a07ada7184bdb9913ac49ef9ac4f978e0d9968.jar" />
     </item>
     <item
@@ -424,6 +428,9 @@
         sha1="5de0c73fef18917cd85d0ab70bb23818685e4dfd">
         <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/pre-dexed/androidTest/debug/hamcrest-integration-1.3_87cc3b18e24951f95ad8dd9c3f8e28376d019436.jar" />
 >>>>>>> origin/IntentTest
+=======
+        <dex dex="/Users/ryanp/Desktop/untitled folder 12/pylonConstructor/app/build/intermediates/pre-dexed/debug/jest-droid-2.0.1-SNAPSHOT_23eb4270ca36b34652aef020d867af4e2e1d8344.jar" />
+>>>>>>> refs/remotes/origin/master
     </item>
 
 </items>
