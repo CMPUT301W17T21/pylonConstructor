@@ -35,6 +35,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This is the main view activity. All mood entries for a logged in user are displayed as a list
+ * here.
+ *
+ * From this activity the user can create, edit and delete moods.
+ * The user can also search for other users, filter the history, and eventually navigate to other
+ * views.
+ *
+ * @version 1.0
+ */
 public class MoodFeedActivity extends AppCompatActivity {
 
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
@@ -45,55 +55,23 @@ public class MoodFeedActivity extends AppCompatActivity {
     Context context = this;
     private List<Mood> moodList;
 
-    String username;
+    ElasticSearch elasticSearch;
+    Profile profile;
 
-    //TODO: JOSH, send an instance of moodList to this instance
     private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.username = getIntent().getStringExtra("Username");
-
+        String username = getIntent().getStringExtra("Username");
+        elasticSearch = new ElasticSearch();
+        this.profile = elasticSearch.getProfile(username);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
         oldMoodsList = (RecyclerView) findViewById(R.id.recycler_view);
-        moodList = new ArrayList<>();
+        moodList = elasticSearch.getmymoods(this.profile);
         adapter = new MoodAdapter(this, moodList);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
-
-        //TEST
-        Mood mood = new Mood();
-        Profile user = new Profile();
-        user.setUserName("ejk");
-        mood.setEmoji("HAPPY");
-        try {
-            mood.setTrigger("HOTDAWG");
-        } catch (ReasonTooLongException e) {
-
-        }
-        mood.setSituation("1 other person");
-        mood.setUser(user);
-        moodList.add(mood);
-
-        //TEST
-        Mood mood2 = new Mood();
-        Profile user2 = new Profile();
-        user2.setUserName("dsa");
-        mood2.setEmoji("HAPPY");
-        try {
-            mood2.setTrigger("HOTDAWG");
-        } catch (ReasonTooLongException e) {
-
-        }
-        mood2.setSituation("1 other person");
-        mood2.setUser(user2);
-        moodList.add(mood2);
-
-
-
-
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -152,6 +130,7 @@ public class MoodFeedActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             setResult(RESULT_OK);
                             Intent intent = new Intent(MoodFeedActivity.this, UpdateMoodActivity.class);
+                            intent.putExtra("Username", profile.getUserName());
                             startActivity(intent);
                         }
                     });
@@ -200,10 +179,6 @@ public class MoodFeedActivity extends AppCompatActivity {
 
                 // show it
                 alertDialog.show();
-
-
-
-
             }
         });
 
@@ -215,8 +190,6 @@ public class MoodFeedActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
     // create an action bar button
@@ -238,4 +211,17 @@ public class MoodFeedActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    protected void onStart() {
+        super.onStart();
+        moodList = elasticSearch.getmymoods(this.profile);
+        adapter = new MoodAdapter(this, moodList);
+        oldMoodsList.setAdapter(adapter);
+    }
+
+    @Override
+    protected  void onResume() {
+        super.onResume();
+        moodList = elasticSearch.getmymoods(this.profile);
+        adapter.notifyDataSetChanged();
+    }
 }

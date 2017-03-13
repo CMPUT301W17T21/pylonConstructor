@@ -18,8 +18,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+/**
+ * This activity is used to create and modify mood entries.
+ *
+ * Currently this activity can only create moods. In the future a mood object will be passed
+ * and the view fields will be initialized with the mood parameters.
+ *
+ * Once the mood fields have been sufficiently filled, the user may create a new mood entry.
+ * This class will ensure that the mood is valid, while the mood class will ensure that passed data
+ * is valid.
+ *
+ * Currently on creation the mood is saved directly with ElasticSearch. In the future the mood will
+ * be passed to the controller, and the controller will synchronize online and offline behavior.
+ *
+ * @see Mood
+ * @see Profile
+ *
+ * @version 1.0
+ */
 public class UpdateMoodActivity extends AppCompatActivity {
     ImageView mImageView;
+
     Button happyButton;
     Button sadButton;
     Button angryButton;
@@ -29,7 +48,11 @@ public class UpdateMoodActivity extends AppCompatActivity {
     Button surpriseButton;
     Button shamefulButton;
     Bitmap imageBitmap;
-    Mood mood = new Mood();
+
+    String username;
+    ElasticSearch elasticSearch = new ElasticSearch();
+    Mood mood;
+
     private TextView selectedMoodTextView;
     private EditText triggerEditText;
     ImageButton goToCameraButton;
@@ -59,6 +82,10 @@ public class UpdateMoodActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.update_mood_layout);
 
+        username = getIntent().getStringExtra("Username");
+        mood = new Mood(elasticSearch.getProfile(username));
+
+        //TODO: IMPLEMENT THE MOOD OPTIONS & BUTTONS HERE that are laid out in activity_update_mood.xml
 
         happyButton = (Button) findViewById(R.id.happy_button);
         happyButton.setOnClickListener(new View.OnClickListener() {
@@ -232,14 +259,11 @@ public class UpdateMoodActivity extends AppCompatActivity {
                 }
 
                 if (validMood) {
-                    //TODO: JOSH, at this point mood is correct, so controller.add(mood)
+                    elasticSearch.addMood(mood);
                     finish();
                 }
-
             }
         });
-
-
     }
 
 

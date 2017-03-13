@@ -42,6 +42,7 @@ public class FilterActivity extends AppCompatActivity {
     private String feeling;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
