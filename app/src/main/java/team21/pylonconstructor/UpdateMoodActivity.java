@@ -11,20 +11,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.Date;
 
 
 /**
  * This activity is used to create and modify mood entries.
- *
- * Currently this activity can only create moods. In the future a mood object will be passed
- * and the view fields will be initialized with the mood parameters.
  *
  * Once the mood fields have been sufficiently filled, the user may create a new mood entry.
  * This class will ensure that the mood is valid, while the mood class will ensure that passed data
@@ -50,6 +49,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
     Button surpriseButton;
     Button shamefulButton;
     Bitmap imageBitmap;
+    DatePicker datePicker;
 
     String username;
     ElasticSearch elasticSearch = new ElasticSearch();
@@ -81,6 +81,8 @@ public class UpdateMoodActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_mood);
         selectedMoodTextView = (TextView) findViewById(R.id.selected_mood);
         triggerEditText = (EditText) findViewById(R.id.message);
+        datePicker = (DatePicker) findViewById(R.id.datePicker);
+
         Bitmap img;
         int edt = getIntent().getExtras().getInt("EDIT");
 
@@ -273,6 +275,12 @@ public class UpdateMoodActivity extends AppCompatActivity {
                     toast.show();
                 }
 
+                /**
+                 * set date
+                 */
+                Date date = getDateFromDatePicker(datePicker);
+                mood.setDate(date);
+
 
                 try {
                     mood.setTrigger(trigger);
@@ -325,5 +333,21 @@ public class UpdateMoodActivity extends AppCompatActivity {
             mImageView.setImageBitmap(imageBitmap);
 
         }
+    }
+    /**
+     * Adapted from http://stackoverflow.com/questions/8409043/getdate-from-datepicker-android
+     * accessed 03-12-2017 by rperez
+     * @param datePicker
+     * @return a java.util.Date
+     */
+    public static java.util.Date getDateFromDatePicker(DatePicker datePicker){
+        int day = datePicker.getDayOfMonth();
+        int month = datePicker.getMonth();
+        int year =  datePicker.getYear();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+
+        return calendar.getTime();
     }
 }

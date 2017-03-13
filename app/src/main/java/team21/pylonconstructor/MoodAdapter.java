@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -32,19 +33,20 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
 
     private Context mContext;
     private List<Mood> moodList;
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa");
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, count, trigger;
+        public TextView title, trigger, dtView;
         public ImageView thumbnail, overflow, emoji;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
-            count = (TextView) view.findViewById(R.id.count);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             overflow = (ImageView) view.findViewById(R.id.overflow);
             emoji = (ImageView) view.findViewById(R.id.emoji);
             trigger = (TextView) view.findViewById(R.id.trigger);
+            dtView = (TextView) view.findViewById(R.id.dt);
         }
     }
 
@@ -67,6 +69,9 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
         Mood mood = moodList.get(position);
         holder.title.setText(mood.getUser().getUserName());
         holder.trigger.setText(mood.getTrigger());
+
+        String dateStr = sdf.format(mood.getDate());
+        holder.dtView.setText(dateStr);
 
         Drawable emoticon = mContext.getDrawable(R.drawable.ic_happy_263a);
 

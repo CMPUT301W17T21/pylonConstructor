@@ -27,64 +27,29 @@ public class MoodHistoryActivity extends AppCompatActivity {
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
     boolean isOpen = false;
-    private RecyclerView oldMoodsList;
     private MoodAdapter adapter;
     Context context = this;
     private List<Mood> moodList;
 
-    String username;
+    ElasticSearch elasticSearch;
+    Profile profile;
 
-    //TODO: JOSH, send an instance of moodList to this instance
     private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.username = getIntent().getStringExtra("Username");
-
+        String username = getIntent().getStringExtra("Username");
+        elasticSearch = new ElasticSearch();
+        this.profile = elasticSearch.getProfile(username);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
-        oldMoodsList = (RecyclerView) findViewById(R.id.recycler_view);
-        moodList = new ArrayList<>();
+        moodList = elasticSearch.getmymoods(this.profile);
         adapter = new MoodAdapter(this, moodList);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-
-        //TEST
-        Mood mood = new Mood();
-        Profile user = new Profile();
-        user.setUserName("ejk");
-        mood.setEmoji("HAPPY");
-        try {
-            mood.setTrigger("HOTDAWG");
-        } catch (ReasonTooLongException e) {
-
-        }
-        mood.setSituation("1 other person");
-        mood.setUser(user);
-        moodList.add(mood);
-
-        //TEST
-        Mood mood2 = new Mood();
-        Profile user2 = new Profile();
-        user2.setUserName("dsa");
-        mood2.setEmoji("HAPPY");
-        try {
-            mood2.setTrigger("HOTDAWG");
-        } catch (ReasonTooLongException e) {
-
-        }
-        mood2.setSituation("1 other person");
-        mood2.setUser(user2);
-        moodList.add(mood2);
-
-
-
-
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -135,17 +100,21 @@ public class MoodHistoryActivity extends AppCompatActivity {
                     isOpen = true;
 
 
-                    fab_updateMood.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            setResult(RESULT_OK);
-                            Intent intent = new Intent(MoodHistoryActivity.this, UpdateMoodActivity.class);
-                            startActivity(intent);
-                        }
-                    });
+
                 }
 
             }
         });
+
+        fab_updateMood.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                Intent intent = new Intent(MoodHistoryActivity.this, UpdateMoodActivity.class);
+                intent.putExtra("Username", profile.getUserName());
+                startActivity(intent);
+            }
+        });
+
 
         fab_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,8 +125,6 @@ public class MoodHistoryActivity extends AppCompatActivity {
                  */
                 LayoutInflater li = LayoutInflater.from(context);
                 View promptsView = li.inflate(R.layout.promt_search_user, null);
-
-
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         context);
@@ -189,12 +156,6 @@ public class MoodHistoryActivity extends AppCompatActivity {
 
                 // show it
                 alertDialog.show();
-
-
-
-
-
-
             }
         });
 
@@ -202,12 +163,11 @@ public class MoodHistoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                Intent intent = new Intent(MoodHistoryActivity.this, FilterActivity.class);
+                Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
+                intent.putExtra("Username", profile.getUserName());
                 startActivity(intent);
             }
         });
-
-
     }
 
     // create an action bar button
@@ -222,11 +182,23 @@ public class MoodHistoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.mybutton) {
-            Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
+        intent.putExtra("Username", profile.getUserName());
+        startActivity(intent);
         return super.onOptionsItemSelected(item);
     }
 
+    protected void onStart() {
+        super.onStart();
+        moodList = elasticSearch.getmymoods(this.profile);
+        adapter = new MoodAdapter(this, moodList);
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected  void onResume() {
+        super.onResume();
+        moodList = elasticSearch.getmymoods(this.profile);
+        adapter.notifyDataSetChanged();
+    }
 }

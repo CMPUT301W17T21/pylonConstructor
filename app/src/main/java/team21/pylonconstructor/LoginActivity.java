@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (username.matches("[a-zA-Z]+")) {
                     if (elasticSearch.addProfile(new Profile(username))) {
-                        Intent intent = new Intent(LoginActivity.this, MoodFeedActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
                         intent.putExtra("Username", username);
                         startActivity(intent);
                     } else {
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 Profile profile = elasticSearch.getProfile(username);
 
                 if (profile != null) {
-                    Intent intent = new Intent(LoginActivity.this, MoodFeedActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
                     intent.putExtra("Username", username);
                     startActivity(intent);
                 } else  {

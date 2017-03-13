@@ -37,6 +37,7 @@ public class FilterActivity extends AppCompatActivity {
     Mood mood = new Mood();
 
     private EditText triggerEditText;
+    private TextView selectedMood;
     private CheckBox pastWeekCheckBox;
 
     private String feeling;
@@ -64,6 +65,7 @@ public class FilterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 feeling = getString(R.string.happy_button_label);
                 mood.setEmoji(getString(R.string.happy_button_label));
+                selectedMood.setText(feeling);
 
             }
 
@@ -75,6 +77,7 @@ public class FilterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 feeling = getString(R.string.sad_button_label);
                 mood.setEmoji(getString(R.string.sad_button_label));
+                selectedMood.setText(feeling);
 
             }
         });
@@ -85,6 +88,7 @@ public class FilterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 feeling = getString(R.string.angry_button_label);
                 mood.setEmoji(getString(R.string.angry_button_label));
+                selectedMood.setText(feeling);
 
             }
         });
@@ -95,6 +99,7 @@ public class FilterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 feeling = getString(R.string.confused_button_label);
                 mood.setEmoji(getString(R.string.confused_button_label));
+                selectedMood.setText(feeling);
 
 
             }
@@ -106,6 +111,7 @@ public class FilterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 feeling = getString(R.string.disgusted_button_label);
                 mood.setEmoji(getString(R.string.disgusted_button_label));
+                selectedMood.setText(feeling);
 
 
 
@@ -118,6 +124,7 @@ public class FilterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 feeling = getString(R.string.scared_button_label);
                 mood.setEmoji(getString(R.string.scared_button_label));
+                selectedMood.setText(feeling);
 
 
             }
@@ -129,6 +136,7 @@ public class FilterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 feeling = getString(R.string.surprised_button_label);
                 mood.setEmoji(getString(R.string.surprised_button_label));
+                selectedMood.setText(feeling);
 
             }
         });
@@ -139,6 +147,8 @@ public class FilterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 feeling = getString(R.string.shameful_button_label);
                 mood.setEmoji(getString(R.string.shameful_button_label));
+
+                selectedMood.setText(feeling);
 
             }
         });

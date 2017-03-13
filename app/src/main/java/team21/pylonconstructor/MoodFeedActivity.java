@@ -50,7 +50,6 @@ public class MoodFeedActivity extends AppCompatActivity {
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
     boolean isOpen = false;
-    private RecyclerView oldMoodsList;
     private MoodAdapter adapter;
     Context context = this;
     private List<Mood> moodList;
@@ -68,14 +67,12 @@ public class MoodFeedActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
-        oldMoodsList = (RecyclerView) findViewById(R.id.recycler_view);
         moodList = elasticSearch.getmymoods(this.profile);
         adapter = new MoodAdapter(this, moodList);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -125,15 +122,6 @@ public class MoodFeedActivity extends AppCompatActivity {
                     fab_updateMood.setClickable(true);
                     isOpen = true;
 
-
-                    fab_updateMood.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            setResult(RESULT_OK);
-                            Intent intent = new Intent(MoodFeedActivity.this, UpdateMoodActivity.class);
-                            intent.putExtra("Username", profile.getUserName());
-                            startActivity(intent);
-                        }
-                    });
                 }
 
             }
@@ -182,11 +170,21 @@ public class MoodFeedActivity extends AppCompatActivity {
             }
         });
 
+        fab_updateMood.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                Intent intent = new Intent(MoodFeedActivity.this, UpdateMoodActivity.class);
+                intent.putExtra("Username", profile.getUserName());
+                startActivity(intent);
+            }
+        });
+
         fab_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                Intent intent = new Intent(MoodFeedActivity.this, FilterActivity.class);
+                Intent intent = new Intent(MoodFeedActivity.this, MoodHistoryActivity.class);
+                intent.putExtra("Username", profile.getUserName());
                 startActivity(intent);
             }
         });
@@ -203,9 +201,9 @@ public class MoodFeedActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.mybutton) {
+        if (id == R.id.flipButton) {
             Intent intent = new Intent(MoodFeedActivity.this, MoodHistoryActivity.class);
+            intent.putExtra("Username", profile.getUserName());
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -215,7 +213,8 @@ public class MoodFeedActivity extends AppCompatActivity {
         super.onStart();
         moodList = elasticSearch.getmymoods(this.profile);
         adapter = new MoodAdapter(this, moodList);
-        oldMoodsList.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
