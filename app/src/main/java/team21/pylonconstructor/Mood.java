@@ -25,6 +25,13 @@ class Mood {
     @JestId
     private String id;
 
+    public Mood(Profile profile) {
+        this.user = profile;
+        this.emoji = null;
+        this.trigger = null;
+        this.date = new Date();
+    }
+
     public String getId() {
         return id;
     }
