@@ -5,6 +5,10 @@ import android.os.Bundle;
 
 
 //TODO: implement
+
+/**
+ * This class is an activity that allows the user to filter moods in their feed by certain parameters.
+ */
 public class FilterActivity extends AppCompatActivity {
 
     @Override

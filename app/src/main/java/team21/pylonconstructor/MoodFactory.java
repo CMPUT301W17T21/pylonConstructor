@@ -8,6 +8,9 @@ import java.util.Random;
  * Created by joshuarobertson on 2017-03-09.
  */
 
+/**
+ * This class creates mood objects for testing.
+ */
 public class MoodFactory {
     Random rand = new Random();
 

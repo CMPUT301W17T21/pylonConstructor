@@ -1,5 +1,7 @@
 package team21.pylonconstructor;
 
+import android.graphics.Bitmap;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,12 +14,17 @@ import io.searchbox.annotations.JestId;
  * Created by joshuarobertson on 2017-03-03.
  */
 
+/**
+ * This is the class for our mood objects.
+ */
+
 class Mood {
     private String emoji, situation;
     private String trigger;
     private Date date;
     private Profile user;
     private int imageSize;
+    private Bitmap image;
 
     @JestId
     private String id;
@@ -79,6 +86,10 @@ class Mood {
         return this.trigger;
     }
 
+    public String toString() {
+        return this.trigger;
+    }
+
 
     public void setSituation(String situation) {
         //TODO: check for valid input
@@ -93,6 +104,7 @@ class Mood {
     public void setUser(Profile user) {
         this.user = user;
     }
+
     public Profile getUser() {
         return user;
     }
@@ -100,10 +112,14 @@ class Mood {
 
 
     //TODO: IMAGES
-    public void setImage()  throws ImageTooLargeException{
-        throw new ImageTooLargeException();
+    public void setImage(Bitmap image)  throws ImageTooLargeException{
+        this.image = image;
+        Boolean a = true;
+        if (!a)
+            throw new ImageTooLargeException();
     }
-    public void getImage() {
+    public Bitmap getImage() {
+        return this.image;
     }
 
     //TODO: LOCATION

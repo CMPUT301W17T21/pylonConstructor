@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 //TODO: logic of how to check if user is logged in...
 
+/**
+ * The class is an activity that allows the user to login to their account.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     @Override

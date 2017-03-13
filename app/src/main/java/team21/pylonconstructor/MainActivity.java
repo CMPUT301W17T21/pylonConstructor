@@ -8,6 +8,10 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
+/**
+ * This class is the default main activity.  I don't believe we are using it though.
+ */
+
 public class MainActivity extends AppCompatActivity {
 
 

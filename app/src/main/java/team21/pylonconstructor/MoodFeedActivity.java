@@ -4,14 +4,6 @@
 
 package team21.pylonconstructor;
 
-import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,38 +12,108 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+
+import com.bumptech.glide.Glide;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+/**
+ * This class is the main view of the app.  It displays the mood history of the user
+ * and gives them the option to edit existing moods.
+ */
 public class MoodFeedActivity extends AppCompatActivity {
+
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
     boolean isOpen = false;
-
-    private ListView oldMoodsList;
-    private ArrayAdapter<Mood> adapter;
+    private RecyclerView oldMoodsList;
+    private MoodAdapter adapter;
     Context context = this;
+    private List<Mood> moodList;
 
     //TODO: JOSH, send an instance of moodList to this instance
-    private MoodList moodList;
+    private RecyclerView recyclerView;
+
+
+
 
 
 
     @Override
+    //* Called when the activity is first created. */
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_mood_feed);
+        oldMoodsList = (RecyclerView) findViewById(R.id.recycler_view);
+        moodList = new ArrayList<>();
+        adapter = new MoodAdapter(this, moodList);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+
+        //TEST
+        Mood mood = new Mood();
+        Profile user = new Profile();
+        user.setUserName("ejk");
+        mood.setEmoji("HAPPY");
+        try {
+            mood.setTrigger("HOTDAWG");
+        } catch (ReasonTooLongException e) {
+
+        }
+        mood.setSituation("1 other person");
+        mood.setUser(user);
+        moodList.add(mood);
+
+        //TEST
+        Mood mood2 = new Mood();
+        Profile user2 = new Profile();
+        user2.setUserName("dsa");
+        mood2.setEmoji("HAPPY");
+        try {
+            mood2.setTrigger("HOTDAWG");
+        } catch (ReasonTooLongException e) {
+
+        }
+        mood2.setSituation("1 other person");
+        mood2.setUser(user2);
+        moodList.add(mood2);
+
+
+
+
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
+        try {
+            Glide.with(this).load(R.drawable.ic_action_close).into((ImageView) findViewById(R.id.backdrop));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         /* Set Custom App bar title, centered */
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.mood_history_layout);
+
 
         fab_plus = (FloatingActionButton) findViewById(R.id.fab_plus);
         fab_updateMood = (FloatingActionButton) findViewById(R.id.fab_updateMood);
@@ -111,6 +173,7 @@ public class MoodFeedActivity extends AppCompatActivity {
             public void onClick(View v) {
                 /**
                  * https://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+                 * accessed 03/11/2017
                  */
                 LayoutInflater li = LayoutInflater.from(context);
                 View promptsView = li.inflate(R.layout.promt_search_user, null);
@@ -132,7 +195,7 @@ public class MoodFeedActivity extends AppCompatActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
                                         String result = userInput.getText().toString();
-                                        //TODO: JOSH, find users using result
+                                        //TODO: JOSH, filter users using result
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -164,7 +227,6 @@ public class MoodFeedActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     @Override
@@ -172,9 +234,7 @@ public class MoodFeedActivity extends AppCompatActivity {
         super.onStart();
 
         //TODO: JOSH, SEND ME AN UPDATED/REFRESHED/FILTERED MOODLIST control.get(moodList)
-
-        //TODO: HALP, implementation of moodList, 'Cannot resolve constructor"??
-        //adapter = new ArrayAdapter<Mood>(this, R.layout.list_item, moodList);
+        adapter = new MoodAdapter(this, moodList);
         oldMoodsList.setAdapter(adapter);
     }
 
