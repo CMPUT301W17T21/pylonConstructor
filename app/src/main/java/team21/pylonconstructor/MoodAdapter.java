@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Ravi Tamada on 18/05/16.
@@ -33,7 +34,8 @@ import java.util.List;
 
 /**
  * This class extracts the data from the mood objects and passes it to the views to be displayed.
- *
+ * From https://github.com/CMPUT301W17T21/pylonConstructor/tree/master/doc
+ * accessed 03-13-2017 by rperez
  * @see Mood
  *
  * @version 1.0
@@ -44,7 +46,8 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
     private Context mContext;
     private List<Mood> moodList;
     private MoodAdapter adapter;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa");
+    //Refactored this to include Locale.
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa", Locale.US);
     ElasticSearch elasticSearch = new ElasticSearch();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
