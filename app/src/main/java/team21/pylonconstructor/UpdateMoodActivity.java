@@ -116,6 +116,11 @@ public class UpdateMoodActivity extends AppCompatActivity {
                 try {
                     mood.setImage(img);
                 } catch (ImageTooLargeException e) {
+                    /***
+                     * REFACTORING
+                     *
+                     * Unhandled exception, need toast.
+                     */
                 }
             }
 

@@ -46,6 +46,11 @@ public class FilterActivity extends AppCompatActivity {
 
     private EditText triggerEditText;
     private TextView selectedMood;
+
+    /***
+     * FACTORING
+     * can be made local variable since not shared.
+     */
     private CheckBox pastWeekCheckBox;
 
     private String feeling;
@@ -246,7 +251,9 @@ public class FilterActivity extends AppCompatActivity {
 
         });
     }
-
+    /*** REFACTORING
+     * Remove unnecessary semicolen
+      */
 };
 
 

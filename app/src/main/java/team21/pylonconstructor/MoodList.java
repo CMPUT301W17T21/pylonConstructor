@@ -22,6 +22,13 @@ class MoodList extends ArrayList {
         for (Mood m : moods)
             this.moodList.add(m);
     }
+
+    /***
+     * REFACTORING
+     *
+     * do not need this as already initialized.
+     */
+
     MoodList () {
         moodList = new ArrayList<>();
     }
