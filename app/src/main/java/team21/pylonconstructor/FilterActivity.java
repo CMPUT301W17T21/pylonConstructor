@@ -165,11 +165,8 @@ public class FilterActivity extends AppCompatActivity {
         pastWeekCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    searchPastWeek = true;
-                } else {
-                    searchPastWeek = false;
-                }
+                //Removed the if statement that is not needed.
+                searchPastWeek = isChecked;
             }
         });
 

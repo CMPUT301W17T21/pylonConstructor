@@ -1,12 +1,17 @@
 <component name="libraryTable">
   <library name="rules-0.5">
     <CLASSES>
+<<<<<<< HEAD
       <root url="file://$USER_HOME$/.android/build-cache/9f609d3fcb6ef000ca17a115ab18a99ddaf5fcee/output/res" />
       <root url="jar://$USER_HOME$/.android/build-cache/9f609d3fcb6ef000ca17a115ab18a99ddaf5fcee/output/jars/classes.jar!/" />
+=======
+      <root url="file://$USER_HOME$/.android/build-cache/66b9d8ba5903f8a583f03667b1b65dc6c14e4dbf/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/66b9d8ba5903f8a583f03667b1b65dc6c14e4dbf/output/jars/classes.jar!/" />
+>>>>>>> refs/remotes/origin/IntentTest
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/test/rules/0.5/rules-0.5-sources.jar!/" />
+      <root url="jar://$USER_HOME$/AppData/Local/Android/sdk/extras/android/m2repository/com/android/support/test/rules/0.5/rules-0.5-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

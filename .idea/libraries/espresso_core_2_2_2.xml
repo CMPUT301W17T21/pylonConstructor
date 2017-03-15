@@ -1,12 +1,17 @@
 <component name="libraryTable">
   <library name="espresso-core-2.2.2">
     <CLASSES>
+<<<<<<< HEAD
       <root url="jar://$USER_HOME$/.android/build-cache/d6c74ca15fa3dc82180d2b714d2524263e5ee95e/output/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.android/build-cache/d6c74ca15fa3dc82180d2b714d2524263e5ee95e/output/res" />
+=======
+      <root url="file://$USER_HOME$/.android/build-cache/a90a0e9b85b0724960650e877a9dff55ce3dc367/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/a90a0e9b85b0724960650e877a9dff55ce3dc367/output/jars/classes.jar!/" />
+>>>>>>> refs/remotes/origin/IntentTest
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/test/espresso/espresso-core/2.2.2/espresso-core-2.2.2-sources.jar!/" />
+      <root url="jar://$USER_HOME$/AppData/Local/Android/sdk/extras/android/m2repository/com/android/support/test/espresso/espresso-core/2.2.2/espresso-core-2.2.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
