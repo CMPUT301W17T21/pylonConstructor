@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Ravi Tamada on 18/05/16.
@@ -45,7 +46,8 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
     private Context mContext;
     private List<Mood> moodList;
     private MoodAdapter adapter;
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa");
+    //Refactored this to include Locale.
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa", Locale.US);
     ElasticSearch elasticSearch = new ElasticSearch();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
