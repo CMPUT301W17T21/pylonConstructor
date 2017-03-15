@@ -25,6 +25,11 @@ public class LoginTest {
     /**
      * Test Login
      */
+
+    /***
+     * Refactoring
+     * do not need @test already extending JUNIT3 test class.
+     */
     @Test
     public void checkLogin() {
         //TODO Check Login
