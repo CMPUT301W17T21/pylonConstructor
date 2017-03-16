@@ -14,6 +14,7 @@ gen/
 out/
 
 # Gradle files
+.gradle/3.3
 .gradle/
 build/
 
@@ -38,7 +39,7 @@ captures/
 .idea/tasks.xml
 .idea/gradle.xml
 .idea/dictionaries
-.idea/libraries
+.idea/libraries/
 
 # Keystore files
 *.jks
