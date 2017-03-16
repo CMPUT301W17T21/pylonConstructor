@@ -128,24 +128,17 @@ public class ElasticSearch {
      * Adds a Profile to the Elastic Search Database only if it doesn't already exist
      * @param profile
      * @return true if the profile was successfully added
-     * false if profile already exists
+     * false if unsuccessful
      */
     public boolean addProfile(Profile profile){
-
-        Profile p = new Profile();
-        p = getProfile(profile.getUserName());
-        if(p == null) {
-            ElasticSearchController.AddProfileTask addProfileTask = new ElasticSearchController.AddProfileTask();
-            addProfileTask.execute(profile);
-            try{
-                addProfileTask.get();
-                return true;
-            }
-            catch (Exception e){
-                return false;
-            }
+        ElasticSearchController.AddProfileTask addProfileTask = new ElasticSearchController.AddProfileTask();
+        addProfileTask.execute(profile);
+        try {
+            addProfileTask.get();
+            return true;
         }
-        else {
+        catch (Exception e){
+            Log.i("Error", "Failed to add mood");
             return false;
         }
     }
@@ -192,7 +185,7 @@ public class ElasticSearch {
             return getProfileTask.get();
         }
         catch (Exception e){
-            Log.i("Error", "Failed to Filter Moods objects for emotional state!");
+            Log.i("Error", "Failed to Find a profile with given username!");
             return null;
         }
 

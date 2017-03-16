@@ -3,6 +3,7 @@ package team21.pylonconstructor;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -49,16 +50,21 @@ public class MoodHistoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String username = getIntent().getStringExtra("Username");
-        elasticSearch = new ElasticSearch();
-        this.profile = elasticSearch.getProfile(username);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
+        /**
+         * Getting users' login info from first time log in
+         */
+        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "");
+
+        elasticSearch = new ElasticSearch();
+        this.profile = elasticSearch.getProfile(username);
         moodList = elasticSearch.getmymoods(this.profile);
         adapter = new MoodAdapter(this, moodList);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -80,6 +86,13 @@ public class MoodHistoryActivity extends AppCompatActivity {
         FabClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         FabRotateClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
         FabRotateCounterClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_counterclockwise);
+
+
+       /* if (username.equals("")) {
+            Intent intent = new Intent(MoodHistoryActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }*/
 
         fab_plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,10 +205,22 @@ public class MoodHistoryActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
-        intent.putExtra("Username", profile.getUserName());
-        startActivity(intent);
+        /**
+         * Action performed on clicking logout button
+         */
+        if (id == R.id.logoutButton) {
+            SharedPreferences sharedPreferences = getSharedPreferences("userinfo",MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", "");
+            editor.apply();
+            Intent intent = new Intent(MoodHistoryActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        if(id == R.id.flipButton){
+            Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 
