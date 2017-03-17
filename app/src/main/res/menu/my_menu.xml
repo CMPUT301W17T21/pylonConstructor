@@ -6,4 +6,10 @@
         app:showAsAction="always"
         android:icon="@drawable/ic_code_black_24dp"
         />
+    <item
+        android:id="@+id/logoutButton"
+        android:title=""
+        app:showAsAction="always"
+        android:icon="@mipmap/logout"
+        />
 </menu>

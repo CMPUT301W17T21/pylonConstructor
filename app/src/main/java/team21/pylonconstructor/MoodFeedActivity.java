@@ -7,6 +7,7 @@ package team21.pylonconstructor;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -66,8 +67,11 @@ public class MoodFeedActivity extends AppCompatActivity {
     @Override
     //* Called when the activity is first created. */
     protected void onCreate(Bundle savedInstanceState) {
-
-        String username = getIntent().getStringExtra("Username");
+        /**
+         * Getting users' login info from first time log in
+         */
+        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "");
         elasticSearch = new ElasticSearch();
         this.profile = elasticSearch.getProfile(username);
 
@@ -209,9 +213,16 @@ public class MoodFeedActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.flipButton) {
-            Intent intent = new Intent(MoodFeedActivity.this, MoodHistoryActivity.class);
-            intent.putExtra("Username", profile.getUserName());
+            finish();
+        }
+        if (id == R.id.logoutButton) {
+            SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", "");
+            editor.apply();
+            Intent intent = new Intent(MoodFeedActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

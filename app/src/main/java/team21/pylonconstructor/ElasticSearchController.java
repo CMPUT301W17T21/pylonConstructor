@@ -230,27 +230,25 @@ public class ElasticSearchController {
         @Override
         protected Boolean doInBackground(Profile... profiles) {
             verifySettings();
+
             Index index = new Index.Builder(profiles[0]).index("g21testing").type("Profile").build();
             try {
                 // Execute the query
                 DocumentResult result = client.execute(index);
-                if(result.isSucceeded()){
+                if (result.isSucceeded()) {
                     profiles[0].setId(result.getId());
-                    Log.i("Success", "Added your Profile!");
+                    Log.i("Success", "Added your profile!");
                     return true;
-                }
-                else{
-                    Log.i("Error", "Elastic search was not able to add the profile!");
+                } else {
+                    Log.i("Error", "Elastic search was not able to add profile!");
                     return false;
                 }
-            }
-            catch (Exception e) {
-                Log.i("Error", "The application failed to build and send the Profile");
+            } catch (Exception e) {
+                Log.i("Error", "The application failed to build and add profile");
                 return false;
             }
         }
     }
-
 
     /**
      * Removes a Profile from the DB

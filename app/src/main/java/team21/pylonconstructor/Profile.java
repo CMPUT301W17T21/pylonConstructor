@@ -20,8 +20,8 @@ import io.searchbox.annotations.JestId;
 
 class Profile {
     String userName;
-    ArrayList<Profile> followers;
-    ArrayList<Profile> following;
+    ArrayList<String> followers;
+    ArrayList<String> following;
 
     @JestId
     private String id;
@@ -49,17 +49,17 @@ class Profile {
     }
 
 
-    public void addFollowers(Profile follower) {
+    public void addFollowers(String follower) {
         followers.add(follower);
     }
-    public ArrayList<Profile> getFollowers() {
+    public ArrayList<String> getFollowers() {
         return followers;
     }
 
-    public void addFollowing(Profile follow) {
+    public void addFollowing(String follow) {
         following.add(follow);
     }
-    public ArrayList<Profile> getFollowing() {
+    public ArrayList<String> getFollowing() {
         return following;
     }
 
