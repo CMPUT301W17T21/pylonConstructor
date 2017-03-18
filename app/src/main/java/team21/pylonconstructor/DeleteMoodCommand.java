@@ -15,7 +15,9 @@ public class DeleteMoodCommand extends Command {
 
     @Override
     public Boolean execute() {
-        return elasticSearch.deleteMood(mood);
+       elasticSearch.deleteMood(mood);
+        if (elasticSearch.checkmood(mood)) return false;
+        return  true;
     }
 
     @Override

@@ -43,8 +43,8 @@ public class MoodHistoryActivity extends AppCompatActivity {
     Context context = this;
     private List<Mood> moodList;
 
-    Controller controller;
-    ElasticSearch elasticSearch;
+    //Controller controller = Controller.getInstance();
+    //ElasticSearch elasticSearch;
     Profile profile;
 
     private RecyclerView recyclerView;
@@ -60,10 +60,9 @@ public class MoodHistoryActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
 
-        elasticSearch = new ElasticSearch();
-        this.profile = elasticSearch.getProfile(username);
-        controller = new Controller(this.profile);
-        moodList = controller.getAllMoods();
+        //elasticSearch = new ElasticSearch();
+        profile = Controller.getInstance().getProfile();
+        moodList = Controller.getInstance().getAllMoods();
         adapter = new MoodAdapter(this, moodList);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -214,9 +213,6 @@ public class MoodHistoryActivity extends AppCompatActivity {
             finish();
         }
         if(id == R.id.flipButton){
-            Mood mood = new Mood(new Profile("Shivansh"));
-            mood.setId("AVrGmo7OddyQCUFeX0Ly");
-            boolean result = elasticSearch.checkmood(mood);
             Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
             startActivity(intent);
         }
@@ -225,7 +221,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        moodList = controller.getAllMoods();
+        moodList = Controller.getInstance().getAllMoods();
         adapter = new MoodAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -234,7 +230,8 @@ public class MoodHistoryActivity extends AppCompatActivity {
     @Override
     protected  void onResume() {
         super.onResume();
-        moodList = controller.getAllMoods();
+        Controller.getInstance().getProfile();
+        moodList = Controller.getInstance().getAllMoods();
         adapter.notifyDataSetChanged();
     }
 }

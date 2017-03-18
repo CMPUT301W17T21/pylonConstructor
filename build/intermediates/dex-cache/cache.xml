@@ -2,13 +2,157 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="C:\Users\Shivansh\AndroidStudioProjects\pylonConstructor\app\src\include\jest-droid-2.0.1-SNAPSHOT.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/5ddf83f60f97db9ceaa3c04bc73d719ef6c7b68e/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_b330f937edd92bd6f7631266c3c42cc0964f41c0/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/c01d163d502c01835d500cbc3aef2347075f423b/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="fa0446a14ed5dd3725047d6399ffea771a564b30">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_ee10436a8a4405c3e4f85319eb04430a003dfd78/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9e77f94e8225c01fc2b7bb3fe2c1c7406275bc15">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_0aec813e6cf3107f7dbe6dfc34f145659c0c884f/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/09ebfd05ca29c906de15c76c43924de0d327599e/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e51c2f662bb72419632af5192553c37e33890a99">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_e7394319be30be4a2b82a2a38e3af5fbc12bef85/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/3a55a5559e0e4c67c8af1a61aa3244e2c5497ca8/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_2c7c07e02cd960bd59e959d1d5e70e53631f572e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/f7c9af389a6ca954d303370d0205c8728ad6a67c/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="152de8da301561dcb0946471697a420d8f7a68c5">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_9cddaae0cef04688cc52b287c1cabd277bfca02b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/src/include/jest-droid-2.0.1-SNAPSHOT.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="e1199e84d8d3907b8262330dd6976ce04d37f6de">
-        <dex dex="C:\Users\Shivansh\AndroidStudioProjects\pylonConstructor\app\build\intermediates\pre-dexed\debug\jest-droid-2.0.1-SNAPSHOT_6484b9ca9eabd3a5a2416f16ff267fecbd3b2f97.jar" />
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/2/jest-droid-2.0.1-SNAPSHOT_f63d0dfa301cd19e8efc6bf7552b9e6bd709e53d/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.gradle/caches/modules-2/files-2.1/com.jayway.android.robotium/robotium-solo/5.6.3/94ec2d7b23be9817d92905cc09124aecfc46d28c/robotium-solo-5.6.3.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="94ec2d7b23be9817d92905cc09124aecfc46d28c">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/robotium-solo-5.6.3_cdc6d7e43560a454badb9c3192ab4b57a99bf0ec/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/2724485590882c79acf9b50a34214197b402d49c/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="810f41e5b7fd99f196ebeabe865ba2c54e7e76dc">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c5c7f4a5341ca76978782844e12eb141277bd4f8/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/23729ea2f82f448e6f23c5da506ba49fe93681eb/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="30a4938ea5235ccf532b3e9f04200e68547e36ad">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_6ae9e1be0e92dd220feb5c7b0f834842b238379b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_ab5469fb881691ff54d5b0df0d68805179a86d14/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/936bcc223e6e677192bf8e75f00de77394142409/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="cb454b52545859ed2f24a6c01366805b0fa04b22">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_e0718c1bcd3ad27e23d6acf6b82faa42ca6d3ece/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/c5701552074204f9ad1085f26b013131a5730e80/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="702d339bc0a81d21354cd7e2cf2b67225fa4a16c">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_12afbafcfa1abc4abc1d9fc8899693fc4e300561/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/2635145655b97108aa5a358ccbe566c9f347fe28/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_9d5c471b80cf40715a3fd2c8ca4da8a4e10e6eb7/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/7f9a0dbe1669c0888bbb4bdb677f287369bc3168/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="8fe8a8f77d651982ce5e18f6187dc4daf914ac57">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_05756755ca740459df210d8d48722a2e8fb700e1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/5f0296d7f1d584188d40ad1270a7cb9bdccaaf69/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="67eb33110dbacb46a48175b08ae0c96761d2c17d">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_062f545a2f80d471efda2869396301c0817042b1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/joshuarobertson/.android/build-cache/79fa912e54066753aa17c8622b35655095e7bc62/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ea6a989b83d19b1b461281e0475a6cd6514897f8">
+        <dex dex="/Users/joshuarobertson/Documents/GitProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_b6a1bd8f63a60852687dc83703d3dcfaee4b86ae/classes.dex" />
     </item>
 
 </items>

@@ -2,7 +2,9 @@ package team21.pylonconstructor;
 
 import android.util.Log;
 
+import java.nio.channels.ConnectionPendingException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -75,6 +77,7 @@ public class ElasticSearch {
         }
         return result;
     }
+
 
     /**
      *  Deletes a given Mood from Elastic Search Database
@@ -169,8 +172,8 @@ public class ElasticSearch {
     public boolean deleteProfile(Profile profile){
         if(profile != null) {
             Profile p = new Profile();
-            p = getProfile(profile.getUserName());
-            if (p != null) {
+            try {
+                p = getProfile(profile.getUserName());
                 ElasticSearchController.DeleteProfileTask deleteProfileTask = new ElasticSearchController.DeleteProfileTask();
                 deleteProfileTask.execute(profile);
                 try {
@@ -179,7 +182,7 @@ public class ElasticSearch {
                 } catch (Exception e) {
                     return false;
                 }
-            } else {
+            } catch (Exception e){
                 Log.i("Error","No such profile exists in the database");
                 return false;
             }
@@ -195,17 +198,10 @@ public class ElasticSearch {
      * @param username
      * @return Profile object
      */
-    public Profile getProfile(String username){
+    public Profile getProfile(String username) throws ExecutionException, InterruptedException {
         ElasticSearchController.GetProfileTask getProfileTask = new ElasticSearchController.GetProfileTask();
         getProfileTask.execute(username);
-        try{
-            return getProfileTask.get();
-        }
-        catch (Exception e){
-            Log.i("Error", "Failed to Find a profile with given username!");
-            return null;
-        }
-
+        return getProfileTask.get();
     }
 
 }

@@ -7,9 +7,11 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import java.nio.channels.ConnectionPendingException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
@@ -153,6 +155,7 @@ public class ElasticSearchController {
             return moods;
         }
     }
+
 
     /**
      * A function which gets moods from elastic search
@@ -336,11 +339,11 @@ public class ElasticSearchController {
                 }
                 else{
                     Log.i("Error", "Search query failed to find any Profiles that matched!");
-
                 }
             }
             catch (Exception e) {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+                //throw new ConnectionPendingException();
             }
 
             return profile;

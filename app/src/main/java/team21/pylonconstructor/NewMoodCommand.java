@@ -15,7 +15,8 @@ public class NewMoodCommand extends Command {
 
     @Override
     public Boolean execute() {
-        return elasticSearch.addMood(mood);
+        elasticSearch.addMood(mood);
+        return elasticSearch.checkmood(mood);
     }
 
     @Override

@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.NoSuchElementException;
+
 
 //TODO: logic of how to check if user is logged in...
 
@@ -34,17 +36,28 @@ import android.widget.Toast;
  *
  */
 public class LoginActivity extends AppCompatActivity {
+    ElasticSearch elasticSearch;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        elasticSearch = new ElasticSearch();
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-        String user = sharedPreferences.getString("username", "");
+        final String user = sharedPreferences.getString("username", "");
         if (!user.equals("")) {
-            Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
-            startActivity(intent);
-            finish();
+            Log.i("Controller", "set a profile: "+user);
+            try {
+                Profile profile = elasticSearch.getProfile(user);
+                Controller.getInstance().setProfile(profile);
+                Log.d(Controller.getInstance().getProfile().getUserName(), "Controller: Username");
+                Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
+                startActivity(intent);
+                finish();
+            } catch (Exception e) {
+                Toast.makeText(LoginActivity.this, "You may be offline!", Toast.LENGTH_SHORT).show();
+            }
         } else {
             final ElasticSearch elasticSearch = new ElasticSearch();
 
@@ -57,13 +70,25 @@ public class LoginActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     EditText editText = (EditText) findViewById(R.id.userinp);
                     String username = editText.getText().toString();
+                    Profile profile = new Profile();
 
                     if (username.isEmpty()) {
                         Toast.makeText(LoginActivity.this, "Username cannot be empty!", Toast.LENGTH_SHORT).show();
                     } else if (username.matches("[a-zA-Z]+")) {
-                        if (elasticSearch.getProfile(username) == null) {
+                        try {
+                            profile = elasticSearch.getProfile(username);
+                        } catch (Exception e) {
+                            Toast.makeText(LoginActivity.this, "You may be offline!", Toast.LENGTH_SHORT).show();
+                        }
+                        if (profile.getUserName().equals(username)) {
+                            Toast.makeText(LoginActivity.this, "Profile already exists. Log in!", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
                             boolean result = elasticSearch.addProfile(new Profile(username));
                             if (result) {
+                                Log.i("Controller", "set a profile: " + username);
+                                Controller.getInstance().setProfile(new Profile(user));
+                                Log.d("Controller: Username = ", Controller.getInstance().getProfile().getUserName());
                                 SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putString("username", username);
@@ -74,9 +99,8 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(LoginActivity.this, "Failed to create a Profile. Try Again!", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Profile already exists. Log in!", Toast.LENGTH_SHORT).show();
                         }
+
                     } else {
                         Toast.makeText(LoginActivity.this, "Username should only contain characters!", Toast.LENGTH_SHORT).show();
                     }
@@ -88,19 +112,26 @@ public class LoginActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     EditText editText = (EditText) findViewById(R.id.userinp);
                     String username = editText.getText().toString();
-                    Profile profile = elasticSearch.getProfile(username);
+                    try {
+                        Profile profile = elasticSearch.getProfile(username);
 
-                    if (username.isEmpty()) {
-                        Toast.makeText(LoginActivity.this, "Please enter a username!", Toast.LENGTH_SHORT).show();
-                    } else if (profile != null) {
-                        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("username", username);
-                        editor.apply();
-                        Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
+                        if (username.isEmpty()) {
+                            Toast.makeText(LoginActivity.this, "Please enter a username!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.i("Controller", "set a profile: " + profile.getUserName());
+                            Controller.getInstance().setProfile(elasticSearch.getProfile(user));
+                            Log.d("Controller: Username = ", Controller.getInstance().getProfile().getUserName());
+
+                            SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("username", username);
+                            editor.apply();
+                            Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                    catch (Exception e) {
                         Toast.makeText(LoginActivity.this, "Profile does not exist! Please Register.", Toast.LENGTH_SHORT).show();
                     }
                 }
