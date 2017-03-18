@@ -46,6 +46,7 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
     private Context mContext;
     private List<Mood> moodList;
     private MoodAdapter adapter;
+
     //Refactored this to include Locale.
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa", Locale.US);
     ElasticSearch elasticSearch = new ElasticSearch();
@@ -193,9 +194,9 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
                         slideStart.putExtra("situ", moodList.get(pos).getSituation());
                         slideStart.putExtra("trig", moodList.get(pos).getTrigger());
                         slideStart.putExtra("date", moodList.get(pos).getDate().getTime());
+                        slideStart.putExtra("id", moodList.get(pos).getId());
 
-
-                        slideStart.putExtra("usr", moodList.get(pos).getUser().getUserName());
+                        slideStart.putExtra("username", moodList.get(pos).getUser().getUserName());
                         slideStart.putExtra("image",  moodList.get(pos).getImage());
                         slideStart.putExtra("EDIT",  1);
                         mContext.startActivity(slideStart);

@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -82,15 +83,17 @@ public class UpdateMoodActivity extends AppCompatActivity {
         datePicker = (DatePicker) findViewById(R.id.datePicker);
 
         Bitmap img;
-        int edt = getIntent().getExtras().getInt("EDIT");
+        final int edt = getIntent().getExtras().getInt("EDIT");
 
 
           /* Set Custom App bar title, centered */
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.update_mood_layout);
 
-        username = getIntent().getStringExtra("Username");
+        username = getIntent().getStringExtra("username");
         mood = new Mood(elasticSearch.getProfile(username));
+        mood.setId(getIntent().getStringExtra("id"));
+        Log.i("mood id", mood.getId().toString());
 
         //TODO: IMPLEMENT THE MOOD OPTIONS & BUTTONS HERE that are laid out in activity_update_mood.xml
 
@@ -307,10 +310,16 @@ public class UpdateMoodActivity extends AppCompatActivity {
                         toast.show();
                     }
                 }
-
-                if (validMood) {
-                    elasticSearch.addMood(mood);
-                    finish();
+                if (validMood){
+                    Log.i("mood id", mood.getId().toString());
+                    if( edt == 1){
+                        elasticSearch.editMood(mood);
+                        finish();
+                    }
+                    else {
+                        elasticSearch.addMood(mood);
+                        finish();
+                    }
                 }
             }
         });

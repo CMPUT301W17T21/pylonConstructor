@@ -88,12 +88,6 @@ public class MoodHistoryActivity extends AppCompatActivity {
         FabRotateCounterClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_counterclockwise);
 
 
-       /* if (username.equals("")) {
-            Intent intent = new Intent(MoodHistoryActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }*/
-
         fab_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +128,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
                 Intent intent = new Intent(MoodHistoryActivity.this, UpdateMoodActivity.class);
-                intent.putExtra("Username", profile.getUserName());
+                intent.putExtra("username", profile.getUserName());
                 startActivity(intent);
             }
         });
@@ -188,7 +182,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
                 Intent intent = new Intent(MoodHistoryActivity.this, FilterActivity.class);
-                intent.putExtra("Username", profile.getUserName());
+                intent.putExtra("username", profile.getUserName());
                 startActivity(intent);
             }
         });
