@@ -60,6 +60,25 @@ public class ElasticSearch {
     }
 
     /**
+     *  Check for the existance of a mood in Elastic Search Database
+     * @param mood
+     * @return true if mood exists
+     * false otherwise
+     */
+    public boolean checkmood(Mood mood){
+        ElasticSearchController.CheckMoodExistence checkMoodExistence = new ElasticSearchController.CheckMoodExistence();
+        checkMoodExistence.execute(mood);
+        boolean result = false;
+        try{
+            result = checkMoodExistence.get();
+        }
+        catch (Exception e){
+            Log.i("Error", "Failed to search for Moods objects for current user!");
+        }
+        return result;
+    }
+
+    /**
      *  Deletes a given Mood from Elastic Search Database
      * @param mood
      * @return true if mood successfully deleted

@@ -212,6 +212,9 @@ public class MoodHistoryActivity extends AppCompatActivity {
             finish();
         }
         if(id == R.id.flipButton){
+            Mood mood = new Mood(new Profile("Shivansh"));
+            mood.setId("AVrGmo7OddyQCUFeX0Ly");
+            boolean result = elasticSearch.checkmood(mood);
             Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
             startActivity(intent);
         }
