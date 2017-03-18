@@ -42,6 +42,7 @@ public class MoodFeedActivity extends AppCompatActivity {
     Context context = this;
     private List<Mood> moodList;
 
+    Controller controller;
     ElasticSearch elasticSearch;
     Profile profile;
 
@@ -53,11 +54,12 @@ public class MoodFeedActivity extends AppCompatActivity {
         String username = getIntent().getStringExtra("Username");
         elasticSearch = new ElasticSearch();
         this.profile = elasticSearch.getProfile(username);
+        controller = new Controller(this.profile);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
         oldMoodsList = (RecyclerView) findViewById(R.id.recycler_view);
-        moodList = elasticSearch.getmymoods(this.profile);
+        moodList = controller.getAllMoods();
         adapter = new MoodAdapter(this, moodList);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -198,7 +200,7 @@ public class MoodFeedActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        moodList = elasticSearch.getmymoods(this.profile);
+        moodList = controller.getAllMoods();
 
         //TODO: JOSH, SEND ME AN UPDATED/REFRESHED/FILTERED MOODLIST control.get(moodList)
         adapter = new MoodAdapter(this, moodList);
@@ -208,7 +210,7 @@ public class MoodFeedActivity extends AppCompatActivity {
     @Override
     protected  void onResume() {
         super.onResume();
-        moodList = elasticSearch.getmymoods(this.profile);
+        moodList = controller.getAllMoods();
         adapter.notifyDataSetChanged();
     }
 

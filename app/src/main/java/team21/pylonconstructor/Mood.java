@@ -135,4 +135,20 @@ class Mood {
     public int getImageSize() {
         return 0;
     }
+
+    //http://stackoverflow.com/questions/185937/overriding-the-java-equals-method-quirk
+    //March 17th 2017, Joshua did this.
+    //Don't think we'l' have issues but this looks really safe in case.
+    @Override
+    public boolean equals(Object other){
+        if (this.id == null) return false;
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof Mood))return false;
+        if (((Mood) other).getId() == null) return false;
+        if (this.getId().equals(((Mood) other).getId())) return true;
+        return false;
+    }
 }
+
+

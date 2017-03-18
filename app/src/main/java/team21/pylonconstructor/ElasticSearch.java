@@ -3,6 +3,7 @@ package team21.pylonconstructor;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Shivansh on 2017-03-10.
@@ -42,18 +43,15 @@ public class ElasticSearch {
 
     /**
      *  Gets Moods from the Elastic Search Database from a given user
+     *
+     *  Josh updated this to throw exceptions so he could make sure it actually got the list.
      * @param user
      * @return mymoodsList
      */
-    public ArrayList<Mood> getmymoods(Profile user){
+    public ArrayList<Mood> getmymoods(Profile user) throws ExecutionException, InterruptedException {
         ElasticSearchController.GetMoodsTask getmyMoods = new ElasticSearchController.GetMoodsTask();
         getmyMoods.execute(user.getUserName());
-        try{
-            mymoodsList = getmyMoods.get();
-        }
-        catch (Exception e){
-            Log.i("Error", "Failed to search for Moods objects for current user!");
-        }
+        mymoodsList = getmyMoods.get();
         return mymoodsList;
     }
 

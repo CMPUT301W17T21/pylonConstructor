@@ -53,3 +53,15 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+
+app/src/main/java/team21/pylonconstructor/FeedSync.java
+
+app/src/main/java/team21/pylonconstructor/FeedSync.java
+
+app/src/main/java/team21/pylonconstructor/MoodList.java
+
+app/src/main/java/team21/pylonconstructor/UserSync.java
+
+app/src/main/java/team21/pylonconstructor/Synchronizer.java
+
+app/src/main/java/team21/pylonconstructor/SocialSync.java
