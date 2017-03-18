@@ -72,3 +72,5 @@ app/src/main/java/team21/pylonconstructor/SocialSync.java
 
 *.bin
 >>>>>>> master
+
+.gradle/3.3/taskArtifacts/taskArtifacts.lock
