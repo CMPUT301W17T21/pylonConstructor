@@ -204,7 +204,7 @@
             android:text="FILTER"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/add_mood_event" />
+            android:id="@+id/filter" />
 
     </LinearLayout>
 

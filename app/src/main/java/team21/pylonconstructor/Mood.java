@@ -1,17 +1,32 @@
 package team21.pylonconstructor;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 
+import org.apache.commons.lang3.SystemUtils;
+
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 import java.util.Date;
 
 import io.searchbox.annotations.JestId;
 
 /**
- * Created by joshuarobertson on 2017-03-03.
+ * This is the main object in use.
+ *
+ * All mood Entries are encapsulated in Mood objects.
+ *
+ * The mood class wil verify internally that any given data is valid, and will throw appropriate
+ * errors if invalid data is presented.
+ *
+ * @version 1.0
+ *
  */
 
 class Mood {
@@ -20,7 +35,7 @@ class Mood {
     private Date date;
     private Profile user;
     private int imageSize;
-    private Bitmap image;
+    private String image;
 
     @JestId
     private String id;
@@ -40,13 +55,12 @@ class Mood {
         this.id = id;
     }
 
-
-
     // RYAN added null default values
     public Mood() {
         this.emoji = null;
         this.trigger = null;
         this.date = new Date();
+        this.image = null;
     }
 
     public void setEmoji(String emoji) {
@@ -112,17 +126,33 @@ class Mood {
         return user;
     }
 
-
-
     //TODO: IMAGES
-    public void setImage(Bitmap image)  throws ImageTooLargeException{
-        this.image = image;
-        Boolean a = true;
-        if (!a)
+    public void setImage(Bitmap bmp)  throws ImageTooLargeException{
+
+
+        String encoded = encodeToBase64(bmp,Bitmap.CompressFormat.JPEG, 100);
+
+        int bytecount = encoded.getBytes().length;
+        Log.d("STATE", Integer.toString(bytecount));
+        if (bytecount > 66636) {
             throw new ImageTooLargeException();
+        }
+        else {
+            this.image = encoded;
+        }
     }
+
+    /**
+     *     returns the image decoded back to a bitmap.
+     */
     public Bitmap getImage() {
-        return this.image;
+        if (this.image != null) {
+            Bitmap bp = decodeBase64(this.image);
+            return bp;
+        }
+        else return null;
+
+
     }
 
     //TODO: LOCATION
@@ -136,6 +166,7 @@ class Mood {
         return 0;
     }
 
+<<<<<<< HEAD
     //http://stackoverflow.com/questions/185937/overriding-the-java-equals-method-quirk
     //March 17th 2017, Joshua did this.
     //Don't think we'l' have issues but this looks really safe in case.
@@ -148,7 +179,27 @@ class Mood {
         if (((Mood) other).getId() == null) return false;
         if (this.getId().equals(((Mood) other).getId())) return true;
         return false;
+=======
+
+    public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
+    {
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
+        image.compress(compressFormat, quality, byteArrayOS);
+        return Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
+    }
+
+    public static Bitmap decodeBase64(String input)
+    {
+        byte[] decodedBytes = Base64.decode(input, 0);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+>>>>>>> master
     }
 }
 
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> master

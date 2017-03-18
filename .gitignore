@@ -14,6 +14,7 @@ gen/
 out/
 
 # Gradle files
+.gradle/3.3
 .gradle/
 build/
 
@@ -38,7 +39,7 @@ captures/
 .idea/tasks.xml
 .idea/gradle.xml
 .idea/dictionaries
-.idea/libraries
+.idea/libraries/
 
 # Keystore files
 *.jks
@@ -54,6 +55,7 @@ freeline.py
 freeline/
 freeline_project_description.json
 
+<<<<<<< HEAD
 app/src/main/java/team21/pylonconstructor/FeedSync.java
 
 app/src/main/java/team21/pylonconstructor/FeedSync.java
@@ -65,3 +67,8 @@ app/src/main/java/team21/pylonconstructor/UserSync.java
 app/src/main/java/team21/pylonconstructor/Synchronizer.java
 
 app/src/main/java/team21/pylonconstructor/SocialSync.java
+=======
+.gradle/3.3/taskArtifacts/fileHashes.bin
+
+*.bin
+>>>>>>> master

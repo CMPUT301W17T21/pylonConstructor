@@ -5,7 +5,17 @@ import java.util.ArrayList;
 import io.searchbox.annotations.JestId;
 
 /**
- * Created by joshuarobertson on 2017-03-03.
+ * This class is used to represent profiles. User profiles are identified by a username,
+ * and contain a list of followers and following.
+ *
+ * profiles must be username unique, and each username must be valid under to be specified
+ * constraints.
+ *
+ * Profiles are stored on ElasticSearch.
+ *
+ * @see ElasticSearch
+ *
+ * @version 1.0
  */
 
 class Profile {

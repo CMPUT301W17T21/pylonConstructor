@@ -11,8 +11,10 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -27,9 +29,7 @@ import io.searchbox.core.SearchResult;
  * on 8th March, 2017 and was initially written during the lab session.
  * This has been modified to suite the needs of our project.
  */
-
 public class ElasticSearchController {
-
     //static means var is shared amongst class objects
     private static JestDroidClient client;
 
@@ -155,6 +155,41 @@ public class ElasticSearchController {
     }
 
     /**
+     * A function which gets moods from elastic search
+     */
+    public static class CheckMoodExistence extends AsyncTask<Mood, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Mood... moods) {
+
+            verifySettings();
+            //Get the requested mood
+            Get get = new Get.Builder("g21testing",moods[0].getId()).type("Mood").build();
+
+            try {
+                JestResult result = client.execute(get);
+                if(result.isSucceeded()){
+                    Mood foundmood = result.getSourceAsObject(Mood.class);
+                    if(foundmood != null){
+                        Log.i("Found", "mood matched!");
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any moods that matched!");
+
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+
+            return false;
+        }
+    }
+    /**
      *  A function which filters moods from elastic search based on given emotional state
      */
     public static class FilterEmotionalState extends AsyncTask<String, Void, ArrayList<Mood>> {
@@ -232,27 +267,25 @@ public class ElasticSearchController {
         @Override
         protected Boolean doInBackground(Profile... profiles) {
             verifySettings();
+
             Index index = new Index.Builder(profiles[0]).index("g21testing").type("Profile").build();
             try {
                 // Execute the query
                 DocumentResult result = client.execute(index);
-                if(result.isSucceeded()){
+                if (result.isSucceeded()) {
                     profiles[0].setId(result.getId());
-                    Log.i("Success", "Added your Profile!");
+                    Log.i("Success", "Added your profile!");
                     return true;
-                }
-                else{
-                    Log.i("Error", "Elastic search was not able to add the profile!");
+                } else {
+                    Log.i("Error", "Elastic search was not able to add profile!");
                     return false;
                 }
-            }
-            catch (Exception e) {
-                Log.i("Error", "The application failed to build and send the Profile");
+            } catch (Exception e) {
+                Log.i("Error", "The application failed to build and add profile");
                 return false;
             }
         }
     }
-
 
     /**
      * Removes a Profile from the DB

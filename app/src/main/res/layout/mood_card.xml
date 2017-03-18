@@ -7,7 +7,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/card_margin"
         android:elevation="3dp"
@@ -17,44 +17,70 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/thumbnail"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/album_cover_height"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:scaleType="fitXY" />
+
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/thumbnail"
                 android:paddingLeft="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
-                android:paddingTop="@dimen/album_title_padding"
+                android:paddingTop="10sp"
                 android:textColor="@color/fab1_color"
-                android:textSize="@dimen/album_title" />
+                android:textSize="@dimen/album_title"
+                android:layout_marginStart="16dp" />
+
 
             <TextView
-                android:id="@+id/count"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/title"
-                android:paddingBottom="@dimen/songs_count_padding_bottom"
-                android:paddingLeft="@dimen/album_title_padding"
-                android:paddingRight="@dimen/album_title_padding"
-                android:textSize="@dimen/songs_count" />
+                android:textSize="24sp"
+                android:id="@+id/trigger"
+                android:layout_below="@+id/title"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:id="@+id/thumbnail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:layout_below="@id/trigger"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:paddingBottom="5sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:id="@+id/dt"
+                android:layout_alignBottom="@+id/thumbnail"
+                android:layout_alignEnd="@+id/overflow"
+                android:layout_marginBottom="12dp" />
 
             <ImageView
                 android:id="@+id/overflow"
                 android:layout_width="@dimen/ic_album_overflow_width"
                 android:layout_height="@dimen/ic_album_overflow_height"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/thumbnail"
-                android:layout_marginTop="@dimen/ic_album_overflow_margin_top"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_action_plus" />
+
+                android:src="@drawable/ic_more_vert_black_24dp"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_alignBottom="@+id/title" />
+
+            <ImageView android:id="@+id/emoji"
+                android:src="@drawable/ic_happy_263a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_below="@+id/title"
+                android:layout_alignStart="@+id/title" />
 
         </RelativeLayout>
 

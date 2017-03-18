@@ -17,6 +17,12 @@
     <string name="surprised_button_label">SURPRISED</string>
     <string name="shameful_button_label">SHAMEFUL</string>
     <string name="empty_mood">(Please select a mood)</string>
+    <string name="history_edit_mood">Edit mood</string>
+    <string name="history_delete_mood">Delete mood</string>
+
+
+
+
 
 
 </resources>

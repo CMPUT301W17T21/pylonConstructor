@@ -7,6 +7,7 @@ package team21.pylonconstructor;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -32,12 +36,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * This is the main view activity. All mood entries for a logged in user are displayed as a list
+ * here.
+ *
+ * From this activity the user can create, edit and delete moods.
+ * The user can also search for other users, filter the history, and eventually navigate to other
+ * views.
+ *
+ * @see Profile
+ * @see ElasticSearch
+ * @see MoodAdapter
+ *
+ * @version 1.0
+ */
 public class MoodFeedActivity extends AppCompatActivity {
 
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
     boolean isOpen = false;
-    private RecyclerView oldMoodsList;
     private MoodAdapter adapter;
     Context context = this;
     private List<Mood> moodList;
@@ -46,39 +63,39 @@ public class MoodFeedActivity extends AppCompatActivity {
     ElasticSearch elasticSearch;
     Profile profile;
 
-    //TODO: JOSH, send an instance of moodList to this instance
     private RecyclerView recyclerView;
 
     @Override
+    //* Called when the activity is first created. */
     protected void onCreate(Bundle savedInstanceState) {
-        String username = getIntent().getStringExtra("Username");
+        /**
+         * Getting users' login info from first time log in
+         */
+        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "");
         elasticSearch = new ElasticSearch();
         this.profile = elasticSearch.getProfile(username);
         controller = new Controller(this.profile);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
+<<<<<<< HEAD
         oldMoodsList = (RecyclerView) findViewById(R.id.recycler_view);
         moodList = controller.getAllMoods();
+=======
+        moodList = elasticSearch.getmymoods(this.profile);
+>>>>>>> master
         adapter = new MoodAdapter(this, moodList);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        try {
-            Glide.with(this).load(R.drawable.ic_action_close).into((ImageView) findViewById(R.id.backdrop));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         /* Set Custom App bar title, centered */
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.mood_history_layout);
+        getSupportActionBar().setCustomView(R.layout.mood_feed_layout);
 
 
         fab_plus = (FloatingActionButton) findViewById(R.id.fab_plus);
@@ -86,6 +103,7 @@ public class MoodFeedActivity extends AppCompatActivity {
         fab_search = (FloatingActionButton) findViewById(R.id.fab_search);
         fab_filter = (FloatingActionButton) findViewById(R.id.fab_filter);
         fab_goToMap = (FloatingActionButton) findViewById(R.id.fab_map);
+
 
         FabOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
         FabClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
@@ -121,15 +139,6 @@ public class MoodFeedActivity extends AppCompatActivity {
                     fab_updateMood.setClickable(true);
                     isOpen = true;
 
-
-                    fab_updateMood.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            setResult(RESULT_OK);
-                            Intent intent = new Intent(MoodFeedActivity.this, UpdateMoodActivity.class);
-                            intent.putExtra("Username", profile.getUserName());
-                            startActivity(intent);
-                        }
-                    });
                 }
 
             }
@@ -139,13 +148,12 @@ public class MoodFeedActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 /**
-                 * https://www.mkyong.com/android/android-prompt-user-input-dialog-example/
+                 * <a href="https://www.mkyong.com/android/android-prompt-user-input-dialog-example/">
+                 * Source site</a>
                  * accessed 03/11/2017
                  */
                 LayoutInflater li = LayoutInflater.from(context);
                 View promptsView = li.inflate(R.layout.promt_search_user, null);
-
-
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         context);
@@ -177,10 +185,15 @@ public class MoodFeedActivity extends AppCompatActivity {
 
                 // show it
                 alertDialog.show();
+            }
+        });
 
-
-
-
+        fab_updateMood.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                Intent intent = new Intent(MoodFeedActivity.this, UpdateMoodActivity.class);
+                intent.putExtra("Username", profile.getUserName());
+                startActivity(intent);
             }
         });
 
@@ -189,22 +202,51 @@ public class MoodFeedActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
                 Intent intent = new Intent(MoodFeedActivity.this, FilterActivity.class);
+                intent.putExtra("Username", profile.getUserName());
                 startActivity(intent);
             }
         });
-
-
     }
 
+    // create an action bar button
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.flipButton) {
+            finish();
+        }
+        if (id == R.id.logoutButton) {
+            SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username", "");
+            editor.apply();
+            Intent intent = new Intent(MoodFeedActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     protected void onStart() {
         super.onStart();
+<<<<<<< HEAD
 
         moodList = controller.getAllMoods();
 
         //TODO: JOSH, SEND ME AN UPDATED/REFRESHED/FILTERED MOODLIST control.get(moodList)
+=======
+        moodList = elasticSearch.getmymoods(this.profile);
+>>>>>>> master
         adapter = new MoodAdapter(this, moodList);
-        oldMoodsList.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -213,5 +255,4 @@ public class MoodFeedActivity extends AppCompatActivity {
         moodList = controller.getAllMoods();
         adapter.notifyDataSetChanged();
     }
-
 }

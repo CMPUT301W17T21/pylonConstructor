@@ -1,5 +1,6 @@
 package team21.pylonconstructor;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Test;
 
 import java.util.Date;
@@ -15,32 +16,43 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Note: This class only tests data and data storage.
- * It does not test views, or filters
+ * It does not test views, or filters, intents, activities, etc
  */
 public class DataTest {
     public DataTest() {
         super(/* TODO: Add activity here */);
     }
 
+    /**
+     * Tests variables of the Mood object
+     * -Emoji
+     * -Situation
+     * -Trigger
+     * -User (Username)
+     *
+     * @throws Exception
+     */
     @Test
     public void createMood() throws Exception {
         Mood mood = new Mood();
 
+        //Change the variables
         mood.setEmoji("Happy");
         mood.setSituation("One Person");
         mood.setTrigger("Bear Dog");
         mood.setUser(new Profile("Username"));
 
+        //Test that the changes are stored
         assertEquals(mood.getEmoji(), "Happy");
         assertEquals(mood.getSituation(), "One Person");
-        assertEquals(mood.getTrigger().get(0), "Bear Dog");
-        assertNotEquals(mood.getTrigger().get(0), "Bear");
+        assertEquals(mood.getTrigger(), "Bear Dog");
         assertEquals(mood.getUser().getUserName(), "Username");
 
-        mood.setTrigger("Bear", "Dog");
-        assertEquals(mood.getTrigger().get(0), "Bear");
-        assertNotEquals(mood.getTrigger().get(0), "BearDog");
-        assertNotEquals(mood.getTrigger().get(0), "Bear Dog");
+        //Some invalid cases
+        assertNotEquals(mood.getEmoji(), "Ha");
+        assertNotEquals(mood.getSituation(), "Person");
+        assertNotEquals(mood.getTrigger(), "Bear");
+        assertNotEquals(mood.getUser().getUserName(), "User");
     }
 
     @Test
@@ -48,6 +60,22 @@ public class DataTest {
         Mood mood = new Mood();
         //TODO: Test the behavior of the date.
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Tests the mood class and its contents
@@ -72,8 +100,8 @@ public class DataTest {
         //Edit mood
         mood.setUser(new Profile("UserName")); //TODO: TEST THIS
         mood.setEmoji("Anger");
-        mood.setDate("12 12 2010");
-        mood.setTrigger(/* TODO: Add trigger here */);
+        //mood.setDate("12 12 2010");
+        //mood.setTrigger(/* TODO: Add trigger here */);
         mood.setSituation("Alone");
 
         //moodList.add(mood);
@@ -166,21 +194,6 @@ public class DataTest {
         assertEquals(mood.getEmoji(), state);
     }
     */
-    /**
-     * Tests the social situation field of moods
-     * Assumes that the social situation is not set if invalid
-     *
-     * @throws Exception
-     */
-    /*
-    @Test
-    public void socialSituationTest(String situation) throws Exception{
-        Mood mood = new Mood();
-
-        mood.setSituation(situation);
-
-        assertEquals(mood.getSituation(), situation);
-    }*/
 
     /**
      * Tests the location of moods
