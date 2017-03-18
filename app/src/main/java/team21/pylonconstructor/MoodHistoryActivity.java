@@ -43,6 +43,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
     Context context = this;
     private List<Mood> moodList;
 
+    Controller controller;
     ElasticSearch elasticSearch;
     Profile profile;
 
@@ -61,7 +62,8 @@ public class MoodHistoryActivity extends AppCompatActivity {
 
         elasticSearch = new ElasticSearch();
         this.profile = elasticSearch.getProfile(username);
-        moodList = elasticSearch.getmymoods(this.profile);
+        controller = new Controller(this.profile);
+        moodList = controller.getAllMoods();
         adapter = new MoodAdapter(this, moodList);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -223,7 +225,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        moodList = elasticSearch.getmymoods(this.profile);
+        moodList = controller.getAllMoods();
         adapter = new MoodAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -232,7 +234,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
     @Override
     protected  void onResume() {
         super.onResume();
-        moodList = elasticSearch.getmymoods(this.profile);
+        moodList = controller.getAllMoods();
         adapter.notifyDataSetChanged();
     }
 }

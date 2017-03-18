@@ -79,12 +79,9 @@ public class MoodFeedActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
-<<<<<<< HEAD
-        oldMoodsList = (RecyclerView) findViewById(R.id.recycler_view);
+
         moodList = controller.getAllMoods();
-=======
-        moodList = elasticSearch.getmymoods(this.profile);
->>>>>>> master
+
         adapter = new MoodAdapter(this, moodList);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -236,14 +233,12 @@ public class MoodFeedActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-<<<<<<< HEAD
+
 
         moodList = controller.getAllMoods();
 
         //TODO: JOSH, SEND ME AN UPDATED/REFRESHED/FILTERED MOODLIST control.get(moodList)
-=======
-        moodList = elasticSearch.getmymoods(this.profile);
->>>>>>> master
+
         adapter = new MoodAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
