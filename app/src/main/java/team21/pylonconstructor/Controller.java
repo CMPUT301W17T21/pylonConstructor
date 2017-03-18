@@ -22,7 +22,6 @@ public class Controller {
     private LinkedList<Command> commands;
 
     private Profile profile;
-    private Boolean Internet = Boolean.FALSE;
 
     public void setProfile(Profile profile) {
         Log.d("setProfile: Input =", profile.getUserName());
@@ -61,13 +60,16 @@ public class Controller {
     Boolean addMood(Mood mood) {
         Command c = new NewMoodCommand(mood);
         if (c.execute()) {
-            this.Internet = Boolean.FALSE;
+            this.update();
             Log.i("AddMood: ", "Added mood!");
             return true;
         } else {
-            this.commands.addLast(c);
-            this.moodList.add(mood);
-            Log.i("AddMood: ", "Saved mood!");
+            if (!this.commands.contains(c)) {
+                this.commands.addLast(c);
+                this.moodList.add(mood);
+                //Manually sort. or smart insert.
+                Log.i("AddMood: ", "Saved mood!");
+            }
         }
         return false;
     }
@@ -75,7 +77,7 @@ public class Controller {
     Boolean editMood(Mood mood) {
         Command c = new EditMoodCommand(mood);
         if (c.execute()) {
-            this.Internet = Boolean.FALSE;
+            this.update();
             return true;
         } else {
             this.commands.addLast(c);
@@ -89,28 +91,31 @@ public class Controller {
     Boolean deleteMood(Mood mood) {
         Command c = new DeleteMoodCommand(mood);
         if (c.execute()) {
-            this.Internet = Boolean.FALSE;
+            this.update();
             return true;
         } else {
             this.commands.addLast(c);
             this.moodList.remove(mood);
-            this.Internet = Boolean.FALSE;
         }
         return false;
     }
 
     ArrayList<Mood> getAllMoods() {
-        if (!Internet) {
+
             try {
                 //JOSHUA THIS NEVER FAILS YOU KNEW THAT
-                this.moodList = this.elasticSearch.getmymoods(this.profile);
-                this.update();
-                Internet = Boolean.TRUE;
+                ArrayList<Mood> recieved = this.elasticSearch.getmymoods(this.profile);
+                if (recieved != null) {
+                    this.moodList = recieved;
+                    this.update();
+                }
+                else {
+                    Log.i("Get MoodList", "Error getting.");
+                }
                 //TODO: Handle exceptions.
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
         for (Mood m : moodList) {
             Log.d("MoodList:Mood:Trigger= ", m.getEmoji());
         }

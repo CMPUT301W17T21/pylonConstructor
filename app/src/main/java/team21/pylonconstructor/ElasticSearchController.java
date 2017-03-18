@@ -129,7 +129,7 @@ public class ElasticSearchController {
         protected ArrayList<Mood> doInBackground(String... search_parameters) {
             verifySettings();
 
-            ArrayList<Mood> moods = new ArrayList<Mood>();
+            ArrayList<Mood> moods = null;
 
             // Arranged in reverse Chronological order
             String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"user.userName\"],\"query\" :\""+ search_parameters[0]+"\"}}}";
@@ -140,12 +140,12 @@ public class ElasticSearchController {
                 SearchResult result = client.execute(search);
                 if(result.isSucceeded()){
                     List<Mood> foundmoods = result.getSourceAsObjectList(Mood.class);
+                    moods = new ArrayList<>();
                     moods.addAll(foundmoods);
                     Log.i("Found", "mood matched!");
                 }
                 else{
                     Log.i("Error", "Search query failed to find any moods that matched!");
-
                 }
             }
             catch (Exception e) {
@@ -325,7 +325,7 @@ public class ElasticSearchController {
         @Override
         protected Profile doInBackground(String... search_parameters) {
             verifySettings();
-            Profile profile = new Profile();
+            Profile profile = null;
             // Search for given Username
             String query = "{\"query\":{\"query_string\" :{\"fields\" : [\"userName\"],\"query\" :\""+ search_parameters[0]+"\"}}}";
             Search search = new Search.Builder(query)
@@ -333,19 +333,18 @@ public class ElasticSearchController {
 
             try {
                 SearchResult result = client.execute(search);
-                if(result.isSucceeded()){
+                if(result.isSucceeded()) {
                     profile = result.getSourceAsObject(Profile.class);
-                    Log.i("Found", "Profile matched!");
                 }
                 else{
                     Log.i("Error", "Search query failed to find any Profiles that matched!");
                 }
             }
             catch (Exception e) {
+                profile = null;
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
                 //throw new ConnectionPendingException();
             }
-
             return profile;
         }
     }
