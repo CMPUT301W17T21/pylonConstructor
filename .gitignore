@@ -54,3 +54,7 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+
+.gradle/3.3/taskArtifacts/fileHashes.bin
+
+*.bin
