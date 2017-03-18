@@ -92,8 +92,11 @@ public class UpdateMoodActivity extends AppCompatActivity {
 
         username = getIntent().getStringExtra("username");
         mood = new Mood(elasticSearch.getProfile(username));
-        mood.setId(getIntent().getStringExtra("id"));
-        Log.i("mood id", mood.getId().toString());
+        String id = getIntent().getStringExtra("id");
+        if (id!= null){
+            mood.setId(id);
+        }
+
 
         //TODO: IMPLEMENT THE MOOD OPTIONS & BUTTONS HERE that are laid out in activity_update_mood.xml
 
@@ -311,7 +314,6 @@ public class UpdateMoodActivity extends AppCompatActivity {
                     }
                 }
                 if (validMood){
-                    Log.i("mood id", mood.getId().toString());
                     if( edt == 1){
                         elasticSearch.editMood(mood);
                         finish();

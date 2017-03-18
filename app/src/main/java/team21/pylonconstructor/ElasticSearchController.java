@@ -11,8 +11,10 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -152,6 +154,41 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     * A function which gets moods from elastic search
+     */
+    public static class CheckMoodExistence extends AsyncTask<Mood, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Mood... moods) {
+
+            verifySettings();
+            //Get the requested mood
+            Get get = new Get.Builder("g21testing",moods[0].getId()).type("Mood").build();
+
+            try {
+                JestResult result = client.execute(get);
+                if(result.isSucceeded()){
+                    Mood foundmood = result.getSourceAsObject(Mood.class);
+                    if(foundmood != null){
+                        Log.i("Found", "mood matched!");
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any moods that matched!");
+
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+
+            return false;
+        }
+    }
     /**
      *  A function which filters moods from elastic search based on given emotional state
      */
