@@ -3,7 +3,8 @@
     package="team21.pylonconstructor">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Icon made by Freepik from www.flaticon.com-->
+
+    <!-- Icon made by Freepik from www.flaticon.com -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/smile"
@@ -20,7 +21,14 @@
         <activity android:name=".UpdateMoodActivity" />
         <activity android:name=".MoodFeedActivity" />
         <activity android:name=".FilterActivity" />
-        <activity android:name=".MoodHistoryActivity"></activity>
+        <activity
+            android:name=".MoodHistoryActivity2"
+            android:label="@string/title_activity_mood_history2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MoodFeedActivity2"
+            android:label="@string/title_activity_mood_feed2"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

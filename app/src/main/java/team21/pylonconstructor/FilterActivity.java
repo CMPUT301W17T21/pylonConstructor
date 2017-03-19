@@ -3,7 +3,6 @@ package team21.pylonconstructor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -88,7 +87,7 @@ public class FilterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_filter);
         /* Set Custom App bar title, centered */
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.mood_feed_layout);
+        getSupportActionBar().setCustomView(R.layout.mood_feed_appbar_title_layout);
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         byMood = (RadioButton) findViewById(R.id.filter_mood_radio_button);

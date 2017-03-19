@@ -24,17 +24,13 @@
     <string name="filter_week_select_filter">Only moods from past week</string>
     <string name="clear_filter_button_label">CLEAR FILTER</string>
     <string name="filtered_by">Filtered by: </string>
+    <string name="title_activity_mood_history2">MoodHistoryActivity2</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
-
-
-
-
-
-
-
-
-
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_mood_feed2">MoodFeedActivity2</string>
 
 
 </resources>

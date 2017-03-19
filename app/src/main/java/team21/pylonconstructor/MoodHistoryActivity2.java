@@ -5,19 +5,26 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -28,18 +35,8 @@ import android.widget.Toast;
 import java.util.Date;
 import java.util.List;
 
-/**
- * This class handles displaying the users mood history.
- *
- * The user can navigate back to their mood feed from here.
- *
- * @see Profile
- * @see ElasticSearch
- *
- * @version 1.0
- */
-
-public class MoodHistoryActivity extends AppCompatActivity {
+public class MoodHistoryActivity2 extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
@@ -61,12 +58,21 @@ public class MoodHistoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mood_feed);
-        /**
-         * Getting users' login info from first time log in
-         */
+        setContentView(R.layout.activity_mood_history2);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
 
@@ -84,9 +90,39 @@ public class MoodHistoryActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        /* Set Custom App bar title, centered */
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.mood_history_layout);
+        /**
+         * The following sets a clickable app title, which toggles between mood history and mood feed.
+         * adapted from http://stackoverflow.com/questions/24838155/set-onclick-listener-on-action-bar-title-in-android
+         * accessed on 03-19-2017 by rperez
+         */
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // Disable the default and enable the custom
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayShowCustomEnabled(true);
+            View customView = getLayoutInflater().inflate(R.layout.mood_history_appbar_title_layout, null);
+            // Get the textview of the title
+            TextView customTitle = (TextView) customView.findViewById(R.id.mood_history_title_tview);
+
+            ActionBar.LayoutParams params = new
+                    ActionBar.LayoutParams(Gravity.CENTER);
+
+            // Set the on click listener for the title
+            customTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.w("MainActivity", "ActionBar's title clicked.");
+                    finish();
+                    Intent intent = new Intent(MoodHistoryActivity2.this, MoodFeedActivity2.class);
+                    startActivity(intent);
+                }
+            });
+            // Apply the custom view
+            actionBar.setCustomView(customView, params);
+        }
+
+
+
 
         clearFilterButton = (Button) findViewById(R.id.clearfilter);
         filteredByText = (TextView) findViewById(R.id.filtered_by_label);
@@ -142,7 +178,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
         fab_updateMood.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                Intent intent = new Intent(MoodHistoryActivity.this, UpdateMoodActivity.class);
+                Intent intent = new Intent(MoodHistoryActivity2.this, UpdateMoodActivity.class);
                 intent.putExtra("username", profile.getUserName());
                 startActivity(intent);
             }
@@ -206,7 +242,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
                     toast.show();
                 }
                 else {
-                    Intent intent = new Intent(MoodHistoryActivity.this, FilterActivity.class);
+                    Intent intent = new Intent(MoodHistoryActivity2.this, FilterActivity.class);
                     intent.putExtra("username", profile.getUserName());
                     startActivityForResult(intent, REQUEST_FILTER);
                 }
@@ -230,35 +266,71 @@ public class MoodHistoryActivity extends AppCompatActivity {
         });
     }
 
-    // create an action bar button
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    // handle button activities
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        /**
-         * Action performed on clicking logout button
-         */
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
         if (id == R.id.logoutButton) {
             SharedPreferences sharedPreferences = getSharedPreferences("userinfo",MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("username", "");
             editor.apply();
-            Intent intent = new Intent(MoodHistoryActivity.this, LoginActivity.class);
+            Intent intent = new Intent(MoodHistoryActivity2.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
-        if(id == R.id.flipButton){
-            finish();
-            Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
-            startActivity(intent);
-        }
+
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     protected void onStart() {
@@ -345,8 +417,4 @@ public class MoodHistoryActivity extends AppCompatActivity {
 
         }
     }
-
-
-
-
 }

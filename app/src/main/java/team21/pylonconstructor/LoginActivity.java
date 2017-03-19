@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.i("Skip", "launching...");
                     Controller.getInstance().setProfile(profile);
                     Log.d(Controller.getInstance().getProfile().getUserName(), "Controller: Username");
-                    Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity2.class);
                     startActivity(intent);
                     finish();
                 }
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("username", username);
                             editor.apply();
-                            Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity2.class);
                             startActivity(intent);
                             finish();
                         } else {
@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("username", username);
                             editor.apply();
-                            Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity2.class);
                             startActivity(intent);
                             finish();
                         } else {
