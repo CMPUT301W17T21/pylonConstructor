@@ -7,7 +7,9 @@ package team21.pylonconstructor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -54,6 +56,7 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, trigger, dtView;
         public ImageView thumbnail, overflow, emoji;
+        private CardView mCardView;
 
         public MyViewHolder(View view) {
             super(view);
@@ -63,6 +66,8 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
             emoji = (ImageView) view.findViewById(R.id.emoji);
             trigger = (TextView) view.findViewById(R.id.trigger);
             dtView = (TextView) view.findViewById(R.id.dt);
+            mCardView = (CardView) itemView.findViewById(R.id.card_view);
+
         }
     }
 
@@ -86,10 +91,13 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
         final int pos = position;
         Mood mood = moodList.get(position);
         holder.title.setText(mood.getUser().getUserName());
+        holder.title.append(" is feeling ");
+
         holder.trigger.setText(mood.getTrigger());
 
 
         holder.thumbnail.setImageBitmap(mood.getImage());
+        holder.mCardView.setCardBackgroundColor(Color.GREEN);
 
         String dateStr = sdf.format(mood.getDate());
         holder.dtView.setText(dateStr);
@@ -99,34 +107,64 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
         String e = mood.getEmoji();
         if (e.equals(mContext.getString(R.string.happy_button_label))) {
             emoticon = mContext.getDrawable(R.drawable.ic_happy_263a);
+            holder.mCardView.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.happy_color));
+            holder.title.append(mContext.getString(R.string.happy_button_label));
+
+
         }
 
         if (e.equals(mContext.getString(R.string.sad_button_label))) {
             emoticon = mContext.getDrawable(R.drawable.ic_sad_2639);
+            holder.mCardView.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.sad_color));
+            holder.title.append(mContext.getString(R.string.sad_button_label));
+
+
         }
 
         if (e.equals(mContext.getString(R.string.angry_button_label))) {
             emoticon = mContext.getDrawable(R.drawable.ic_angry_1f620);
+            holder.mCardView.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.angry_color));
+            holder.title.append(mContext.getString(R.string.angry_button_label));
+
+
         }
 
         if (e.equals(mContext.getString(R.string.confused_button_label))) {
             emoticon = mContext.getDrawable(R.drawable.ic_confused_1f615_1);
+            holder.mCardView.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.confused_color));
+            holder.title.append(mContext.getString(R.string.confused_button_label));
+
         }
 
         if (e.equals(mContext.getString(R.string.disgusted_button_label))) {
             emoticon = mContext.getDrawable(R.drawable.ic_disgusted_1f616);
+            holder.mCardView.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.disgusted_color));
+            holder.title.append(mContext.getString(R.string.disgusted_button_label));
+
+
         }
 
         if (e.equals(mContext.getString(R.string.scared_button_label))) {
             emoticon = mContext.getDrawable(R.drawable.ic_scared_1f631);
+            holder.mCardView.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.scared_color));
+            holder.title.append(mContext.getString(R.string.scared_button_label));
+
+
         }
 
         if (e.equals(mContext.getString(R.string.surprised_button_label))) {
             emoticon = mContext.getDrawable(R.drawable.ic_surprised_1f632);
+            holder.mCardView.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.surprised_color));
+            holder.title.append(mContext.getString(R.string.surprised_button_label));
+
+
         }
 
         if (e.equals(mContext.getString(R.string.shameful_button_label))) {
             emoticon = mContext.getDrawable(R.drawable.ic_shameful_1f612);
+            holder.mCardView.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.shameful_color));
+            holder.title.append(mContext.getString(R.string.shameful_button_label));
+
         }
 
         holder.emoji.setImageDrawable(emoticon);

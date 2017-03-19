@@ -11,7 +11,8 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/card_margin"
         android:elevation="3dp"
-        card_view:cardCornerRadius="@dimen/card_album_radius">
+        card_view:cardCornerRadius="@dimen/card_album_radius"
+        card_view:cardBackgroundColor="@android:color/white">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,9 +27,15 @@
                 android:paddingLeft="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
                 android:paddingTop="10sp"
-                android:textColor="@color/fab1_color"
                 android:textSize="@dimen/album_title"
                 android:layout_marginStart="16dp" />
+
+            <ImageView android:id="@+id/emoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_below="@+id/title"
+                android:layout_alignStart="@+id/title" />
 
 
             <TextView
@@ -36,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
                 android:id="@+id/trigger"
-                android:layout_below="@+id/title"
+                android:layout_below="@+id/emoji"
                 android:layout_centerHorizontal="true" />
 
             <ImageView
@@ -73,14 +80,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="10dp"
                 android:layout_alignBottom="@+id/title" />
-
-            <ImageView android:id="@+id/emoji"
-                android:src="@drawable/ic_happy_263a"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:layout_below="@+id/title"
-                android:layout_alignStart="@+id/title" />
 
         </RelativeLayout>
 
