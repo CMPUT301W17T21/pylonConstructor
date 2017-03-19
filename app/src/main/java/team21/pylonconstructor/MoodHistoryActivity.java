@@ -1,5 +1,6 @@
 package team21.pylonconstructor;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +23,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,14 +41,17 @@ public class MoodHistoryActivity extends AppCompatActivity {
 
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
-    boolean isOpen = false;
     private MoodAdapter adapter;
-    Context context = this;
     private List<Mood> moodList;
 
     Controller controller;
     ElasticSearch elasticSearch;
     Profile profile;
+
+    boolean isOpen = false;
+    Context context = this;
+    static final int REQUEST_FILTER = 1;
+    String filterDate = null;
 
     private RecyclerView recyclerView;
 
@@ -65,6 +71,8 @@ public class MoodHistoryActivity extends AppCompatActivity {
         controller = new Controller(this.profile);
         moodList = controller.getAllMoods();
         adapter = new MoodAdapter(this, moodList);
+        Log.d("ACTIV ST IS", "OnCreate");
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -185,7 +193,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
                 setResult(RESULT_OK);
                 Intent intent = new Intent(MoodHistoryActivity.this, FilterActivity.class);
                 intent.putExtra("username", profile.getUserName());
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_FILTER);
             }
         });
     }
@@ -214,9 +222,6 @@ public class MoodHistoryActivity extends AppCompatActivity {
             finish();
         }
         if(id == R.id.flipButton){
-            Mood mood = new Mood(new Profile("Shivansh"));
-            mood.setId("AVrGmo7OddyQCUFeX0Ly");
-            boolean result = elasticSearch.checkmood(mood);
             Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
             startActivity(intent);
         }
@@ -225,6 +230,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
+        Log.d("ACTIV ST IS", "onStart");
         moodList = controller.getAllMoods();
         adapter = new MoodAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
@@ -234,7 +240,45 @@ public class MoodHistoryActivity extends AppCompatActivity {
     @Override
     protected  void onResume() {
         super.onResume();
+        Log.d("ACTIV ST IS", "onResume");
         moodList = controller.getAllMoods();
         adapter.notifyDataSetChanged();
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("ACTIV ST IS", "onActRes");
+
+        switch(requestCode) {
+            case (REQUEST_FILTER) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    // TODO Extract the data returned from the child Activity.
+                    Bundle extras = data.getExtras();
+                    int filterOption = extras.getInt("filter_option");
+
+                    if (filterOption == 1) {
+                       String filterTerm = extras.getString("mood_filter");
+                        controller.addFilters(filterTerm, filterOption);
+                    }
+                    if (filterOption == 2) {
+                        String filterTerm = extras.getString("mood_filter");
+                        controller.addFilters(filterTerm, filterOption);
+                    }
+
+                    if (filterOption == 3) {
+                        Date filterDate =  (Date) extras.getSerializable("mood_filter");
+                        controller.addDateFilter(filterDate);
+                        //TODO: implement week search here
+                    }
+
+                }
+                break;
+            }
+        }
+    }
+
+
+
 }

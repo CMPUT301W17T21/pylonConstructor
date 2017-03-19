@@ -19,6 +19,13 @@
     <string name="empty_mood">(Please select a mood)</string>
     <string name="history_edit_mood">Edit mood</string>
     <string name="history_delete_mood">Delete mood</string>
+    <string name="filter_mood_select_filter">by Mood</string>
+    <string name="filter_trigger_select_filter">by Trigger</string>
+    <string name="filter_week_select_filter">Only moods from past week</string>
+
+
+
+
 
 
 

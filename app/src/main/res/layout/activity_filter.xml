@@ -46,6 +46,23 @@
                     android:id="@+id/name_lbl" />
 
             </LinearLayout>
+
+
+            <RadioGroup
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:weightSum="1"
+                android:id="@+id/radioGroup"
+                >
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:onClick="rbClick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/filter_mood_select_filter"
+                android:id="@+id/filter_mood_radio_button"
+                android:textSize="20sp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -153,8 +170,17 @@
 
             </LinearLayout>
 
-            <LinearLayout
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:onClick="rbClick"
                 android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/filter_trigger_select_filter"
+                android:id="@+id/filter_trigger_radio_button"
+                android:textSize="20sp"/>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
@@ -174,15 +200,20 @@
                     android:id="@+id/message" />
             </LinearLayout>
 
-            <CheckBox
-                android:layout_marginTop="10dp"
-                android:id="@+id/checkBox3"
+            <android.support.v7.widget.AppCompatRadioButton
+                android:onClick="rbClick"
+                android:layout_marginTop="15dp"
+                android:id="@+id/filter_week_radio_button"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="Only moods from past week" />
+
+                android:text="@string/filter_week_select_filter" />
+
+            </RadioGroup>
 
         </LinearLayout>
+
     </ScrollView>
 
     <LinearLayout

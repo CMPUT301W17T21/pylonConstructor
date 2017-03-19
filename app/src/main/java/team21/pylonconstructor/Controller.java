@@ -1,5 +1,6 @@
 package team21.pylonconstructor;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -12,8 +13,10 @@ public class Controller {
     private ElasticSearch elasticSearch = new ElasticSearch();
     private ArrayList<Mood> moodList = new ArrayList<>();
     LinkedList<Command> commands = new LinkedList<>();
-
+    String filterTerm = null;
+    int filterOption = 0;
     private Profile profile;
+    Date filterDate = null;
 
     Controller (Profile profile) {
         this.profile = profile;
@@ -70,15 +73,43 @@ public class Controller {
     }
 
     ArrayList<Mood> getAllMoods() {
-        try {
-            this.moodList = this.elasticSearch.getmymoods(this.profile);
-            this.update();
-            //TODO: Handle exceptions.
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        if (filterOption == 0) {
+            try {
+                this.moodList = this.elasticSearch.getmymoods(this.profile);
+                this.update();
+                //TODO: Handle exceptions.
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
+        if (filterOption == 1) {
+            this.moodList = this.elasticSearch.emotionalstatefilteredmoods(this.profile, filterTerm);
+        }
+
+        if (filterOption == 2) {
+            this.moodList = this.elasticSearch.triggerfilteredmoods(this.profile, filterTerm);
+        }
+
+        if (filterOption == 3) {
+            //TODO: implement tthis weekfilteredmoods()
+            //this.moodsList = this.elasticSearch.weekfilteredmoods()
+        }
+
+        this.update();
+        //TODO: Exception handling for emotionalstatefilteredmoods?
         return this.moodList;
+    }
+
+    void addFilters(String filterTerm, int filterOption) {
+        this.filterTerm = filterTerm;
+        this.filterOption = filterOption;
+    }
+
+    void addDateFilter(Date filterDate) {
+        this.filterDate = filterDate;
     }
 }

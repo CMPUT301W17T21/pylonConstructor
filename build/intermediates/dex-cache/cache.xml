@@ -3,12 +3,12 @@
 
     <item
         is-multidex="false"
-        jar="C:\Users\Shivansh\AndroidStudioProjects\pylonConstructor\app\src\include\jest-droid-2.0.1-SNAPSHOT.jar"
+        jar="/Users/ryanp/Desktop/untitled folder/pylonConstructor/app/src/include/jest-droid-2.0.1-SNAPSHOT.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="e1199e84d8d3907b8262330dd6976ce04d37f6de">
-        <dex dex="C:\Users\Shivansh\AndroidStudioProjects\pylonConstructor\app\build\intermediates\pre-dexed\debug\jest-droid-2.0.1-SNAPSHOT_6484b9ca9eabd3a5a2416f16ff267fecbd3b2f97.jar" />
+        <dex dex="/Users/ryanp/Desktop/untitled folder/pylonConstructor/app/build/intermediates/pre-dexed/debug/jest-droid-2.0.1-SNAPSHOT_8abbc16ca4af4cbad98cd314d29c059c45a87d26.jar" />
     </item>
 
 </items>
