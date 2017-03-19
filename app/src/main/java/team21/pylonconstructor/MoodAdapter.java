@@ -185,7 +185,7 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
                     if (delete) {
                         Mood dmood = moodList.get(pos);
                         Controller.getInstance().deleteMood(dmood);
-                        Intent intent = new Intent(mContext, MoodHistoryActivity.class);
+                        //Intent intent = new Intent(mContext, MoodHistoryActivity.class);
                         adapter.notifyDataSetChanged();
                     }
 

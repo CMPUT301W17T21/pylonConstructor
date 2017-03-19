@@ -23,6 +23,8 @@
     <string name="filter_trigger_select_filter">by Trigger</string>
     <string name="filter_week_select_filter">Only moods from past week</string>
     <string name="clear_filter_button_label">CLEAR FILTER</string>
+    <string name="filtered_by">Filtered by: </string>
+
 
 
 

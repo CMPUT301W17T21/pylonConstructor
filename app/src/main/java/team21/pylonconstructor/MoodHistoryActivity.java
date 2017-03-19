@@ -22,8 +22,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +46,8 @@ public class MoodHistoryActivity extends AppCompatActivity {
     private MoodAdapter adapter;
     private List<Mood> moodList;
     Button clearFilterButton;
+    TextView filteredByText;
+    private Toast toast;
 
     //Controller controller = Controller.getInstance();
     //ElasticSearch elasticSearch;
@@ -53,8 +56,6 @@ public class MoodHistoryActivity extends AppCompatActivity {
     boolean isOpen = false;
     Context context = this;
     static final int REQUEST_FILTER = 1;
-    String filterDate = null;
-    private boolean showClearMood;
 
     private RecyclerView recyclerView;
 
@@ -73,7 +74,6 @@ public class MoodHistoryActivity extends AppCompatActivity {
         profile = Controller.getInstance().getProfile();
         moodList = Controller.getInstance().getAllMoods();
         adapter = new MoodAdapter(this, moodList);
-        showClearMood = false;
 
         Log.d("ACTIV ST IS", "OnCreate");
 
@@ -89,6 +89,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.mood_history_layout);
 
         clearFilterButton = (Button) findViewById(R.id.clearfilter);
+        filteredByText = (TextView) findViewById(R.id.filtered_by_label);
         fab_plus = (FloatingActionButton) findViewById(R.id.fab_plus);
         fab_updateMood = (FloatingActionButton) findViewById(R.id.fab_updateMood);
         fab_search = (FloatingActionButton) findViewById(R.id.fab_search);
@@ -100,7 +101,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
         FabRotateClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
         FabRotateCounterClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_counterclockwise);
 
-        setFilterButtonVisible();
+        changeClearFilterVisibility();
 
         fab_plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,9 +196,20 @@ public class MoodHistoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                Intent intent = new Intent(MoodHistoryActivity.this, FilterActivity.class);
-                intent.putExtra("username", profile.getUserName());
-                startActivityForResult(intent, REQUEST_FILTER);
+
+                if (Controller.getInstance().getFilterOption() != 0) {
+                    context = getApplicationContext();
+                    CharSequence text = "Already in filtered feed. Tap 'Clear Filter' before" +
+                            " filtering again.";
+                    int duration = Toast.LENGTH_SHORT;
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+                else {
+                    Intent intent = new Intent(MoodHistoryActivity.this, FilterActivity.class);
+                    intent.putExtra("username", profile.getUserName());
+                    startActivityForResult(intent, REQUEST_FILTER);
+                }
             }
         });
 
@@ -206,8 +218,14 @@ public class MoodHistoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
                 Controller.getInstance().addFilters(null, 0);
-                finish();
-                startActivity(getIntent());
+                filteredByText.setText(getResources().getString(R.string.filtered_by));
+
+                moodList = Controller.getInstance().getAllMoods();
+                adapter = new MoodAdapter(context, moodList);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
+                changeClearFilterVisibility();
             }
         });
     }
@@ -236,6 +254,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
             finish();
         }
         if(id == R.id.flipButton){
+            finish();
             Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
             startActivity(intent);
         }
@@ -246,10 +265,12 @@ public class MoodHistoryActivity extends AppCompatActivity {
         super.onStart();
         Log.d("ACTIV ST IS", "onStart");
 
-        setFilterButtonVisible();
+        changeClearFilterVisibility();
 
+        if (Controller.getInstance().getFilterOption() != 0) {
+            moodList = Controller.getInstance().getAllMoods();
+        }
 
-        moodList = Controller.getInstance().getAllMoods();
         adapter = new MoodAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -260,10 +281,10 @@ public class MoodHistoryActivity extends AppCompatActivity {
         super.onResume();
         Log.d("ACTIV ST IS", "onResume");
 
-        setFilterButtonVisible();
-
-        Controller.getInstance().getProfile();
-        moodList = Controller.getInstance().getAllMoods();
+        changeClearFilterVisibility();
+        //moodList.clear();
+        //moodList.addAll(Controller.getInstance().getAllMoods());
+        //moodList = Controller.getInstance().getAllMoods();
         adapter.notifyDataSetChanged();
     }
 
@@ -277,23 +298,31 @@ public class MoodHistoryActivity extends AppCompatActivity {
             case (REQUEST_FILTER) : {
                 if (resultCode == Activity.RESULT_OK) {
 
-                    showClearMood = true;
                     Bundle extras = data.getExtras();
                     int filterOption = extras.getInt("filter_option");
 
                     if (filterOption == 1) {
-                       String filterTerm = extras.getString("mood_filter");
+                        String filterTerm = extras.getString("mood_filter");
                         Controller.getInstance().addFilters(filterTerm, filterOption);
+                        filteredByText.append(" Mood - ");
+                        String byMood = Controller.getInstance().getFilterTerm();
+                        filteredByText.append(byMood);
+                        filteredByText.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_action_go_to_map,0,0,0);
+
                     }
                     if (filterOption == 2) {
                         String filterTerm = extras.getString("mood_filter");
                         Controller.getInstance().addFilters(filterTerm, filterOption);
+                        filteredByText.append(" Trigger word - ");
+                        String byTrigger = Controller.getInstance().getFilterTerm();
+                        filteredByText.append(byTrigger);
                     }
 
                     if (filterOption == 3) {
                         Date filterDate =  (Date) extras.getSerializable("mood_filter");
                         Controller.getInstance().addDateFilter(filterDate, filterOption);
                         //TODO: implement week search here
+                        filteredByText.append("Past week only");
                     }
 
                 }
@@ -302,11 +331,17 @@ public class MoodHistoryActivity extends AppCompatActivity {
         }
     }
 
-    private void setFilterButtonVisible() {
-        if (Controller.getInstance().getFilterOption() == 0) {
+    private void changeClearFilterVisibility() {
+        int filterOp = Controller.getInstance().getFilterOption();
+
+        if (filterOp == 0) {
             clearFilterButton.setVisibility(View.GONE); //To set invisible
-        } else {
+            filteredByText.setVisibility(View.GONE);
+
+        }
+        else {
             clearFilterButton.setVisibility(View.VISIBLE); //To set visible
+            filteredByText.setVisibility(View.VISIBLE);
 
         }
     }

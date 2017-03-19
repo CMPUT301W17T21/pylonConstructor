@@ -173,4 +173,12 @@ public class Controller {
     int getFilterOption() {
         return this.filterOption;
     }
+
+    String getFilterTerm() {
+        return this.filterTerm;
+    }
+
+    Date getFilterDate() {
+        return this.getFilterDate();
+    }
 }

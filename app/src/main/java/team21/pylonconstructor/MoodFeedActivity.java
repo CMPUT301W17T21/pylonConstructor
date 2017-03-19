@@ -219,6 +219,8 @@ public class MoodFeedActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.flipButton) {
             finish();
+            Intent intent = new Intent(MoodFeedActivity.this, MoodHistoryActivity.class);
+            startActivity(intent);
         }
         if (id == R.id.logoutButton) {
             SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
