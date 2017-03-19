@@ -44,8 +44,8 @@ public class MoodHistoryActivity extends AppCompatActivity {
     private MoodAdapter adapter;
     private List<Mood> moodList;
 
-    Controller controller;
-    ElasticSearch elasticSearch;
+    //Controller controller = Controller.getInstance();
+    //ElasticSearch elasticSearch;
     Profile profile;
 
     boolean isOpen = false;
@@ -66,10 +66,9 @@ public class MoodHistoryActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
 
-        elasticSearch = new ElasticSearch();
-        this.profile = elasticSearch.getProfile(username);
-        controller = new Controller(this.profile);
-        moodList = controller.getAllMoods();
+        //elasticSearch = new ElasticSearch();
+        profile = Controller.getInstance().getProfile();
+        moodList = Controller.getInstance().getAllMoods();
         adapter = new MoodAdapter(this, moodList);
         Log.d("ACTIV ST IS", "OnCreate");
 
@@ -231,7 +230,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d("ACTIV ST IS", "onStart");
-        moodList = controller.getAllMoods();
+        moodList = Controller.getInstance().getAllMoods();
         adapter = new MoodAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -241,7 +240,8 @@ public class MoodHistoryActivity extends AppCompatActivity {
     protected  void onResume() {
         super.onResume();
         Log.d("ACTIV ST IS", "onResume");
-        moodList = controller.getAllMoods();
+        Controller.getInstance().getProfile();
+        moodList = Controller.getInstance().getAllMoods();
         adapter.notifyDataSetChanged();
     }
 
@@ -260,16 +260,16 @@ public class MoodHistoryActivity extends AppCompatActivity {
 
                     if (filterOption == 1) {
                        String filterTerm = extras.getString("mood_filter");
-                        controller.addFilters(filterTerm, filterOption);
+                        Controller.getInstance().addFilters(filterTerm, filterOption);
                     }
                     if (filterOption == 2) {
                         String filterTerm = extras.getString("mood_filter");
-                        controller.addFilters(filterTerm, filterOption);
+                        Controller.getInstance().addFilters(filterTerm, filterOption);
                     }
 
                     if (filterOption == 3) {
                         Date filterDate =  (Date) extras.getSerializable("mood_filter");
-                        controller.addDateFilter(filterDate);
+                        Controller.getInstance().addDateFilter(filterDate);
                         //TODO: implement week search here
                     }
 

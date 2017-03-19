@@ -257,7 +257,7 @@ public class FilterActivity extends AppCompatActivity {
                         toast.show();
                     }
 
-                    if (mood.getTrigger() == null) {
+                    if (mood.getTrigger() == null || mood.getTrigger().equals("")) {
                         validFilter = false;
                         context = getApplicationContext();
                         CharSequence text = "Please enter a filter term";

@@ -50,7 +50,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
     DatePicker datePicker;
 
     String username;
-    ElasticSearch elasticSearch = new ElasticSearch();
+    //ElasticSearch elasticSearch = new ElasticSearch();
     Mood mood;
 
     private TextView selectedMoodTextView;
@@ -69,6 +69,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
     CheckBox locationCheckBox;
     Button cancelButton;
     Button addMoodButton;
+
 
 
     @Override
@@ -91,7 +92,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.update_mood_layout);
 
         username = getIntent().getStringExtra("username");
-        mood = new Mood(elasticSearch.getProfile(username));
+        mood = new Mood(Controller.getInstance().getProfile());
         String id = getIntent().getStringExtra("id");
         if (id!= null){
             mood.setId(id);
@@ -315,11 +316,11 @@ public class UpdateMoodActivity extends AppCompatActivity {
                 }
                 if (validMood){
                     if( edt == 1){
-                        elasticSearch.editMood(mood);
+                        Controller.getInstance().editMood(mood);
                         finish();
                     }
                     else {
-                        elasticSearch.addMood(mood);
+                        Controller.getInstance().addMood(mood);
                         finish();
                     }
                 }

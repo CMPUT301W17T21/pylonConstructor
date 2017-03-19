@@ -17,6 +17,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,9 +60,8 @@ public class MoodFeedActivity extends AppCompatActivity {
     Context context = this;
     private List<Mood> moodList;
 
-    Controller controller;
-    ElasticSearch elasticSearch;
-    Profile profile;
+    //ElasticSearch elasticSearch;
+    Profile profile = Controller.getInstance().getProfile();
 
     private RecyclerView recyclerView;
 
@@ -73,14 +73,15 @@ public class MoodFeedActivity extends AppCompatActivity {
          */
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
-        elasticSearch = new ElasticSearch();
-        this.profile = elasticSearch.getProfile(username);
-        controller = new Controller(this.profile);
+        //elasticSearch = new ElasticSearch();
+        //this.profile = elasticSearch.getProfile(username);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
 
-        moodList = controller.getAllMoods();
+        //TODO: Get friends instead
+        moodList = Controller.getInstance().getAllMoods();
 
         adapter = new MoodAdapter(this, moodList);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -234,8 +235,8 @@ public class MoodFeedActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-
-        moodList = controller.getAllMoods();
+        //TODO: Get friends instead
+        //moodList = Controller.getInstance().getAllMoods();
 
         //TODO: JOSH, SEND ME AN UPDATED/REFRESHED/FILTERED MOODLIST control.get(moodList)
 
@@ -247,7 +248,9 @@ public class MoodFeedActivity extends AppCompatActivity {
     @Override
     protected  void onResume() {
         super.onResume();
-        moodList = controller.getAllMoods();
+        //TODO: Get friends instead
+
+        //moodList = Controller.getInstance().getAllMoods();
         adapter.notifyDataSetChanged();
     }
 }

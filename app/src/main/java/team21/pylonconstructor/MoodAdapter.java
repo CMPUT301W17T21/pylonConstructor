@@ -184,7 +184,7 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
 
                     if (delete) {
                         Mood dmood = moodList.get(pos);
-                        elasticSearch.deleteMood(dmood);
+                        Controller.getInstance().deleteMood(dmood);
                         Intent intent = new Intent(mContext, MoodHistoryActivity.class);
                         adapter.notifyDataSetChanged();
                     }
