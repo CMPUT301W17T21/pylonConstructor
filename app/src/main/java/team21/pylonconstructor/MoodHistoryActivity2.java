@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -114,6 +113,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                     Log.w("MainActivity", "ActionBar's title clicked.");
                     finish();
                     Intent intent = new Intent(MoodHistoryActivity2.this, MoodFeedActivity2.class);
+                    overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
                     startActivity(intent);
                 }
             });
@@ -144,32 +144,11 @@ public class MoodHistoryActivity2 extends AppCompatActivity
             public void onClick(View v) {
 
                 if(isOpen) {
-                    fab_goToMap.startAnimation(FabClose);
-                    fab_filter.startAnimation(FabClose);
-                    fab_search.startAnimation(FabClose);
-                    fab_updateMood.startAnimation(FabClose);
-                    fab_plus.startAnimation(FabRotateCounterClockwise);
-                    fab_goToMap.setClickable(false);
-                    fab_filter.setClickable(false);
-                    fab_search.setClickable(false);
-                    fab_updateMood.setClickable(false);
-                    isOpen = false;
+                    collapseFAB();
                 }
 
                 else {
-                    fab_goToMap.startAnimation(FabOpen);
-                    fab_filter.startAnimation(FabOpen);
-                    fab_search.startAnimation(FabOpen);
-                    fab_updateMood.startAnimation(FabOpen);
-                    fab_plus.startAnimation(FabRotateClockwise);
-                    fab_goToMap.setClickable(true);
-                    fab_filter.setClickable(true);
-                    fab_search.setClickable(true);
-                    fab_updateMood.setClickable(true);
-                    isOpen = true;
-
-
-
+                    expandFAB();
                 }
 
             }
@@ -180,7 +159,9 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                 setResult(RESULT_OK);
                 Intent intent = new Intent(MoodHistoryActivity2.this, UpdateMoodActivity.class);
                 intent.putExtra("username", profile.getUserName());
+                collapseFAB();
                 startActivity(intent);
+
             }
         });
 
@@ -192,6 +173,8 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                  * https://www.mkyong.com/android/android-prompt-user-input-dialog-example/
                  * accessed 03/11/2017
                  */
+
+                collapseFAB();
                 LayoutInflater li = LayoutInflater.from(context);
                 View promptsView = li.inflate(R.layout.promt_search_user, null);
 
@@ -244,6 +227,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                 else {
                     Intent intent = new Intent(MoodHistoryActivity2.this, FilterActivity.class);
                     intent.putExtra("username", profile.getUserName());
+                    collapseFAB();
                     startActivityForResult(intent, REQUEST_FILTER);
                 }
             }
@@ -294,14 +278,9 @@ public class MoodHistoryActivity2 extends AppCompatActivity
             return true;
         }
 
-        if (id == R.id.logoutButton) {
-            SharedPreferences sharedPreferences = getSharedPreferences("userinfo",MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("username", "");
-            editor.apply();
-            Intent intent = new Intent(MoodHistoryActivity2.this, LoginActivity.class);
+        if (id == R.id.notificationButton) {
+            Intent intent = new Intent(MoodHistoryActivity2.this, NotificationsActivity.class);
             startActivity(intent);
-            finish();
         }
 
 
@@ -314,23 +293,23 @@ public class MoodHistoryActivity2 extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
+        if (id == R.id.view_followers) {
+            Intent intent = new Intent(MoodHistoryActivity2.this, ViewFollowersActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.view_following) {
+            Intent intent = new Intent(MoodHistoryActivity2.this, ViewFollowingActivity.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.account_settings) {
+            Intent intent = new Intent(MoodHistoryActivity2.this, UserSettingsActivity.class);
+            startActivity(intent);
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return false;
     }
 
     protected void onStart() {
@@ -379,7 +358,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                         filteredByText.append(" Mood - ");
                         String byMood = Controller.getInstance().getFilterTerm();
                         filteredByText.append(byMood);
-                        filteredByText.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_action_go_to_map,0,0,0);
+                        filteredByText.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_happy_263a,0,0,0);
 
                     }
                     if (filterOption == 2) {
@@ -416,5 +395,31 @@ public class MoodHistoryActivity2 extends AppCompatActivity
             filteredByText.setVisibility(View.VISIBLE);
 
         }
+    }
+
+    private void expandFAB() {
+        fab_goToMap.startAnimation(FabOpen);
+        fab_filter.startAnimation(FabOpen);
+        fab_search.startAnimation(FabOpen);
+        fab_updateMood.startAnimation(FabOpen);
+        fab_plus.startAnimation(FabRotateClockwise);
+        fab_goToMap.setClickable(true);
+        fab_filter.setClickable(true);
+        fab_search.setClickable(true);
+        fab_updateMood.setClickable(true);
+        isOpen = true;
+    }
+
+    private void collapseFAB() {
+        fab_goToMap.startAnimation(FabClose);
+        fab_filter.startAnimation(FabClose);
+        fab_search.startAnimation(FabClose);
+        fab_updateMood.startAnimation(FabClose);
+        fab_plus.startAnimation(FabRotateCounterClockwise);
+        fab_goToMap.setClickable(false);
+        fab_filter.setClickable(false);
+        fab_search.setClickable(false);
+        fab_updateMood.setClickable(false);
+        isOpen = false;
     }
 }

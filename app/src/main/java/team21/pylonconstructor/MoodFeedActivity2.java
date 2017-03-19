@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -26,10 +25,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -109,6 +106,8 @@ public class MoodFeedActivity2 extends AppCompatActivity
                 public void onClick(View v) {
                     Log.w("MainActivity", "ActionBar's title clicked.");
                     finish();
+
+                    overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
                     Intent intent = new Intent(MoodFeedActivity2.this, MoodHistoryActivity2.class);
                     startActivity(intent);
                 }
@@ -258,14 +257,10 @@ public class MoodFeedActivity2 extends AppCompatActivity
             return true;
         }
 
-        if (id == R.id.logoutButton) {
-            SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("username", "");
-            editor.apply();
-            Intent intent = new Intent(MoodFeedActivity2.this, LoginActivity.class);
+        if (id == R.id.notificationButton) {
+            Intent intent = new Intent(MoodFeedActivity2.this, NotificationsActivity.class);
             startActivity(intent);
-            finish();
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -277,22 +272,20 @@ public class MoodFeedActivity2 extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.view_followers) {
+            Intent intent = new Intent(MoodFeedActivity2.this, ViewFollowersActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.view_following) {
+            Intent intent = new Intent(MoodFeedActivity2.this, ViewFollowingActivity.class);
+            startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.account_settings) {
+            Intent intent = new Intent(MoodFeedActivity2.this, UserSettingsActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        return false;
     }
 }

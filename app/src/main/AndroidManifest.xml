@@ -28,7 +28,20 @@
         <activity
             android:name=".MoodFeedActivity2"
             android:label="@string/title_activity_mood_feed2"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewFollowingActivity"
+            android:label="@string/title_following"/>
+        <activity
+            android:name=".UserSettingsActivity"
+            android:label="@string/title_user_settings" />
+        <activity
+            android:name=".ViewFollowersActivity"
+            android:label="@string/title_followers"/>
+        <activity
+            android:name=".NotificationsActivity"
+            android:label="@string/title_notifications"
+            />
     </application>
 
 </manifest>

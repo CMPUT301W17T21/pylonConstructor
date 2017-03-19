@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+        android:choiceMode="none"
         <item
             android:id="@+id/view_followers"
             android:icon="@drawable/ic_people_followers_24dp"

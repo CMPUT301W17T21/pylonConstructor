@@ -243,7 +243,7 @@ public class MoodFeedActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.logoutButton) {
+        if (id == R.id.notificationButton) {
             SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("username", "");

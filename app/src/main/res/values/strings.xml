@@ -31,6 +31,14 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_mood_feed2">MoodFeedActivity2</string>
+    <string name="title_activity_view_my_followers">ViewMyFollowersActivity</string>
+    <string name="title_user_settings">Account Settings</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_followers">Followers</string>
+    <string name="title_following">Following</string>
+
+
+
 
 
 </resources>
