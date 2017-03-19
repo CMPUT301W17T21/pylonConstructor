@@ -165,7 +165,12 @@ public class Controller {
         this.filterOption = filterOption;
     }
 
-    void addDateFilter(Date filterDate) {
+    void addDateFilter(Date filterDate, int filterOption) {
         this.filterDate = filterDate;
+        this.filterOption = filterOption;
+    }
+
+    int getFilterOption() {
+        return this.filterOption;
     }
 }

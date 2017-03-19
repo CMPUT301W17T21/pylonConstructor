@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
     private MoodAdapter adapter;
     private List<Mood> moodList;
+    Button clearFilterButton;
 
     //Controller controller = Controller.getInstance();
     //ElasticSearch elasticSearch;
@@ -52,6 +54,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
     Context context = this;
     static final int REQUEST_FILTER = 1;
     String filterDate = null;
+    private boolean showClearMood;
 
     private RecyclerView recyclerView;
 
@@ -70,6 +73,8 @@ public class MoodHistoryActivity extends AppCompatActivity {
         profile = Controller.getInstance().getProfile();
         moodList = Controller.getInstance().getAllMoods();
         adapter = new MoodAdapter(this, moodList);
+        showClearMood = false;
+
         Log.d("ACTIV ST IS", "OnCreate");
 
 
@@ -83,19 +88,19 @@ public class MoodHistoryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.mood_history_layout);
 
-
+        clearFilterButton = (Button) findViewById(R.id.clearfilter);
         fab_plus = (FloatingActionButton) findViewById(R.id.fab_plus);
         fab_updateMood = (FloatingActionButton) findViewById(R.id.fab_updateMood);
         fab_search = (FloatingActionButton) findViewById(R.id.fab_search);
         fab_filter = (FloatingActionButton) findViewById(R.id.fab_filter);
         fab_goToMap = (FloatingActionButton) findViewById(R.id.fab_map);
 
-
         FabOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
         FabClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         FabRotateClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
         FabRotateCounterClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_counterclockwise);
 
+        setFilterButtonVisible();
 
         fab_plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,6 +200,16 @@ public class MoodHistoryActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_FILTER);
             }
         });
+
+        clearFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                Controller.getInstance().addFilters(null, 0);
+                finish();
+                startActivity(getIntent());
+            }
+        });
     }
 
     // create an action bar button
@@ -230,6 +245,10 @@ public class MoodHistoryActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.d("ACTIV ST IS", "onStart");
+
+        setFilterButtonVisible();
+
+
         moodList = Controller.getInstance().getAllMoods();
         adapter = new MoodAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
@@ -240,6 +259,9 @@ public class MoodHistoryActivity extends AppCompatActivity {
     protected  void onResume() {
         super.onResume();
         Log.d("ACTIV ST IS", "onResume");
+
+        setFilterButtonVisible();
+
         Controller.getInstance().getProfile();
         moodList = Controller.getInstance().getAllMoods();
         adapter.notifyDataSetChanged();
@@ -254,7 +276,8 @@ public class MoodHistoryActivity extends AppCompatActivity {
         switch(requestCode) {
             case (REQUEST_FILTER) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    // TODO Extract the data returned from the child Activity.
+
+                    showClearMood = true;
                     Bundle extras = data.getExtras();
                     int filterOption = extras.getInt("filter_option");
 
@@ -269,7 +292,7 @@ public class MoodHistoryActivity extends AppCompatActivity {
 
                     if (filterOption == 3) {
                         Date filterDate =  (Date) extras.getSerializable("mood_filter");
-                        Controller.getInstance().addDateFilter(filterDate);
+                        Controller.getInstance().addDateFilter(filterDate, filterOption);
                         //TODO: implement week search here
                     }
 
@@ -278,6 +301,16 @@ public class MoodHistoryActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void setFilterButtonVisible() {
+        if (Controller.getInstance().getFilterOption() == 0) {
+            clearFilterButton.setVisibility(View.GONE); //To set invisible
+        } else {
+            clearFilterButton.setVisibility(View.VISIBLE); //To set visible
+
+        }
+    }
+
 
 
 
