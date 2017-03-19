@@ -236,7 +236,7 @@ public class MoodFeedActivity extends AppCompatActivity {
         super.onStart();
 
         //TODO: Get friends instead
-        moodList = Controller.getInstance().getAllMoods();
+        //moodList = Controller.getInstance().getAllMoods();
 
         //TODO: JOSH, SEND ME AN UPDATED/REFRESHED/FILTERED MOODLIST control.get(moodList)
 
@@ -250,7 +250,7 @@ public class MoodFeedActivity extends AppCompatActivity {
         super.onResume();
         //TODO: Get friends instead
 
-        moodList = Controller.getInstance().getAllMoods();
+        //moodList = Controller.getInstance().getAllMoods();
         adapter.notifyDataSetChanged();
     }
 }

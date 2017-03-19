@@ -16,6 +16,7 @@ public class Controller {
     //March 17th 2017 Joshua did this.
 
     private static Controller mInstance = null;
+    private boolean internetStatus = false;
 
     private ElasticSearch elasticSearch;
     private ArrayList<Mood> moodList;
@@ -53,72 +54,77 @@ public class Controller {
     }
 
     void update() {
-        for (Command c : commands) {
-            c.execute();
+        Command c;
+        for (int i = 0; i < commands.size(); i++) {
+            c = commands.getFirst();
+            if (!c.execute()) {
+                commands.addLast(c);
+            }
+            commands.removeFirst();
+            Log.i("CommUpp", "Executing...");
         }
     }
     Boolean addMood(Mood mood) {
         Command c = new NewMoodCommand(mood);
+        this.moodList.add(mood);
+        //TODO: Local Sort
         if (c.execute()) {
             this.update();
             Log.i("AddMood: ", "Added mood!");
             return true;
-        } else {
-            if (!this.commands.contains(c)) {
-                this.commands.addLast(c);
-                this.moodList.add(mood);
-                //Manually sort. or smart insert.
-                Log.i("AddMood: ", "Saved mood!");
-            }
+        } else if (!this.commands.contains(c)) {
+            this.commands.addLast(c);
+            //Manually sort. or smart insert.
+            Log.i("AddMood: ", "Saved mood!");
         }
         return false;
     }
 
     Boolean editMood(Mood mood) {
         Command c = new EditMoodCommand(mood);
+        this.moodList.remove(mood);
+        this.moodList.add(mood);
+        //TODO: Local Sort
         if (c.execute()) {
             this.update();
+            Log.i("EditMood: ", "Edited mood!");
             return true;
-        } else {
+        } else if (!this.commands.contains(c)) {
             this.commands.addLast(c);
             //If equals() override works, this should update.
-            this.moodList.remove(mood);
-            this.moodList.add(mood);
         }
         return false;
     }
 
     Boolean deleteMood(Mood mood) {
         Command c = new DeleteMoodCommand(mood);
+        this.moodList.remove(mood);
+        //TODO: Local Sort
         if (c.execute()) {
             this.update();
+            Log.i("DeleteMood: ", "Deleted mood!");
             return true;
-        } else {
+        } else if (!this.commands.contains(c)) {
             this.commands.addLast(c);
-            this.moodList.remove(mood);
         }
         return false;
     }
 
     ArrayList<Mood> getAllMoods() {
-
+        this.update();
             try {
-                //JOSHUA THIS NEVER FAILS YOU KNEW THAT
                 ArrayList<Mood> recieved = this.elasticSearch.getmymoods(this.profile);
                 if (recieved != null) {
+                    //Got a mood list
                     this.moodList = recieved;
-                    this.update();
-                }
-                else {
+                } else {
                     Log.i("Get MoodList", "Error getting.");
                 }
                 //TODO: Handle exceptions.
             } catch (Exception e) {
+                Log.i("Get MoodList", "Error connecting.");
                 e.printStackTrace();
             }
-        for (Mood m : moodList) {
-            Log.d("MoodList:Mood:Trigger= ", m.getEmoji());
-        }
         Log.i("MoodList", "Returning MoodList");
         return this.moodList;
     }
