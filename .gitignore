@@ -54,3 +54,23 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+
+<<<<<<< HEAD
+app/src/main/java/team21/pylonconstructor/FeedSync.java
+
+app/src/main/java/team21/pylonconstructor/FeedSync.java
+
+app/src/main/java/team21/pylonconstructor/MoodList.java
+
+app/src/main/java/team21/pylonconstructor/UserSync.java
+
+app/src/main/java/team21/pylonconstructor/Synchronizer.java
+
+app/src/main/java/team21/pylonconstructor/SocialSync.java
+=======
+.gradle/3.3/taskArtifacts/fileHashes.bin
+
+*.bin
+>>>>>>> master
+
+.gradle/3.3/taskArtifacts/taskArtifacts.lock

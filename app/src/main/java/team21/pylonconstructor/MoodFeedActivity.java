@@ -14,26 +14,19 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,8 +52,8 @@ public class MoodFeedActivity extends AppCompatActivity {
     Context context = this;
     private List<Mood> moodList;
 
-    ElasticSearch elasticSearch;
-    Profile profile;
+    //ElasticSearch elasticSearch;
+    Profile profile = Controller.getInstance().getProfile();
 
     private RecyclerView recyclerView;
 
@@ -72,12 +65,16 @@ public class MoodFeedActivity extends AppCompatActivity {
          */
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
-        elasticSearch = new ElasticSearch();
-        this.profile = elasticSearch.getProfile(username);
+        //elasticSearch = new ElasticSearch();
+        //this.profile = elasticSearch.getProfile(username);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
-        moodList = elasticSearch.getmymoods(this.profile);
+
+        //TODO: Get friends instead
+        moodList = Controller.getInstance().getAllMoods();
+
         adapter = new MoodAdapter(this, moodList);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -86,9 +83,42 @@ public class MoodFeedActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        /* Set Custom App bar title, centered */
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.mood_feed_layout);
+        /**
+         * The following sets a clickable app title, which toggles between mood history and mood feed.
+         * adapted from http://stackoverflow.com/questions/24838155/set-onclick-listener-on-action-bar-title-in-android
+         * accessed on 03-19-2017 by rperez
+         */
+
+
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // Disable the default and enable the custom
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayShowCustomEnabled(true);
+            View customView = getLayoutInflater().inflate(R.layout.mood_feed_appbar_title_layout, null);
+            // Get the textview of the title
+            TextView customTitle = (TextView) customView.findViewById(R.id.mood_history_title_tview);
+
+            ActionBar.LayoutParams params = new
+                    ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
+                    ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+
+            // Set the on click listener for the title
+            customTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.w("MainActivity", "ActionBar's title clicked.");
+                    finish();
+                    Intent intent = new Intent(MoodFeedActivity.this, MoodHistoryActivity2.class);
+                    startActivity(intent);
+                }
+            });
+            // Apply the custom view
+            actionBar.setCustomView(customView, params);
+        }
+
+
 
 
         fab_plus = (FloatingActionButton) findViewById(R.id.fab_plus);
@@ -212,10 +242,8 @@ public class MoodFeedActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.flipButton) {
-            finish();
-        }
-        if (id == R.id.logoutButton) {
+
+        if (id == R.id.notificationButton) {
             SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("username", "");
@@ -229,7 +257,12 @@ public class MoodFeedActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        moodList = elasticSearch.getmymoods(this.profile);
+
+        //TODO: Get friends instead
+        //moodList = Controller.getInstance().getAllMoods();
+
+        //TODO: JOSH, SEND ME AN UPDATED/REFRESHED/FILTERED MOODLIST control.get(moodList)
+
         adapter = new MoodAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -238,7 +271,9 @@ public class MoodFeedActivity extends AppCompatActivity {
     @Override
     protected  void onResume() {
         super.onResume();
-        moodList = elasticSearch.getmymoods(this.profile);
+        //TODO: Get friends instead
+
+        //moodList = Controller.getInstance().getAllMoods();
         adapter.notifyDataSetChanged();
     }
 }

@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -49,7 +50,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
     DatePicker datePicker;
 
     String username;
-    ElasticSearch elasticSearch = new ElasticSearch();
+    //ElasticSearch elasticSearch = new ElasticSearch();
     Mood mood;
 
     private TextView selectedMoodTextView;
@@ -70,6 +71,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
     Button addMoodButton;
 
 
+
     @Override
     /** Called when the activity is first created. */
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +84,20 @@ public class UpdateMoodActivity extends AppCompatActivity {
         datePicker = (DatePicker) findViewById(R.id.datePicker);
 
         Bitmap img;
-        int edt = getIntent().getExtras().getInt("EDIT");
+        final int edt = getIntent().getExtras().getInt("EDIT");
 
 
           /* Set Custom App bar title, centered */
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.update_mood_layout);
 
-        username = getIntent().getStringExtra("Username");
-        mood = new Mood(elasticSearch.getProfile(username));
+        username = getIntent().getStringExtra("username");
+        mood = new Mood(Controller.getInstance().getProfile());
+        String id = getIntent().getStringExtra("id");
+        if (id!= null){
+            mood.setId(id);
+        }
+
 
         //TODO: IMPLEMENT THE MOOD OPTIONS & BUTTONS HERE that are laid out in activity_update_mood.xml
 
@@ -307,10 +314,15 @@ public class UpdateMoodActivity extends AppCompatActivity {
                         toast.show();
                     }
                 }
-
-                if (validMood) {
-                    elasticSearch.addMood(mood);
-                    finish();
+                if (validMood){
+                    if( edt == 1){
+                        Controller.getInstance().editMood(mood);
+                        finish();
+                    }
+                    else {
+                        Controller.getInstance().addMood(mood);
+                        finish();
+                    }
                 }
             }
         });
