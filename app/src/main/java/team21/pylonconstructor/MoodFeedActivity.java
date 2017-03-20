@@ -104,6 +104,7 @@ public class MoodFeedActivity extends AppCompatActivity {
                     ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
                     ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
 
+            /*
             // Set the on click listener for the title
             customTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,6 +115,7 @@ public class MoodFeedActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+            */
             // Apply the custom view
             actionBar.setCustomView(customView, params);
         }
