@@ -89,9 +89,9 @@ public class UserSettingsActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("username", "");
                             editor.apply();
+                            finish();
                             Intent intent = new Intent(UserSettingsActivity.this, LoginActivity.class);
                             startActivity(intent);
-                            finish();
                         }
                         else {
                             //TODO: implement delete account here

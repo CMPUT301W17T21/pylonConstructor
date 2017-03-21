@@ -83,13 +83,18 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Username cannot be empty!", Toast.LENGTH_SHORT).show();
                 } else if (username.matches("[a-zA-Z]+")) {
                     try {
+                        if (elasticSearch.getProfile(username) != null) {
+                            Log.i("Login", "Found something!");
+                        }
+                        else {
+                            profile.setUserName(username);
+                        }
                         profile = elasticSearch.getProfile(username);
-                        Log.i("Login", "Found something!");
                     } catch (Exception e) {
                         Toast.makeText(LoginActivity.this, "You may be offline!", Toast.LENGTH_SHORT).show();
                         Log.i("LoginRegister", "Offline");
                     }
-                    if (!profile.getUserName().equals(username)) {
+                    if (profile == null) {
                         boolean result = elasticSearch.addProfile(new Profile(username));
                         if (result) {
                             Log.i("LoginRegister", "Created the profile");
