@@ -238,7 +238,7 @@ public class ElasticSearch {
     /****
      *  Gets the lists of users who have sent a request to follow
      * @param username
-     * @return followRequests list
+     * @return followRequests
      */
     public ArrayList<String> getFollowRequests (String username){
         ArrayList<String> followRequests = new ArrayList<String>();
@@ -254,13 +254,76 @@ public class ElasticSearch {
         return followRequests;
     }
 
+
+    /****
+     *  Gets the lists of users who follow you
+     * @param username
+     * @return followers
+     */
+    public ArrayList<String> getFollowers (String username){
+        ArrayList<String> followers = new ArrayList<String>();
+        try{
+            Profile profile = getProfile(username);
+            if(profile != null){
+                followers = profile.getFollowers();
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Cannot get profile");
+        }
+        return followers;
+    }
+
+
+    /****
+     *  Gets the lists of users who are followed by you
+     * @param username
+     * @return following
+     */
+    public ArrayList<String> getFollowing (String username){
+        ArrayList<String> following = new ArrayList<String>();
+        try{
+            Profile profile = getProfile(username);
+            if(profile != null){
+                following = profile.getFollowing();
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Cannot get profile");
+        }
+        return following;
+    }
+
+    /***
+     * Accept a follow request and add it to following list of the requester and
+     * followers list of user
+     * @param username, requester_name
+     * @return true if accepted successfully
+     * else otherwise
+     */
+    public boolean sendRequests (String username, String requester_name){
+        try{
+            Profile profile = getProfile(requester_name);
+            if(profile != null){
+                profile.addRequests(username);
+                if(updateProfile(profile)){
+                    return true;
+                }
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Cannot get profile");
+        }
+        return false;
+    }
+
     /***
      * Decline a follow request
      * @param username, requester_name
      * @return true if declined successfully,
      * else otherwise
      */
-    public boolean declineRequests (String username, String requester_name ){
+    public boolean declineRequests (String username, String requester_name){
         try{
             Profile profile = getProfile(username);
             if(profile != null){
@@ -277,18 +340,21 @@ public class ElasticSearch {
     }
 
     /***
-     * Accept a follow request
+     * Accept a follow request and add it to following list of the requester and
+     * followers list of user
      * @param username, requester_name
      * @return true if accepted successfully
      * else otherwise
      */
     public boolean acceptRequests (String username, String requester_name){
         try{
-            Profile profile = getProfile(username);
-            if(profile != null){
-                profile.removeRequests(requester_name);
-                profile.addFollowers(requester_name);
-                if(updateProfile(profile)){
+            Profile userprofile = getProfile(username);
+            if(userprofile != null){
+                userprofile.removeRequests(requester_name);
+                userprofile.addFollowers(requester_name);
+                Profile requesterprofile = getProfile(requester_name);
+                requesterprofile.addFollowing(username);
+                if(updateProfile(userprofile) && updateProfile(requesterprofile)){
                     return true;
                 }
             }

@@ -397,7 +397,6 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                     if (filterOption == 3) {
                         Date filterDate =  (Date) extras.getSerializable("mood_filter");
                         Controller.getInstance().addDateFilter(filterDate, filterOption);
-                        //TODO: implement week search here
                         filteredByText.append("Past week only");
                     }
 
