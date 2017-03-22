@@ -141,8 +141,7 @@ public class Controller {
                 }
 
                 if (filterOption == 3) {
-                    //TODO: implement tthis weekfilteredmoods()
-                    //this.moodsList = this.elasticSearch.weekfilteredmoods()
+                    received = this.elasticSearch.getrecentweekmoods(this.profile);
                 }
 
                 if (received != null) {
