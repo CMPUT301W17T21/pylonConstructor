@@ -13,6 +13,11 @@
             android:title="Following" />
 
         <item
+            android:id="@+id/follow_requests"
+            android:icon="@drawable/ic_request_follow_24dp"
+            android:title="Follow Requests" />
+
+        <item
             android:id="@+id/account_settings"
             android:icon="@drawable/ic_menu_manage"
             android:title="Account Settings" />
