@@ -107,6 +107,21 @@ public class ElasticSearch {
         editMoodsTask.execute(mood);
     }
 
+
+    /**
+     *  Gets Moods from the most recent week from the Elastic Search Database for a given user
+     *
+     *  Josh updated this to throw exceptions so he could make sure it actually got the list.
+     * @param user
+     * @return mymoodsList
+     */
+    public ArrayList<Mood> getrecentweekmoods(Profile user) throws ExecutionException, InterruptedException {
+        ElasticSearchController.FilterRecentWeekMoods filterRecentWeekMoods = new ElasticSearchController.FilterRecentWeekMoods();
+        filterRecentWeekMoods.execute(user.getUserName());
+        mymoodsList = filterRecentWeekMoods.get();
+        return mymoodsList;
+    }
+
     /**
      * Filters moods based on a given emotional state
      * @param user
@@ -202,6 +217,86 @@ public class ElasticSearch {
         ElasticSearchController.GetProfileTask getProfileTask = new ElasticSearchController.GetProfileTask();
         getProfileTask.execute(username);
         return getProfileTask.get();
+    }
+
+    /**
+     * Updates a profile in the Elastic Search Database
+     * @param profile
+     */
+
+    public boolean updateProfile(Profile profile){
+        ElasticSearchController.UpdateProfileTask updateProfileTask = new ElasticSearchController.UpdateProfileTask();
+        updateProfileTask.execute(profile);
+        try {
+            return updateProfileTask.get();
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
+    /****
+     *  Gets the lists of users who have sent a request to follow
+     * @param username
+     * @return followRequests list
+     */
+    public ArrayList<String> getFollowRequests (String username){
+        ArrayList<String> followRequests = new ArrayList<String>();
+        try{
+            Profile profile = getProfile(username);
+            if(profile != null){
+                followRequests = profile.getRequests();
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Cannot get profile");
+        }
+        return followRequests;
+    }
+
+    /***
+     * Decline a follow request
+     * @param username, requester_name
+     * @return true if declined successfully,
+     * else otherwise
+     */
+    public boolean declineRequests (String username, String requester_name ){
+        try{
+            Profile profile = getProfile(username);
+            if(profile != null){
+                profile.removeRequests(requester_name);
+                if(updateProfile(profile)){
+                    return true;
+                }
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Cannot get profile");
+        }
+        return false;
+    }
+
+    /***
+     * Accept a follow request
+     * @param username, requester_name
+     * @return true if accepted successfully
+     * else otherwise
+     */
+    public boolean acceptRequests (String username, String requester_name){
+        try{
+            Profile profile = getProfile(username);
+            if(profile != null){
+                profile.removeRequests(requester_name);
+                profile.addFollowers(requester_name);
+                if(updateProfile(profile)){
+                    return true;
+                }
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Cannot get profile");
+        }
+        return false;
     }
 
 }
