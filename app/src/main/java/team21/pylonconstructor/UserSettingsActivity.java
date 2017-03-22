@@ -94,7 +94,17 @@ public class UserSettingsActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                         else {
-                            //TODO: implement delete account here
+                            Profile profile = Controller.getInstance().getProfile();
+                            ElasticSearch elasticSearch = new ElasticSearch();
+                            elasticSearch.deleteProfile(profile);
+                            setResult(RESULT_OK);
+                            SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("username", "");
+                            editor.apply();
+                            Intent intent = new Intent(UserSettingsActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
                         }
                     }
 

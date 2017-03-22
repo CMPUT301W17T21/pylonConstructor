@@ -20,6 +20,7 @@ import io.searchbox.annotations.JestId;
 
 class Profile {
     String userName;
+    ArrayList<String> requests;
     ArrayList<String> followers;
     ArrayList<String> following;
 
@@ -33,8 +34,10 @@ class Profile {
     }
 
     public Profile () {
+        requests = new ArrayList<>();
         followers = new ArrayList<>();
         following = new ArrayList<>();
+
     }
 
     public Profile (String userName) {
@@ -49,12 +52,20 @@ class Profile {
     }
 
 
-    public void addFollowers(String follower) {
-        followers.add(follower);
+    public void addRequests(String name) {
+        requests.add(name);
     }
-    public ArrayList<String> getFollowers() {
-        return followers;
+    public void removeRequests(String name) {
+        requests.remove(name);
     }
+    public ArrayList<String> getRequests() {
+        return requests;
+    }
+
+    public void addFollowers(String follow) {
+        following.add(follow);
+    }
+    public ArrayList<String> getFollowers() { return followers;}
 
     public void addFollowing(String follow) {
         following.add(follow);

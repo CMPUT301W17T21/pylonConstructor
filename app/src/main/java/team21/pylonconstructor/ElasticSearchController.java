@@ -192,6 +192,42 @@ public class ElasticSearchController {
             return false;
         }
     }
+
+    /**
+     *  A function which filters moods from the most recent week from elastic search
+     */
+    public static class FilterRecentWeekMoods extends AsyncTask<String, Void, ArrayList<Mood>> {
+        @Override
+        protected ArrayList<Mood> doInBackground(String... search_parameters) {
+            verifySettings();
+
+            ArrayList<Mood> moods = new ArrayList<Mood>();
+
+            // Most recent week moods arranged in reverse Chronological order
+            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"filtered\":{\"query\":{\"multi_match\":{\"query\":\""+ search_parameters[0]+"\",\"fields\":[\"user.userName\"]}},\"filter\":{\"range\":{\"date\":{\"gte\":\"now-7d/d\"}}}}}}";
+
+            Search search = new Search.Builder(query).addIndex("g21testing").addType("Mood").build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if(result.isSucceeded()){
+                    List<Mood> foundmoods = result.getSourceAsObjectList(Mood.class);
+                    moods.addAll(foundmoods);
+                    Log.i("Found", "mood matched!");
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any moods that matched!");
+
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+
+            return moods;
+        }
+    }
+
     /**
      *  A function which filters moods from elastic search based on given emotional state
      */
@@ -318,6 +354,35 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     *  A function which edits profiles stored on elastic search
+     */
+    public static class UpdateProfileTask extends AsyncTask<Profile, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Profile... profiles) {
+            verifySettings();
+            //Edit the profile
+            Index index = new Index.Builder(profiles[0]).index("g21testing").type("Profile").id(profiles[0].getId()).build();
+
+            try {
+                // Execute the query
+                DocumentResult result = client.execute(index);
+                if(result.isSucceeded()){
+                    Log.i("Success", "Updated your profile!");
+                    return true;
+                }
+                else{
+                    Log.i("Error", "Elastic search was not able to update profile!");
+                    return false;
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "The application failed to build and update the profile");
+                return false;
+            }
+        }
+    }
     /**
      * A function which gets a profile from elastic search
      */
