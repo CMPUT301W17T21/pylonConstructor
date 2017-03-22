@@ -107,6 +107,21 @@ public class ElasticSearch {
         editMoodsTask.execute(mood);
     }
 
+
+    /**
+     *  Gets Moods from the most recent week from the Elastic Search Database for a given user
+     *
+     *  Josh updated this to throw exceptions so he could make sure it actually got the list.
+     * @param user
+     * @return mymoodsList
+     */
+    public ArrayList<Mood> getrecentweekmoods(Profile user) throws ExecutionException, InterruptedException {
+        ElasticSearchController.FilterRecentWeekMoods filterRecentWeekMoods = new ElasticSearchController.FilterRecentWeekMoods();
+        filterRecentWeekMoods.execute(user.getUserName());
+        mymoodsList = filterRecentWeekMoods.get();
+        return mymoodsList;
+    }
+
     /**
      * Filters moods based on a given emotional state
      * @param user

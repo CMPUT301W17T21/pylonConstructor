@@ -192,6 +192,42 @@ public class ElasticSearchController {
             return false;
         }
     }
+
+    /**
+     *  A function which filters moods from the most recent week from elastic search
+     */
+    public static class FilterRecentWeekMoods extends AsyncTask<String, Void, ArrayList<Mood>> {
+        @Override
+        protected ArrayList<Mood> doInBackground(String... search_parameters) {
+            verifySettings();
+
+            ArrayList<Mood> moods = new ArrayList<Mood>();
+
+            // Most recent week moods arranged in reverse Chronological order
+            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"filtered\":{\"query\":{\"multi_match\":{\"query\":\""+ search_parameters[0]+"\",\"fields\":[\"user.userName\"]}},\"filter\":{\"range\":{\"date\":{\"gte\":\"now-7d/d\"}}}}}}";
+
+            Search search = new Search.Builder(query).addIndex("g21testing").addType("Mood").build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if(result.isSucceeded()){
+                    List<Mood> foundmoods = result.getSourceAsObjectList(Mood.class);
+                    moods.addAll(foundmoods);
+                    Log.i("Found", "mood matched!");
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any moods that matched!");
+
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+
+            return moods;
+        }
+    }
+
     /**
      *  A function which filters moods from elastic search based on given emotional state
      */
