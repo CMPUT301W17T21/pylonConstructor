@@ -46,7 +46,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
     private Toast toast;
 
     //Controller controller = Controller.getInstance();
-    //ElasticSearch elasticSearch;
+    ElasticSearch elasticSearch;
     Profile profile;
 
     boolean isOpen = false;
@@ -75,7 +75,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
 
-        //elasticSearch = new ElasticSearch();
+        elasticSearch = new ElasticSearch();
         profile = Controller.getInstance().getProfile();
         moodList = Controller.getInstance().getAllMoods();
         adapter = new MoodAdapter(this, moodList);
@@ -161,7 +161,6 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                 intent.putExtra("username", profile.getUserName());
                 collapseFAB();
                 startActivity(intent);
-
             }
         });
 
@@ -189,11 +188,37 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                 // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton("OK",
+                        .setPositiveButton("Request",
                                 new DialogInterface.OnClickListener() {
+                                    Profile usr;
+
                                     public void onClick(DialogInterface dialog,int id) {
                                         String result = userInput.getText().toString();
-                                        //TODO: JOSH, filter users using result
+                                        try {
+                                            usr = elasticSearch.getProfile(result);
+                                        } catch (Exception e) {
+                                            Log.i("Error", "Failed to get user result");
+                                        }
+                                        if (usr == null) {
+                                            Context ctxt = getApplicationContext();
+                                            CharSequence text = "User is not found!";
+                                            int duration = Toast.LENGTH_SHORT;
+                                            toast = Toast.makeText(ctxt, text, duration);
+                                            toast.show();
+                                            Log.i("Result:", "User not found!");
+                                        }
+                                        else {
+                                            //TODO: implement request follow here
+                                            Context ctxt = getApplicationContext();
+
+
+                                            CharSequence text = "You have sent a follow request to ".concat(usr.getUserName());
+                                            int duration = Toast.LENGTH_SHORT;
+                                            toast = Toast.makeText(ctxt, text, duration);
+                                            toast.show();
+                                            Log.i("Result:", "User IS found!");
+                                        }
+
                                     }
                                 })
                         .setNegativeButton("Cancel",
