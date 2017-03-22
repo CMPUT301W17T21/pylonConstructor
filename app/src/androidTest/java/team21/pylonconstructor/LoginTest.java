@@ -39,14 +39,6 @@ public class LoginTest {
     public ActivityTestRule<LoginActivity> rule = new ActivityTestRule<>(LoginActivity.class, true, true);
 
     /**
-     *  Custom click function for clicking invisible buttons
-     */
-    public static ViewAction customClick() {
-        return actionWithAssertions(
-                new CustomClick(Tap.SINGLE, GeneralLocation.VISIBLE_CENTER, Press.FINGER));
-    }
-
-    /**
      * Test Login with a non-existing user.
      *
     /***
