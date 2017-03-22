@@ -63,7 +63,7 @@ public class FilterTest {
         onView(withId(R.id.happy_button)).perform(click());
         onView(withId(R.id.filter)).perform(click());
 
-        //TODO: Check final output
+        //TODO: Check final output, and other moods
     }
 
     /**
@@ -79,7 +79,7 @@ public class FilterTest {
                 closeSoftKeyboard());
         onView(withId(R.id.filter)).perform(click());
 
-        //TODO: Check final output
+        //TODO: Check final output, and other inputs
     }
 
     /**

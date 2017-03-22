@@ -43,16 +43,9 @@ public class LoginTest {
         //Hit back
         pressBack();*/
 
-        Intents.init();
-
-        rule.launchActivity(new Intent());
-
-        intended(hasComponent(LoginActivity.class.getName()));
-
-        Intents.release();
 
         //Attempt to login with an existing user
-        onView(withId(R.id.userinp)).perform(typeText("Joshua"),
+        onView(withId(R.id.userinp)).perform(typeText("Next"),
                 closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
 

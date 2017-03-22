@@ -47,7 +47,7 @@ public class SearchTest {
                 closeSoftKeyboard());
         onView(withText("OK")).perform(click());
 
-        //TODO Check output
+        //TODO Check output, Check other possibilities
     }
 
     /**
@@ -57,7 +57,7 @@ public class SearchTest {
     public void checkCancel() {
         onView(withId(R.id.fab_plus)).perform(click());
         onView(withId(R.id.fab_search)).perform(customClick());
-        onView(withId(R.id.editTextDialogUserInput)).perform(typeText("Bye"),
+        onView(withId(R.id.editTextDialogUserInput)).perform(typeText("Bye  "),
                 closeSoftKeyboard());
         onView(withText("Cancel")).perform(click());
 

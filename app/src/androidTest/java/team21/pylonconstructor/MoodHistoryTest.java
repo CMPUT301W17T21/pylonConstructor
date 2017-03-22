@@ -11,10 +11,26 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class MoodHistoryTest {
     /**
-     * Test Mood
+     * Populate and check if moods exists
      */
     @Test
     public void checkMood() {
+        //TODO Check Mood
+    }
+
+    /**
+     * Delete mood, and ensure it is deleted
+     */
+    @Test
+    public void deleteCheck() {
+        //TODO Check Mood
+    }
+
+    /**
+     * Edit mood, and ensure it is changed
+     */
+    @Test
+    public void editCheck() {
         //TODO Check Mood
     }
 }

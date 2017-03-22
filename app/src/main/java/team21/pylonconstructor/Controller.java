@@ -44,6 +44,7 @@ public class Controller {
         profile = new Profile();
         profile.setUserName("");
         elasticSearch = new ElasticSearch();
+        elasticSearch = new ElasticSearch();
         moodList = new ArrayList<>();
         commands = new LinkedList<>();
 
