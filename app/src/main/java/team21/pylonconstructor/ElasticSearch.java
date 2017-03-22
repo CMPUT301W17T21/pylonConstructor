@@ -204,4 +204,84 @@ public class ElasticSearch {
         return getProfileTask.get();
     }
 
+    /**
+     * Updates a profile in the Elastic Search Database
+     * @param profile
+     */
+
+    public boolean updateProfile(Profile profile){
+        ElasticSearchController.UpdateProfileTask updateProfileTask = new ElasticSearchController.UpdateProfileTask();
+        updateProfileTask.execute(profile);
+        try {
+            return updateProfileTask.get();
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
+    /****
+     *  Gets the lists of users who have sent a request to follow
+     * @param username
+     * @return followRequests list
+     */
+     public ArrayList<String> getFollowRequests (String username){
+        ArrayList<String> followRequests = new ArrayList<String>();
+        try{
+            Profile profile = getProfile(username);
+            if(profile != null){
+                followRequests = profile.getRequests();
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Cannot get profile");
+        }
+        return followRequests;
+    }
+
+    /***
+     * Decline a follow request
+     * @param username, requester_name
+     * @return true if declined successfully,
+     * else otherwise
+     */
+    public boolean declineRequests (String username, String requester_name ){
+        try{
+            Profile profile = getProfile(username);
+            if(profile != null){
+                profile.removeRequests(requester_name);
+                if(updateProfile(profile)){
+                    return true;
+                }
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Cannot get profile");
+        }
+        return false;
+    }
+
+    /***
+     * Accept a follow request
+     * @param username, requester_name
+     * @return true if accepted successfully
+     * else otherwise
+     */
+    public boolean acceptRequests (String username, String requester_name){
+        try{
+            Profile profile = getProfile(username);
+            if(profile != null){
+                profile.removeRequests(requester_name);
+                profile.addFollowers(requester_name);
+                if(updateProfile(profile)){
+                    return true;
+                }
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Cannot get profile");
+        }
+        return false;
+    }
+
 }

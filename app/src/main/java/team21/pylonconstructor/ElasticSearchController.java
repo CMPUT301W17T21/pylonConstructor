@@ -319,6 +319,35 @@ public class ElasticSearchController {
     }
 
     /**
+     *  A function which edits profiles stored on elastic search
+     */
+    public static class UpdateProfileTask extends AsyncTask<Profile, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Profile... profiles) {
+            verifySettings();
+            //Edit the profile
+            Index index = new Index.Builder(profiles[0]).index("g21testing").type("Profile").id(profiles[0].getId()).build();
+
+            try {
+                // Execute the query
+                DocumentResult result = client.execute(index);
+                if(result.isSucceeded()){
+                    Log.i("Success", "Updated your profile!");
+                    return true;
+                }
+                else{
+                    Log.i("Error", "Elastic search was not able to update profile!");
+                    return false;
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "The application failed to build and update the profile");
+                return false;
+            }
+        }
+    }
+    /**
      * A function which gets a profile from elastic search
      */
     public static class GetProfileTask extends AsyncTask<String, Void, Profile> {
