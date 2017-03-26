@@ -28,6 +28,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,8 +44,11 @@ public class MoodHistoryActivity extends AppCompatActivity
     private MoodAdapter adapter;
     private List<Mood> moodList;
     Button clearFilterButton;
-    TextView filteredByText;
+    TextView filteredByText, userNameHeader;
     private Toast toast;
+    View bgDimmer;
+
+
 
     //Controller controller = Controller.getInstance();
     ElasticSearch elasticSearch;
@@ -62,6 +66,7 @@ public class MoodHistoryActivity extends AppCompatActivity
         setContentView(R.layout.activity_mood_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //bgDimmer = findViewById(R.id.background_dimmer);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -73,8 +78,12 @@ public class MoodHistoryActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
+
+        userNameHeader = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_name_nav_header);
+        userNameHeader.setText(username);
 
         elasticSearch = new ElasticSearch();
         profile = Controller.getInstance().getProfile();
@@ -448,6 +457,9 @@ public class MoodHistoryActivity extends AppCompatActivity
         fab_search.setClickable(true);
         fab_updateMood.setClickable(true);
         isOpen = true;
+        //bgDimmer.setVisibility(View.VISIBLE);
+
+
     }
 
     private void collapseFAB() {
@@ -461,5 +473,6 @@ public class MoodHistoryActivity extends AppCompatActivity
         fab_search.setClickable(false);
         fab_updateMood.setClickable(false);
         isOpen = false;
+        //bgDimmer.setVisibility(View.INVISIBLE);
     }
 }

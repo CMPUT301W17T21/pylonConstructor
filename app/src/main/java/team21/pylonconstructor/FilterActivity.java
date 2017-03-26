@@ -20,7 +20,7 @@ import android.widget.Toast;
 import java.util.Date;
 
 
-//TODO: implement
+//TODO: DATE preserved on calendar when editing an existing mood.
 
 /**
  * This class will allow the user to filter moods in their feed by certain parameters.

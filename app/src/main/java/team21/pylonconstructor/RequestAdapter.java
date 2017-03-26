@@ -79,15 +79,16 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 elasticSearch.acceptRequests(profile.getUserName(), request);
+                requestList.clear();
                 requestList = elasticSearch.getFollowRequests(profile.getUserName());
                 adapter.notifyDataSetChanged();
-
             }
         });
         holder.declineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 elasticSearch.declineRequests(profile.getUserName(), request);
+                requestList.clear();
                 requestList = elasticSearch.getFollowRequests(profile.getUserName());
                 adapter.notifyDataSetChanged();
             }
