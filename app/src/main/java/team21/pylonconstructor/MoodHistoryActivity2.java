@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -191,6 +192,10 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                         .setPositiveButton("Request",
                                 new DialogInterface.OnClickListener() {
                                     Profile usr;
+                                    CharSequence text;
+                                    Context ctxt = getApplicationContext();
+                                    int duration = Toast.LENGTH_SHORT;
+
 
                                     public void onClick(DialogInterface dialog,int id) {
                                         String result = userInput.getText().toString();
@@ -199,24 +204,31 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                                         } catch (Exception e) {
                                             Log.i("Error", "Failed to get user result");
                                         }
+
                                         if (usr == null) {
-                                            Context ctxt = getApplicationContext();
-                                            CharSequence text = "User is not found!";
-                                            int duration = Toast.LENGTH_SHORT;
+                                            text = "User is not found!";
                                             toast = Toast.makeText(ctxt, text, duration);
                                             toast.show();
                                             Log.i("Result:", "User not found!");
                                         }
+
                                         else {
-                                            //TODO: implement request follow here
-                                            Context ctxt = getApplicationContext();
-
-
-                                            CharSequence text = "You have sent a follow request to ".concat(usr.getUserName());
-                                            int duration = Toast.LENGTH_SHORT;
-                                            toast = Toast.makeText(ctxt, text, duration);
-                                            toast.show();
                                             Log.i("Result:", "User IS found!");
+                                            ArrayList<String> following = profile.getFollowing();
+
+                                            if (following.contains(result)) {
+                                                text = "You are already following ".concat(usr.getUserName());
+                                                toast = Toast.makeText(ctxt, text, duration);
+                                                toast.show();
+
+                                            }
+
+                                            else {
+                                                text = "You have sent a follow request to ".concat(usr.getUserName());
+                                                elasticSearch.sendRequests(profile.getUserName(), usr.getUserName());
+                                                toast = Toast.makeText(ctxt, text, duration);
+                                                toast.show();
+                                            }
                                         }
 
                                     }
@@ -328,6 +340,10 @@ public class MoodHistoryActivity2 extends AppCompatActivity
 
         } else if (id == R.id.account_settings) {
             Intent intent = new Intent(MoodHistoryActivity2.this, UserSettingsActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.follow_requests) {
+            Intent intent = new Intent(MoodHistoryActivity2.this, ViewRequestsActivity.class);
             startActivity(intent);
         }
 

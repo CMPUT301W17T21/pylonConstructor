@@ -19,23 +19,24 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/prf_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/album_title_padding"
                 android:paddingRight="@dimen/album_title_padding"
                 android:paddingTop="10sp"
                 android:textSize="@dimen/album_title"
-                android:layout_marginStart="16dp" />
+                android:layout_marginStart="16dp"
+                android:text="USERNAME"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="11sp"
-                android:id="@+id/dt"
-                android:layout_below="@id/title"
+                android:id="@+id/req_dt"
+                android:layout_toEndOf="@id/prf_title"
                 android:layout_marginBottom="12dp"
-                android:text="REQUESTED TO FOLLOW YOU"/>
+                android:text="2016"/>
 
 
         </RelativeLayout>

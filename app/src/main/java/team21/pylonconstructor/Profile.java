@@ -63,9 +63,11 @@ class Profile {
     }
 
     public void addFollowers(String follow) {
-        following.add(follow);
+        followers.add(follow);
     }
-    public ArrayList<String> getFollowers() { return followers;}
+    public ArrayList<String> getFollowers() {
+        return followers;
+    }
 
     public void addFollowing(String follow) {
         following.add(follow);

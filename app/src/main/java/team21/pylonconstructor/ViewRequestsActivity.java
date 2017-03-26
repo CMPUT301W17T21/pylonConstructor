@@ -6,40 +6,34 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
 
-public class ViewFollowingActivity extends AppCompatActivity {
-    private ElasticSearch elasticSearch;
-    Profile profile = Controller.getInstance().getProfile();
-    ProfileAdapter adapter;
+public class ViewRequestsActivity extends AppCompatActivity {
+    RequestAdapter adapter;
+    private ArrayList<String> requestList;
+    private Profile profile;
     RecyclerView recyclerView;
-    private ArrayList<String> followingList;
+    ElasticSearch elasticSearch;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        profile = Controller.getInstance().getProfile();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_following);
+        setContentView(R.layout.activity_view_requests);
+
         elasticSearch = new ElasticSearch();
+        requestList = elasticSearch.getFollowRequests(profile.getUserName());
 
-        //elasticSearch.acceptRequests(profile.getUserName(),"aaa");
-
-        followingList = elasticSearch.getFollowing(profile.getUserName());
-
-
-        Log.i("following: ", followingList.toString());
-
-        adapter = new ProfileAdapter(this, followingList);
-        recyclerView = (RecyclerView) findViewById(R.id.prf_recycler_view);
+        adapter = new RequestAdapter(this, requestList);
+        recyclerView = (RecyclerView) findViewById(R.id.req_recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
