@@ -1,27 +1,28 @@
-//ryan p: DONE: EXPANDING FLOATING ACTION BUTTON, addmood FAB already redirects to a mood
-// editor.
-//TODO: implement other FAB, CREATE MOODSLIST LISTVIEW.
-
 package team21.pylonconstructor;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -29,21 +30,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * This is the main view activity. All mood entries for a logged in user are displayed as a list
- * here.
- *
- * From this activity the user can create, edit and delete moods.
- * The user can also search for other users, filter the history, and eventually navigate to other
- * views.
- *
- * @see Profile
- * @see ElasticSearch
- * @see MoodAdapter
- *
- * @version 1.0
- */
-public class MoodFeedActivity extends AppCompatActivity {
+public class MoodFeedActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
@@ -58,8 +46,21 @@ public class MoodFeedActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
     @Override
-    //* Called when the activity is first created. */
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_mood_feed);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
         /**
          * Getting users' login info from first time log in
          */
@@ -67,10 +68,6 @@ public class MoodFeedActivity extends AppCompatActivity {
         String username = sharedPreferences.getString("username", "");
         //elasticSearch = new ElasticSearch();
         //this.profile = elasticSearch.getProfile(username);
-
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mood_feed);
 
         //TODO: Get friends instead
         moodList = Controller.getInstance().getAllMoods();
@@ -98,11 +95,10 @@ public class MoodFeedActivity extends AppCompatActivity {
             actionBar.setDisplayShowCustomEnabled(true);
             View customView = getLayoutInflater().inflate(R.layout.mood_feed_appbar_title_layout, null);
             // Get the textview of the title
-            TextView customTitle = (TextView) customView.findViewById(R.id.mood_history_title_tview);
+            TextView customTitle = (TextView) customView.findViewById(R.id.mood_feed_title_tview);
 
             ActionBar.LayoutParams params = new
-                    ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
-                    ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+                    ActionBar.LayoutParams(Gravity.CENTER);
 
             // Set the on click listener for the title
             customTitle.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +106,9 @@ public class MoodFeedActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Log.w("MainActivity", "ActionBar's title clicked.");
                     finish();
-                    Intent intent = new Intent(MoodFeedActivity.this, MoodHistoryActivity2.class);
+
+                    overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
+                    Intent intent = new Intent(MoodFeedActivity.this, MoodHistoryActivity.class);
                     startActivity(intent);
                 }
             });
@@ -231,49 +229,63 @@ public class MoodFeedActivity extends AppCompatActivity {
         });
     }
 
-    // create an action bar button
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.my_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    // handle button activities
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.notificationButton) {
-            SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("username", "");
-            editor.apply();
-            Intent intent = new Intent(MoodFeedActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
+
+        if (id == R.id.notificationButton) {
+            Intent intent = new Intent(MoodFeedActivity.this, NotificationsActivity.class);
+            startActivity(intent);
+
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
-    protected void onStart() {
-        super.onStart();
-
-        //TODO: Get friends instead
-        //moodList = Controller.getInstance().getAllMoods();
-
-        //TODO: JOSH, SEND ME AN UPDATED/REFRESHED/FILTERED MOODLIST control.get(moodList)
-
-        adapter = new MoodAdapter(this, moodList);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    protected  void onResume() {
-        super.onResume();
-        //TODO: Get friends instead
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-        //moodList = Controller.getInstance().getAllMoods();
-        adapter.notifyDataSetChanged();
+        if (id == R.id.view_followers) {
+            Intent intent = new Intent(MoodFeedActivity.this, ViewFollowersActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.view_following) {
+            Intent intent = new Intent(MoodFeedActivity.this, ViewFollowingActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.account_settings) {
+            Intent intent = new Intent(MoodFeedActivity.this, UserSettingsActivity.class);
+            startActivity(intent);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return false;
     }
 }

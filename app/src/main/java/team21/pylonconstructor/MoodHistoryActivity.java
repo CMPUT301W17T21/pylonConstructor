@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MoodHistoryActivity2 extends AppCompatActivity
+public class MoodHistoryActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
@@ -59,7 +59,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mood_history2);
+        setContentView(R.layout.activity_mood_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -113,7 +113,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                 public void onClick(View v) {
                     Log.w("MainActivity", "ActionBar's title clicked.");
                     finish();
-                    Intent intent = new Intent(MoodHistoryActivity2.this, MoodFeedActivity2.class);
+                    Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
                     overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
                     startActivity(intent);
                 }
@@ -158,7 +158,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
         fab_updateMood.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                Intent intent = new Intent(MoodHistoryActivity2.this, UpdateMoodActivity.class);
+                Intent intent = new Intent(MoodHistoryActivity.this, UpdateMoodActivity.class);
                 intent.putExtra("username", profile.getUserName());
                 collapseFAB();
                 startActivity(intent);
@@ -262,7 +262,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                     toast.show();
                 }
                 else {
-                    Intent intent = new Intent(MoodHistoryActivity2.this, FilterActivity.class);
+                    Intent intent = new Intent(MoodHistoryActivity.this, FilterActivity.class);
                     intent.putExtra("username", profile.getUserName());
                     collapseFAB();
                     startActivityForResult(intent, REQUEST_FILTER);
@@ -316,7 +316,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
         }
 
         if (id == R.id.notificationButton) {
-            Intent intent = new Intent(MoodHistoryActivity2.this, NotificationsActivity.class);
+            Intent intent = new Intent(MoodHistoryActivity.this, NotificationsActivity.class);
             startActivity(intent);
         }
 
@@ -332,18 +332,18 @@ public class MoodHistoryActivity2 extends AppCompatActivity
 
 
         if (id == R.id.view_followers) {
-            Intent intent = new Intent(MoodHistoryActivity2.this, ViewFollowersActivity.class);
+            Intent intent = new Intent(MoodHistoryActivity.this, ViewFollowersActivity.class);
             startActivity(intent);
         } else if (id == R.id.view_following) {
-            Intent intent = new Intent(MoodHistoryActivity2.this, ViewFollowingActivity.class);
+            Intent intent = new Intent(MoodHistoryActivity.this, ViewFollowingActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.account_settings) {
-            Intent intent = new Intent(MoodHistoryActivity2.this, UserSettingsActivity.class);
+            Intent intent = new Intent(MoodHistoryActivity.this, UserSettingsActivity.class);
             startActivity(intent);
         }
         else if (id == R.id.follow_requests) {
-            Intent intent = new Intent(MoodHistoryActivity2.this, ViewRequestsActivity.class);
+            Intent intent = new Intent(MoodHistoryActivity.this, ViewRequestsActivity.class);
             startActivity(intent);
         }
 

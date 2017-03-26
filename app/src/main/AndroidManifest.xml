@@ -19,14 +19,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".UpdateMoodActivity" />
-        <activity android:name=".MoodFeedActivity" />
         <activity android:name=".FilterActivity" />
         <activity
-            android:name=".MoodHistoryActivity2"
+            android:name=".MoodHistoryActivity"
             android:label="@string/title_activity_mood_history2"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MoodFeedActivity2"
+            android:name=".MoodFeedActivity"
             android:label="@string/title_activity_mood_feed2"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
