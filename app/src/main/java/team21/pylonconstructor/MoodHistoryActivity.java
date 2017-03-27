@@ -69,7 +69,6 @@ public class MoodHistoryActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         bgDimmer = findViewById(R.id.background_dimmer);
-        cardDimmer = findViewById(R.id.cards_dimmer);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
