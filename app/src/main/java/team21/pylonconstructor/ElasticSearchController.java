@@ -414,6 +414,139 @@ public class ElasticSearchController {
         }
     }
 
+
+    /**
+     * A function which gets the most recent mood from a followed user
+     */
+    public static class GetFollowingMoodsTask extends AsyncTask<String, Void, Mood> {
+        @Override
+        protected Mood doInBackground(String... search_parameters) {
+            verifySettings();
+
+            Mood moods = new Mood();
+
+            // Arranged in reverse Chronological order
+            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"user.userName\"],\"query\" :\""+ search_parameters[0]+"\"}},\"size\": \"1\"}";
+            Search search = new Search.Builder(query)
+                    .addIndex("g21testing").addType("Mood").build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if(result.isSucceeded()){
+                    moods = result.getSourceAsObject(Mood.class);
+                    Log.i("Found", "mood matched!");
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any moods that matched!");
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+            return moods;
+        }
+    }
+
+    /**
+     *  A function which filters moods from the most recent week from a followed user
+     */
+    public static class FilterFeedRecentWeekMoods extends AsyncTask<String, Void, Mood> {
+        @Override
+        protected Mood doInBackground(String... search_parameters) {
+            verifySettings();
+
+            Mood moods = new Mood();
+
+            // Most recent week moods arranged in reverse Chronological order
+            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"filtered\":{\"query\":{\"multi_match\":{\"query\":\""+ search_parameters[0]+"\",\"fields\":[\"user.userName\"]}},\"filter\":{\"range\":{\"date\":{\"gte\":\"now-7d/d\"}}},\"size\":\"1\"}}}";
+
+            Search search = new Search.Builder(query).addIndex("g21testing").addType("Mood").build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if(result.isSucceeded()){
+                    moods = result.getSourceAsObject(Mood.class);
+                    Log.i("Found", "mood matched!");
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any moods that matched!");
+
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+
+            return moods;
+        }
+    }
+
+    /**
+     *  A function which filters moods from a followed user from elastic search based on given emotional state
+     */
+    public static class FilterFeedEmotionalState extends AsyncTask<String, Void, Mood> {
+        @Override
+        protected Mood doInBackground(String... search_parameters) {
+            verifySettings();
+
+            Mood moods = new Mood();
+
+            // Arranged in reverse Chronological order
+            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"user.userName\", \"emoji\"],\"query\" :\""+ search_parameters[0]+" AND " +search_parameters[1]+"\"}},\"size\": \"1\"}";
+            Search search = new Search.Builder(query)
+                    .addIndex("g21testing").addType("Mood").build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if(result.isSucceeded()){
+                    moods = result.getSourceAsObject(Mood.class);
+                    Log.i("Found", "mood matched!");
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any moods that matched!");
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+            return moods;
+        }
+    }
+
+    /**
+     *  A function which filters moods from elastic search based on given trigger
+     */
+    public static class FilterFeedTrigger extends AsyncTask<String, Void, Mood> {
+        @Override
+        protected Mood doInBackground(String... search_parameters) {
+            verifySettings();
+
+            Mood moods = new Mood();
+
+            // Arranged in reverse Chronological order
+            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"user.userName\", \"trigger\"],\"query\" :\""+ search_parameters[0]+" AND " +search_parameters[1]+"\"}},\"size\": \"1\"}";
+            Search search = new Search.Builder(query)
+                    .addIndex("g21testing").addType("Mood").build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if(result.isSucceeded()){
+                    moods = result.getSourceAsObject(Mood.class);
+                    Log.i("Found", "mood matched!");
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any moods that matched!");
+
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+
+            return moods;
+        }
+    }
+
     /**
      * A function that sets up the communication with CMPUT 301 server
      */
