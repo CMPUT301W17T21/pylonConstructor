@@ -25,8 +25,6 @@ public class ViewFollowingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_following);
         elasticSearch = new ElasticSearch();
 
-        //elasticSearch.acceptRequests(profile.getUserName(),"aaa");
-
         followingList = elasticSearch.getFollowing(profile.getUserName());
 
 

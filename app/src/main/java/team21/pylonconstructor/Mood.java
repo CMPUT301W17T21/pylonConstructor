@@ -5,13 +5,8 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
-import org.apache.commons.lang3.SystemUtils;
-
 import java.io.ByteArrayOutputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 
 import java.util.Date;
 
@@ -55,7 +50,6 @@ class Mood {
         this.id = id;
     }
 
-    // RYAN added null default values
     public Mood() {
         this.emoji = null;
         this.trigger = null;
@@ -66,23 +60,15 @@ class Mood {
     public void setEmoji(String emoji) {
         this.emoji = emoji;
     }
+
     public String getEmoji() {
         return emoji;
     }
 
-    /*public void setDate(String date) {
-        DateFormat dateformat = new SimpleDateFormat("DD MM YYYY");  //TODO: decide on date format.
-
-        try {
-            this.date = dateformat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace(); //TODO: Actually handle this.
-        }
-    }*/
-
     public void setDate(Date date) {
         this.date = date;
     }
+
     public Date getDate() {
         return date;
     }
@@ -117,7 +103,6 @@ class Mood {
     }
 
 
-    //TODO: USER PROFILE
     public void setUser(Profile user) {
         this.user = user;
     }
@@ -126,24 +111,28 @@ class Mood {
         return user;
     }
 
-    //TODO: IMAGES
     public void setImage(Bitmap bmp)  throws ImageTooLargeException{
 
+        if (bmp == null) {
+            this.image = null;
+            return;
+        }
 
-        String encoded = encodeToBase64(bmp,Bitmap.CompressFormat.JPEG, 100);
+        String encoded = encodeToBase64(bmp, Bitmap.CompressFormat.JPEG, 100);
 
         int bytecount = encoded.getBytes().length;
         Log.d("STATE", Integer.toString(bytecount));
         if (bytecount > 66636) {
             throw new ImageTooLargeException();
-        }
-        else {
+        } else {
             this.image = encoded;
         }
+
     }
 
     /**
-     *     returns the image decoded back to a bitmap.
+     * returns the image decoded back to a bitmap.
+     * @return bitmap, or null if stored image is null.
      */
     public Bitmap getImage() {
         if (this.image != null) {

@@ -9,6 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="team21.pylonconstructor.MoodFeedActivity"
+    android:background="@color/colorPrimary"
     >
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,30 +24,46 @@
         </RelativeLayout>
 
 
+    <ImageView
+        android:layout_width="130sp"
+        android:layout_height="130sp"
+        android:src="@drawable/ic_noun_654393_cc_white"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/logo"
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="40sp"
         android:fontFamily="sans-serif-condensed"
-        android:textStyle="bold"
-        android:text="WELCOME!"
-        android:id="@+id/textView2" />
+        android:text="PylonConstructor"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/textView2"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/logo"
+        android:paddingTop="10sp"/>
+
+
 
     <TextView
+        android:paddingTop="10sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Username"
         android:id="@+id/uname"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:textColor="#FFFFFF"/>
 
     <EditText
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:id="@+id/userinp"
         android:layout_below="@+id/uname"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,14 +72,17 @@
         android:text="Password"
         android:layout_below="@id/userinp"
         android:layout_centerHorizontal="true"
-        android:id="@+id/pw"/>
+        android:id="@+id/pw"
+        android:textColor="#FFFFFF"/>
 
     <EditText
+        android:inputType="textPassword"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/pw"
         android:layout_alignStart="@+id/userinp"
-        android:id="@+id/pw_edit"/>
+        android:id="@+id/pw_edit"
+        android:textColor="#FFFFFF" />
 
     <LinearLayout
         android:id="@+id/footerView"
