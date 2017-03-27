@@ -59,6 +59,7 @@ public class FilterTest {
         onView(withId(R.id.filter)).perform(click());
 
         //TODO: Check final output, and other moods
+        onView(withId(R.id.clearfilter)).perform(click());
     }
 
     /**
@@ -75,6 +76,7 @@ public class FilterTest {
         onView(withId(R.id.filter)).perform(click());
 
         //TODO: Check final output, and other inputs
+        onView(withId(R.id.clearfilter)).perform(click());
     }
 
     /**
@@ -89,6 +91,7 @@ public class FilterTest {
         onView(withId(R.id.filter)).perform(click());
 
         //TODO: Check final output
+        onView(withId(R.id.clearfilter)).perform(click());
     }
 
     /**
