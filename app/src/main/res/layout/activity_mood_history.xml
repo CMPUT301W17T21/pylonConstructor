@@ -10,7 +10,7 @@
 
 
     <include
-        layout="@layout/app_bar_mood_history"
+        layout="@layout/app_bar_mood_list_activities"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

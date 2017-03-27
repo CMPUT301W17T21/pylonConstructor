@@ -20,10 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,12 +37,12 @@ import java.util.Locale;
  *
  * @version 1.0
  */
-public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> {
+public abstract class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> {
 
 
-    private Context mContext;
-    private List<Mood> moodList;
-    private MoodAdapter adapter;
+    Context mContext;
+    List<Mood> moodList;
+    MoodAdapter adapter;
 
     //Refactored this to include Locale.
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa", Locale.US);
@@ -179,13 +177,8 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
     /**
      * Showing popup menu when tapping on 3 dots
      */
-    private void showPopupMenu(View view, int pos) {
-        // inflate menu
-        PopupMenu popup = new PopupMenu(mContext, view);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_mood, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(pos));
-        popup.show();
+    public void showPopupMenu(View view, int pos) {
+        // sub-class dependent implementations
     }
 
     /**
@@ -195,6 +188,8 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
      */
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
 
+        // sub-class dependent implementation
+
         int pos;
 
         public MyMenuItemClickListener(int pos) {
@@ -202,41 +197,7 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
         }
 
         @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            Intent slideStart = new Intent(mContext, UpdateMoodActivity.class);
-
-            boolean delete = false;
-            switch (menuItem.getItemId()) {
-                case R.id.action_delete_mood:
-                    delete = true;
-                case R.id.action_edit_mood:
-
-
-                super.getClass();
-
-
-                    if (delete) {
-                        Mood dmood = moodList.get(pos);
-                        Controller.getInstance().deleteMood(dmood);
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    else {
-                        slideStart.putExtra("emoj", moodList.get(pos).getEmoji());
-                        slideStart.putExtra("situ", moodList.get(pos).getSituation());
-                        slideStart.putExtra("trig", moodList.get(pos).getTrigger());
-                        slideStart.putExtra("date", moodList.get(pos).getDate().getTime());
-                        slideStart.putExtra("id", moodList.get(pos).getId());
-
-                        slideStart.putExtra("username", moodList.get(pos).getUser().getUserName());
-                        slideStart.putExtra("image",  moodList.get(pos).getImage());
-                        slideStart.putExtra("EDIT",  1);
-                        mContext.startActivity(slideStart);
-                    }
-
-                    return true;
-                default:
-            }
+        public boolean onMenuItemClick(MenuItem item) {
             return false;
         }
     }

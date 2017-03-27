@@ -41,11 +41,11 @@ public class MoodHistoryActivity extends AppCompatActivity
 
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
-    private MoodAdapter adapter;
+    private MoodHistoryAdapter adapter;
     private List<Mood> moodList;
     Button clearFilterButton;
     TextView filteredByText, userNameHeader;
-    private Toast toast;
+    Toast toast;
     View bgDimmer, cardDimmer;
 
     //Controller controller = Controller.getInstance();
@@ -59,7 +59,7 @@ public class MoodHistoryActivity extends AppCompatActivity
     Animation animFadeOut;
     Animation animFadeIn;
 
-    private RecyclerView recyclerView;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class MoodHistoryActivity extends AppCompatActivity
         elasticSearch = new ElasticSearch();
         profile = Controller.getInstance().getProfile();
         moodList = Controller.getInstance().getAllMoods();
-        adapter = new MoodAdapter(this, moodList);
+        adapter = new MoodHistoryAdapter(this, moodList);
 
         Log.d("ACTIV ST IS", "OnCreate");
 
@@ -292,7 +292,7 @@ public class MoodHistoryActivity extends AppCompatActivity
                 filteredByText.setText(getResources().getString(R.string.filtered_by));
 
                 moodList = Controller.getInstance().getAllMoods();
-                adapter = new MoodAdapter(context, moodList);
+                adapter = new MoodHistoryAdapter(context, moodList);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
@@ -377,7 +377,7 @@ public class MoodHistoryActivity extends AppCompatActivity
             moodList = Controller.getInstance().getAllMoods();
         }
 
-        adapter = new MoodAdapter(this, moodList);
+        adapter = new MoodHistoryAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -436,7 +436,7 @@ public class MoodHistoryActivity extends AppCompatActivity
         }
     }
 
-    private void changeClearFilterVisibility() {
+    public void changeClearFilterVisibility() {
         int filterOp = Controller.getInstance().getFilterOption();
 
         if (filterOp == 0) {
@@ -451,7 +451,7 @@ public class MoodHistoryActivity extends AppCompatActivity
         }
     }
 
-    private void expandFAB() {
+    public void expandFAB() {
         fab_goToMap.startAnimation(FabOpen);
         fab_filter.startAnimation(FabOpen);
         fab_search.startAnimation(FabOpen);
@@ -468,7 +468,7 @@ public class MoodHistoryActivity extends AppCompatActivity
         bgDimmer.setVisibility(View.VISIBLE);
     }
 
-    private void collapseFAB() {
+    public void collapseFAB() {
         fab_goToMap.startAnimation(FabClose);
         fab_filter.startAnimation(FabClose);
         fab_search.startAnimation(FabClose);

@@ -36,29 +36,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MoodFeedActivity extends AppCompatActivity
+public class MoodFeedActivity extends MoodHistoryActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
-    Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
     private MoodFeedAdapter adapter;
     private List<Mood> moodList;
-    Button clearFilterButton;
-    TextView filteredByText, userNameHeader;
-    private Toast toast;
-    View bgDimmer;
-
-
-
-    //Controller controller = Controller.getInstance();
-    ElasticSearch elasticSearch;
-    Profile profile;
-
-    boolean isOpen = false;
-    Context context = this;
-    static final int REQUEST_FILTER = 1;
-
-    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +48,8 @@ public class MoodFeedActivity extends AppCompatActivity
         setContentView(R.layout.activity_mood_feed);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //bgDimmer = findViewById(R.id.background_dimmer);
+
+        bgDimmer = findViewById(R.id.background_dimmer);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -88,6 +71,10 @@ public class MoodFeedActivity extends AppCompatActivity
         elasticSearch = new ElasticSearch();
         profile = Controller.getInstance().getProfile();
         moodList = Controller.getInstance().getAllMoodsFeed();
+        Mood moodt = new Mood();
+        moodt.setEmoji("HAPPY");
+        moodt.setUser(profile);
+        moodList.add(moodt);
         adapter = new MoodFeedAdapter(this, moodList);
 
         Log.d("ACTIV ST IS", "OnCreate");
@@ -132,10 +119,12 @@ public class MoodFeedActivity extends AppCompatActivity
         }
 
 
+
+
         clearFilterButton = (Button) findViewById(R.id.clearfilter);
         filteredByText = (TextView) findViewById(R.id.filtered_by_label);
         fab_plus = (FloatingActionButton) findViewById(R.id.fab_plus);
-        //fab_updateMood = (FloatingActionButton) findViewById(R.id.fab_updateMood);
+        fab_updateMood = (FloatingActionButton) findViewById(R.id.fab_updateMood);
         fab_search = (FloatingActionButton) findViewById(R.id.fab_search);
         fab_filter = (FloatingActionButton) findViewById(R.id.fab_filter);
         fab_goToMap = (FloatingActionButton) findViewById(R.id.fab_map);
@@ -161,7 +150,7 @@ public class MoodFeedActivity extends AppCompatActivity
 
             }
         });
-/*
+
         fab_updateMood.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 setResult(RESULT_OK);
@@ -172,7 +161,7 @@ public class MoodFeedActivity extends AppCompatActivity
             }
         });
 
-*/
+
         fab_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -298,71 +287,6 @@ public class MoodFeedActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.my_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        if (id == R.id.notificationButton) {
-            Intent intent = new Intent(MoodFeedActivity.this, NotificationsActivity.class);
-            startActivity(intent);
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-
-        if (id == R.id.view_followers) {
-            Intent intent = new Intent(MoodFeedActivity.this, ViewFollowersActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.view_following) {
-            Intent intent = new Intent(MoodFeedActivity.this, ViewFollowingActivity.class);
-            startActivity(intent);
-
-        } else if (id == R.id.account_settings) {
-            Intent intent = new Intent(MoodFeedActivity.this, UserSettingsActivity.class);
-            startActivity(intent);
-        }
-        else if (id == R.id.follow_requests) {
-            Intent intent = new Intent(MoodFeedActivity.this, ViewRequestsActivity.class);
-            startActivity(intent);
-        }
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return false;
-    }
-
     protected void onStart() {
         super.onStart();
         Log.d("ACTIV ST IS", "onStart");
@@ -376,104 +300,5 @@ public class MoodFeedActivity extends AppCompatActivity
         adapter = new MoodFeedAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected  void onResume() {
-        super.onResume();
-        Log.d("ACTIV ST IS", "onResume");
-
-        changeClearFilterVisibility();
-        //moodList.clear();
-        //moodList.addAll(Controller.getInstance().getAllMoods());
-        //moodList = Controller.getInstance().getAllMoods();
-        adapter.notifyDataSetChanged();
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("ACTIV ST IS", "onActRes");
-
-        switch(requestCode) {
-            case (REQUEST_FILTER) : {
-                if (resultCode == Activity.RESULT_OK) {
-
-                    Bundle extras = data.getExtras();
-                    int filterOption = extras.getInt("filter_option");
-
-                    if (filterOption == 1) {
-                        String filterTerm = extras.getString("mood_filter");
-                        Controller.getInstance().addFilters(filterTerm, filterOption);
-                        filteredByText.append(" Mood - ");
-                        String byMood = Controller.getInstance().getFilterTerm();
-                        filteredByText.append(byMood);
-                        filteredByText.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_happy_263a,0,0,0);
-
-                    }
-                    if (filterOption == 2) {
-                        String filterTerm = extras.getString("mood_filter");
-                        Controller.getInstance().addFilters(filterTerm, filterOption);
-                        filteredByText.append(" Trigger word - ");
-                        String byTrigger = Controller.getInstance().getFilterTerm();
-                        filteredByText.append(byTrigger);
-                    }
-
-                    if (filterOption == 3) {
-                        Date filterDate =  (Date) extras.getSerializable("mood_filter");
-                        Controller.getInstance().addDateFilter(filterDate, filterOption);
-                        filteredByText.append("Past week only");
-                    }
-
-                }
-                break;
-            }
-        }
-    }
-
-    private void changeClearFilterVisibility() {
-        int filterOp = Controller.getInstance().getFilterOption();
-
-        if (filterOp == 0) {
-            clearFilterButton.setVisibility(View.GONE); //To set invisible
-            filteredByText.setVisibility(View.GONE);
-
-        }
-        else {
-            clearFilterButton.setVisibility(View.VISIBLE); //To set visible
-            filteredByText.setVisibility(View.VISIBLE);
-
-        }
-    }
-
-    private void expandFAB() {
-        fab_goToMap.startAnimation(FabOpen);
-        fab_filter.startAnimation(FabOpen);
-        fab_search.startAnimation(FabOpen);
-        //fab_updateMood.startAnimation(FabOpen);
-        fab_plus.startAnimation(FabRotateClockwise);
-        fab_goToMap.setClickable(true);
-        fab_filter.setClickable(true);
-        fab_search.setClickable(true);
-        //fab_updateMood.setClickable(true);
-        isOpen = true;
-        //bgDimmer.setVisibility(View.VISIBLE);
-
-
-    }
-
-    private void collapseFAB() {
-        fab_goToMap.startAnimation(FabClose);
-        fab_filter.startAnimation(FabClose);
-        fab_search.startAnimation(FabClose);
-        //fab_updateMood.startAnimation(FabClose);
-        fab_plus.startAnimation(FabRotateCounterClockwise);
-        fab_goToMap.setClickable(false);
-        fab_filter.setClickable(false);
-        fab_search.setClickable(false);
-        //fab_updateMood.setClickable(false);
-        isOpen = false;
-        //bgDimmer.setVisibility(View.INVISIBLE);
     }
 }
