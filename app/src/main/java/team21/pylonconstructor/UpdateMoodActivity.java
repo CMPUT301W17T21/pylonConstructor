@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -119,10 +120,11 @@ public class UpdateMoodActivity extends AppCompatActivity {
                      */
                 }
             }
-            removePhotoButton = (ImageButton) findViewById(R.id.remove_photo_button);
-            hasImg = hasImage(selectedImage);
-            changeRemovePhotoVisibility(hasImg);
         }
+
+        removePhotoButton = (ImageButton) findViewById(R.id.remove_photo_button);
+        hasImg = hasImage(selectedImage);
+        changeRemovePhotoVisibility(hasImg);
 
         happyButton = (Button) findViewById(R.id.happy_button);
         happyButton.setOnClickListener(new View.OnClickListener() {
@@ -219,6 +221,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
 
         });
 
+
         removePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,6 +231,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
                 changeRemovePhotoVisibility(hasImg);
             }
         });
+
 
         socialSituationButton = (ImageButton) findViewById(R.id.add_social_situation);
         socialSituationButton.setOnClickListener(new View.OnClickListener() {
@@ -350,6 +354,15 @@ public class UpdateMoodActivity extends AppCompatActivity {
         calendar.set(year, month, day);
 
         return calendar.getTime();
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

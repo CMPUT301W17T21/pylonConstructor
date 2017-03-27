@@ -46,9 +46,7 @@ public class MoodHistoryActivity extends AppCompatActivity
     Button clearFilterButton;
     TextView filteredByText, userNameHeader;
     private Toast toast;
-    View bgDimmer;
-
-
+    View bgDimmer, cardDimmer;
 
     //Controller controller = Controller.getInstance();
     ElasticSearch elasticSearch;
@@ -58,6 +56,9 @@ public class MoodHistoryActivity extends AppCompatActivity
     Context context = this;
     static final int REQUEST_FILTER = 1;
 
+    Animation animFadeOut;
+    Animation animFadeIn;
+
     private RecyclerView recyclerView;
 
     @Override
@@ -66,7 +67,9 @@ public class MoodHistoryActivity extends AppCompatActivity
         setContentView(R.layout.activity_mood_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //bgDimmer = findViewById(R.id.background_dimmer);
+
+        bgDimmer = findViewById(R.id.background_dimmer);
+        cardDimmer = findViewById(R.id.cards_dimmer);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -460,9 +463,10 @@ public class MoodHistoryActivity extends AppCompatActivity
         fab_search.setClickable(true);
         fab_updateMood.setClickable(true);
         isOpen = true;
-        //bgDimmer.setVisibility(View.VISIBLE);
 
-
+        animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+        bgDimmer.setAnimation(animFadeIn);
+        bgDimmer.setVisibility(View.VISIBLE);
     }
 
     private void collapseFAB() {
@@ -476,6 +480,10 @@ public class MoodHistoryActivity extends AppCompatActivity
         fab_search.setClickable(false);
         fab_updateMood.setClickable(false);
         isOpen = false;
-        //bgDimmer.setVisibility(View.INVISIBLE);
+
+        animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+        bgDimmer.setAnimation(animFadeOut);
+        bgDimmer.setVisibility(View.INVISIBLE);
+
     }
 }
