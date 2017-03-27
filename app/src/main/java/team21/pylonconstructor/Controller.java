@@ -20,6 +20,7 @@ public class Controller {
     private static Controller mInstance = null;
     private ElasticSearch elasticSearch;
     private ArrayList<Mood> moodList;
+    private ArrayList<Mood> moodFeed;
     private LinkedList<Command> commands;
     private boolean internetStatus = false;
 
@@ -46,6 +47,7 @@ public class Controller {
         elasticSearch = new ElasticSearch();
         elasticSearch = new ElasticSearch();
         moodList = new ArrayList<>();
+        moodFeed = new ArrayList<>();
         commands = new LinkedList<>();
 
 
@@ -158,6 +160,43 @@ public class Controller {
             }
         Log.i("MoodList", "Returning MoodList");
         return this.moodList;
+    }
+
+    ArrayList<Mood> getAllMoodsFeed() {
+        this.update();
+        try {
+
+            ArrayList<Mood> received = new ArrayList<>();
+
+            if (filterOption == 0) {
+                received = this.elasticSearch.getfollowingmoods(this.profile);
+            }
+
+            if (filterOption == 1) {
+                received = this.elasticSearch.emotionalstatefilteredmoodsfeed(this.profile, filterTerm);
+            }
+
+            if (filterOption == 2) {
+                received = this.elasticSearch.triggerfilteredmoodsfeed(this.profile, filterTerm);
+            }
+
+            if (filterOption == 3) {
+                received = this.elasticSearch.getrecentweekmoodsfeed(this.profile);
+            }
+
+            if (received != null) {
+                //Got a mood list
+                this.moodFeed = received;
+            } else {
+                Log.i("Get MoodList", "Error getting.");
+            }
+            //TODO: Handle exceptions.
+        } catch (Exception e) {
+            Log.i("Get MoodList", "Error connecting.");
+            e.printStackTrace();
+        }
+        Log.i("MoodList", "Returning MoodList");
+        return this.moodFeed;
     }
 
     void addFilters(String filterTerm, int filterOption) {

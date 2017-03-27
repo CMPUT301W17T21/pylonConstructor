@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -20,7 +21,7 @@ import android.widget.Toast;
 import java.util.Date;
 
 
-//TODO: implement
+//TODO: DATE preserved on calendar when editing an existing mood.
 
 /**
  * This class will allow the user to filter moods in their feed by certain parameters.
@@ -85,9 +86,9 @@ public class FilterActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
-        /* Set Custom App bar title, centered */
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.mood_feed_appbar_title_layout);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         byMood = (RadioButton) findViewById(R.id.filter_mood_radio_button);
@@ -307,9 +308,18 @@ public class FilterActivity extends AppCompatActivity {
 
         });
     }
-    /*** REFACTORING
+    /** REFACTORING
      * Remove unnecessary semicolen
-      */
+     */
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public void rbClick(View v) {
         int rbId = radioGroup.getCheckedRadioButtonId();

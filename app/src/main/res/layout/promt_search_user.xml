@@ -10,7 +10,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search for user: "
+        android:text="Enter user to send follow request: "
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText

@@ -28,22 +28,25 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MoodHistoryActivity2 extends AppCompatActivity
+public class MoodHistoryActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
     Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
-    private MoodAdapter adapter;
+    private MoodHistoryAdapter adapter;
     private List<Mood> moodList;
     Button clearFilterButton;
-    TextView filteredByText;
-    private Toast toast;
+    TextView filteredByText, userNameHeader;
+    Toast toast;
+    View bgDimmer, cardDimmer;
 
     //Controller controller = Controller.getInstance();
     ElasticSearch elasticSearch;
@@ -53,14 +56,19 @@ public class MoodHistoryActivity2 extends AppCompatActivity
     Context context = this;
     static final int REQUEST_FILTER = 1;
 
-    private RecyclerView recyclerView;
+    Animation animFadeOut;
+    Animation animFadeIn;
+
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mood_history2);
+        setContentView(R.layout.activity_mood_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        bgDimmer = findViewById(R.id.background_dimmer);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -72,13 +80,17 @@ public class MoodHistoryActivity2 extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
+
+        userNameHeader = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_name_nav_header);
+        userNameHeader.setText(username);
 
         elasticSearch = new ElasticSearch();
         profile = Controller.getInstance().getProfile();
         moodList = Controller.getInstance().getAllMoods();
-        adapter = new MoodAdapter(this, moodList);
+        adapter = new MoodHistoryAdapter(this, moodList);
 
         Log.d("ACTIV ST IS", "OnCreate");
 
@@ -112,7 +124,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                 public void onClick(View v) {
                     Log.w("MainActivity", "ActionBar's title clicked.");
                     finish();
-                    Intent intent = new Intent(MoodHistoryActivity2.this, MoodFeedActivity2.class);
+                    Intent intent = new Intent(MoodHistoryActivity.this, MoodFeedActivity.class);
                     overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
                     startActivity(intent);
                 }
@@ -157,7 +169,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
         fab_updateMood.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                Intent intent = new Intent(MoodHistoryActivity2.this, UpdateMoodActivity.class);
+                Intent intent = new Intent(MoodHistoryActivity.this, UpdateMoodActivity.class);
                 intent.putExtra("username", profile.getUserName());
                 collapseFAB();
                 startActivity(intent);
@@ -191,6 +203,10 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                         .setPositiveButton("Request",
                                 new DialogInterface.OnClickListener() {
                                     Profile usr;
+                                    CharSequence text;
+                                    Context ctxt = getApplicationContext();
+                                    int duration = Toast.LENGTH_SHORT;
+
 
                                     public void onClick(DialogInterface dialog,int id) {
                                         String result = userInput.getText().toString();
@@ -199,24 +215,34 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                                         } catch (Exception e) {
                                             Log.i("Error", "Failed to get user result");
                                         }
+
                                         if (usr == null) {
-                                            Context ctxt = getApplicationContext();
-                                            CharSequence text = "User is not found!";
-                                            int duration = Toast.LENGTH_SHORT;
+                                            text = "User not found!";
                                             toast = Toast.makeText(ctxt, text, duration);
                                             toast.show();
                                             Log.i("Result:", "User not found!");
                                         }
+
                                         else {
-                                            //TODO: implement request follow here
-                                            Context ctxt = getApplicationContext();
+                                            Log.i("Result:", "User is found!");
+                                            ArrayList<String> following = profile.getFollowing();
 
-
-                                            CharSequence text = "You have sent a follow request to ".concat(usr.getUserName());
-                                            int duration = Toast.LENGTH_SHORT;
-                                            toast = Toast.makeText(ctxt, text, duration);
-                                            toast.show();
-                                            Log.i("Result:", "User IS found!");
+                                            if(result.equals(profile.getUserName())){
+                                                text = "You cannot follow ".concat(usr.getUserName().concat("!"));
+                                                toast = Toast.makeText(ctxt, text, duration);
+                                                toast.show();
+                                            }
+                                            else if (following.contains(result)) {
+                                                text = "You are already following ".concat(usr.getUserName());
+                                                toast = Toast.makeText(ctxt, text, duration);
+                                                toast.show();
+                                            }
+                                            else {
+                                                text = "You have sent a follow request to ".concat(usr.getUserName());
+                                                elasticSearch.sendRequests(profile.getUserName(), usr.getUserName());
+                                                toast = Toast.makeText(ctxt, text, duration);
+                                                toast.show();
+                                            }
                                         }
 
                                     }
@@ -250,7 +276,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                     toast.show();
                 }
                 else {
-                    Intent intent = new Intent(MoodHistoryActivity2.this, FilterActivity.class);
+                    Intent intent = new Intent(MoodHistoryActivity.this, FilterActivity.class);
                     intent.putExtra("username", profile.getUserName());
                     collapseFAB();
                     startActivityForResult(intent, REQUEST_FILTER);
@@ -266,7 +292,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
                 filteredByText.setText(getResources().getString(R.string.filtered_by));
 
                 moodList = Controller.getInstance().getAllMoods();
-                adapter = new MoodAdapter(context, moodList);
+                adapter = new MoodHistoryAdapter(context, moodList);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
@@ -304,7 +330,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
         }
 
         if (id == R.id.notificationButton) {
-            Intent intent = new Intent(MoodHistoryActivity2.this, NotificationsActivity.class);
+            Intent intent = new Intent(MoodHistoryActivity.this, NotificationsActivity.class);
             startActivity(intent);
         }
 
@@ -320,14 +346,18 @@ public class MoodHistoryActivity2 extends AppCompatActivity
 
 
         if (id == R.id.view_followers) {
-            Intent intent = new Intent(MoodHistoryActivity2.this, ViewFollowersActivity.class);
+            Intent intent = new Intent(MoodHistoryActivity.this, ViewFollowersActivity.class);
             startActivity(intent);
         } else if (id == R.id.view_following) {
-            Intent intent = new Intent(MoodHistoryActivity2.this, ViewFollowingActivity.class);
+            Intent intent = new Intent(MoodHistoryActivity.this, ViewFollowingActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.account_settings) {
-            Intent intent = new Intent(MoodHistoryActivity2.this, UserSettingsActivity.class);
+            Intent intent = new Intent(MoodHistoryActivity.this, UserSettingsActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.follow_requests) {
+            Intent intent = new Intent(MoodHistoryActivity.this, ViewRequestsActivity.class);
             startActivity(intent);
         }
 
@@ -347,7 +377,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
             moodList = Controller.getInstance().getAllMoods();
         }
 
-        adapter = new MoodAdapter(this, moodList);
+        adapter = new MoodHistoryAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -406,7 +436,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
         }
     }
 
-    private void changeClearFilterVisibility() {
+    public void changeClearFilterVisibility() {
         int filterOp = Controller.getInstance().getFilterOption();
 
         if (filterOp == 0) {
@@ -421,7 +451,7 @@ public class MoodHistoryActivity2 extends AppCompatActivity
         }
     }
 
-    private void expandFAB() {
+    public void expandFAB() {
         fab_goToMap.startAnimation(FabOpen);
         fab_filter.startAnimation(FabOpen);
         fab_search.startAnimation(FabOpen);
@@ -432,9 +462,13 @@ public class MoodHistoryActivity2 extends AppCompatActivity
         fab_search.setClickable(true);
         fab_updateMood.setClickable(true);
         isOpen = true;
+
+        animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+        bgDimmer.setAnimation(animFadeIn);
+        bgDimmer.setVisibility(View.VISIBLE);
     }
 
-    private void collapseFAB() {
+    public void collapseFAB() {
         fab_goToMap.startAnimation(FabClose);
         fab_filter.startAnimation(FabClose);
         fab_search.startAnimation(FabClose);
@@ -445,5 +479,10 @@ public class MoodHistoryActivity2 extends AppCompatActivity
         fab_search.setClickable(false);
         fab_updateMood.setClickable(false);
         isOpen = false;
+
+        animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+        bgDimmer.setAnimation(animFadeOut);
+        bgDimmer.setVisibility(View.INVISIBLE);
+
     }
 }

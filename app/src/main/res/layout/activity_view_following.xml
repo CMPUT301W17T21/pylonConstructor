@@ -6,4 +6,9 @@
     android:layout_height="match_parent"
     tools:context="team21.pylonconstructor.ViewFollowingActivity">
 
+    <include
+        layout="@layout/content_profile_list_display"
+        />
+
+
 </android.support.constraint.ConstraintLayout>

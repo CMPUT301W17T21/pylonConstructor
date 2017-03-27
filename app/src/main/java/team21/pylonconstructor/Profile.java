@@ -1,5 +1,7 @@
 package team21.pylonconstructor;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -57,15 +59,18 @@ class Profile {
     }
     public void removeRequests(String name) {
         requests.remove(name);
+        Log.i("DELETED REQ", name);
     }
     public ArrayList<String> getRequests() {
         return requests;
     }
 
     public void addFollowers(String follow) {
-        following.add(follow);
+        followers.add(follow);
     }
-    public ArrayList<String> getFollowers() { return followers;}
+    public ArrayList<String> getFollowers() {
+        return followers;
+    }
 
     public void addFollowing(String follow) {
         following.add(follow);

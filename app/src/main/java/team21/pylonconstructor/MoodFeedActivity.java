@@ -1,83 +1,82 @@
-//ryan p: DONE: EXPANDING FLOATING ACTION BUTTON, addmood FAB already redirects to a mood
-// editor.
-//TODO: implement other FAB, CREATE MOODSLIST LISTVIEW.
-
 package team21.pylonconstructor;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-/**
- * This is the main view activity. All mood entries for a logged in user are displayed as a list
- * here.
- *
- * From this activity the user can create, edit and delete moods.
- * The user can also search for other users, filter the history, and eventually navigate to other
- * views.
- *
- * @see Profile
- * @see ElasticSearch
- * @see MoodAdapter
- *
- * @version 1.0
- */
-public class MoodFeedActivity extends AppCompatActivity {
+public class MoodFeedActivity extends MoodHistoryActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    FloatingActionButton fab_plus, fab_updateMood, fab_search, fab_filter, fab_goToMap;
-    Animation FabOpen, FabClose, FabRotateClockwise, FabRotateCounterClockwise;
-    boolean isOpen = false;
-    private MoodAdapter adapter;
-    Context context = this;
+    private MoodFeedAdapter adapter;
     private List<Mood> moodList;
 
-    //ElasticSearch elasticSearch;
-    Profile profile = Controller.getInstance().getProfile();
-
-    private RecyclerView recyclerView;
-
     @Override
-    //* Called when the activity is first created. */
     protected void onCreate(Bundle savedInstanceState) {
-        /**
-         * Getting users' login info from first time log in
-         */
-        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-        String username = sharedPreferences.getString("username", "");
-        //elasticSearch = new ElasticSearch();
-        //this.profile = elasticSearch.getProfile(username);
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_feed);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        //TODO: Get friends instead
-        moodList = Controller.getInstance().getAllMoods();
+        bgDimmer = findViewById(R.id.background_dimmer);
 
-        adapter = new MoodAdapter(this, moodList);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "");
+
+        userNameHeader = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_name_nav_header);
+        userNameHeader.setText(username);
+
+        elasticSearch = new ElasticSearch();
+        profile = Controller.getInstance().getProfile();
+        moodList = Controller.getInstance().getAllMoodsFeed();
+        adapter = new MoodFeedAdapter(this, moodList);
+
+        Log.d("ACTIV ST IS", "OnCreate");
+
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -88,9 +87,6 @@ public class MoodFeedActivity extends AppCompatActivity {
          * adapted from http://stackoverflow.com/questions/24838155/set-onclick-listener-on-action-bar-title-in-android
          * accessed on 03-19-2017 by rperez
          */
-
-
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // Disable the default and enable the custom
@@ -98,11 +94,10 @@ public class MoodFeedActivity extends AppCompatActivity {
             actionBar.setDisplayShowCustomEnabled(true);
             View customView = getLayoutInflater().inflate(R.layout.mood_feed_appbar_title_layout, null);
             // Get the textview of the title
-            TextView customTitle = (TextView) customView.findViewById(R.id.mood_history_title_tview);
+            TextView customTitle = (TextView) customView.findViewById(R.id.mood_feed_title_tview);
 
             ActionBar.LayoutParams params = new
-                    ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT,
-                    ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+                    ActionBar.LayoutParams(Gravity.CENTER);
 
             /*
             // Set the on click listener for the title
@@ -111,7 +106,8 @@ public class MoodFeedActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Log.w("MainActivity", "ActionBar's title clicked.");
                     finish();
-                    Intent intent = new Intent(MoodFeedActivity.this, MoodHistoryActivity2.class);
+                    Intent intent = new Intent(MoodFeedActivity.this, MoodHistoryActivity.class);
+                    overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
                     startActivity(intent);
                 }
             });
@@ -123,60 +119,56 @@ public class MoodFeedActivity extends AppCompatActivity {
 
 
 
+        clearFilterButton = (Button) findViewById(R.id.clearfilter);
+        filteredByText = (TextView) findViewById(R.id.filtered_by_label);
         fab_plus = (FloatingActionButton) findViewById(R.id.fab_plus);
         fab_updateMood = (FloatingActionButton) findViewById(R.id.fab_updateMood);
         fab_search = (FloatingActionButton) findViewById(R.id.fab_search);
         fab_filter = (FloatingActionButton) findViewById(R.id.fab_filter);
         fab_goToMap = (FloatingActionButton) findViewById(R.id.fab_map);
 
-
         FabOpen = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_open);
         FabClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         FabRotateClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_clockwise);
         FabRotateCounterClockwise = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_counterclockwise);
+
+        changeClearFilterVisibility();
 
         fab_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(isOpen) {
-                    fab_goToMap.startAnimation(FabClose);
-                    fab_filter.startAnimation(FabClose);
-                    fab_search.startAnimation(FabClose);
-                    fab_updateMood.startAnimation(FabClose);
-                    fab_plus.startAnimation(FabRotateCounterClockwise);
-                    fab_goToMap.setClickable(false);
-                    fab_filter.setClickable(false);
-                    fab_search.setClickable(false);
-                    fab_updateMood.setClickable(false);
-                    isOpen = false;
+                    collapseFAB();
                 }
 
                 else {
-                    fab_goToMap.startAnimation(FabOpen);
-                    fab_filter.startAnimation(FabOpen);
-                    fab_search.startAnimation(FabOpen);
-                    fab_updateMood.startAnimation(FabOpen);
-                    fab_plus.startAnimation(FabRotateClockwise);
-                    fab_goToMap.setClickable(true);
-                    fab_filter.setClickable(true);
-                    fab_search.setClickable(true);
-                    fab_updateMood.setClickable(true);
-                    isOpen = true;
-
+                    expandFAB();
                 }
 
             }
         });
 
+        fab_updateMood.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                Intent intent = new Intent(MoodFeedActivity.this, UpdateMoodActivity.class);
+                intent.putExtra("username", profile.getUserName());
+                collapseFAB();
+                startActivity(intent);
+            }
+        });
+
+
         fab_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /**
-                 * <a href="https://www.mkyong.com/android/android-prompt-user-input-dialog-example/">
-                 * Source site</a>
+                 * https://www.mkyong.com/android/android-prompt-user-input-dialog-example/
                  * accessed 03/11/2017
                  */
+
+                collapseFAB();
                 LayoutInflater li = LayoutInflater.from(context);
                 View promptsView = li.inflate(R.layout.promt_search_user, null);
 
@@ -191,11 +183,51 @@ public class MoodFeedActivity extends AppCompatActivity {
                 // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton("OK",
+                        .setPositiveButton("Request",
                                 new DialogInterface.OnClickListener() {
+                                    Profile usr;
+                                    CharSequence text;
+                                    Context ctxt = getApplicationContext();
+                                    int duration = Toast.LENGTH_SHORT;
+
+
                                     public void onClick(DialogInterface dialog,int id) {
                                         String result = userInput.getText().toString();
-                                        //TODO: JOSH, filter users using result
+                                        try {
+                                            usr = elasticSearch.getProfile(result);
+                                        } catch (Exception e) {
+                                            Log.i("Error", "Failed to get user result");
+                                        }
+
+                                        if (usr == null) {
+                                            text = "User not found!";
+                                            toast = Toast.makeText(ctxt, text, duration);
+                                            toast.show();
+                                            Log.i("Result:", "User not found!");
+                                        }
+
+                                        else {
+                                            Log.i("Result:", "User is found!");
+                                            ArrayList<String> following = profile.getFollowing();
+
+                                            if(result.equals(profile.getUserName())){
+                                                text = "You cannot follow ".concat(usr.getUserName().concat("!"));
+                                                toast = Toast.makeText(ctxt, text, duration);
+                                                toast.show();
+                                            }
+                                            else if (following.contains(result)) {
+                                                text = "You are already following ".concat(usr.getUserName());
+                                                toast = Toast.makeText(ctxt, text, duration);
+                                                toast.show();
+                                            }
+                                            else {
+                                                text = "You have sent a follow request to ".concat(usr.getUserName());
+                                                elasticSearch.sendRequests(profile.getUserName(), usr.getUserName());
+                                                toast = Toast.makeText(ctxt, text, duration);
+                                                toast.show();
+                                            }
+                                        }
+
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -213,69 +245,58 @@ public class MoodFeedActivity extends AppCompatActivity {
             }
         });
 
-        fab_updateMood.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                setResult(RESULT_OK);
-                Intent intent = new Intent(MoodFeedActivity.this, UpdateMoodActivity.class);
-                intent.putExtra("Username", profile.getUserName());
-                startActivity(intent);
-            }
-        });
-
         fab_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                Intent intent = new Intent(MoodFeedActivity.this, FilterActivity.class);
-                intent.putExtra("Username", profile.getUserName());
-                startActivity(intent);
+
+                if (Controller.getInstance().getFilterOption() != 0) {
+                    context = getApplicationContext();
+                    CharSequence text = "Already in filtered feed. Tap 'Clear Filter' before" +
+                            " filtering again.";
+                    int duration = Toast.LENGTH_SHORT;
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+                else {
+                    Intent intent = new Intent(MoodFeedActivity.this, FilterActivity.class);
+                    intent.putExtra("username", profile.getUserName());
+                    collapseFAB();
+                    startActivityForResult(intent, REQUEST_FILTER);
+                }
+            }
+        });
+
+        clearFilterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                Controller.getInstance().addFilters(null, 0);
+                filteredByText.setText(getResources().getString(R.string.filtered_by));
+
+                moodList = Controller.getInstance().getAllMoodsFeed();
+                adapter = new MoodFeedAdapter(context, moodList);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+
+                changeClearFilterVisibility();
             }
         });
     }
 
-    // create an action bar button
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.my_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    // handle button activities
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.notificationButton) {
-            SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("username", "");
-            editor.apply();
-            Intent intent = new Intent(MoodFeedActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     protected void onStart() {
         super.onStart();
+        Log.d("ACTIV ST IS", "onStart");
 
-        //TODO: Get friends instead
-        //moodList = Controller.getInstance().getAllMoods();
+        changeClearFilterVisibility();
 
-        //TODO: JOSH, SEND ME AN UPDATED/REFRESHED/FILTERED MOODLIST control.get(moodList)
+        if (Controller.getInstance().getFilterOption() != 0) {
+            moodList = Controller.getInstance().getAllMoodsFeed();
+        }
 
-        adapter = new MoodAdapter(this, moodList);
+        adapter = new MoodFeedAdapter(this, moodList);
         recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    protected  void onResume() {
-        super.onResume();
-        //TODO: Get friends instead
-
-        //moodList = Controller.getInstance().getAllMoods();
         adapter.notifyDataSetChanged();
     }
 }

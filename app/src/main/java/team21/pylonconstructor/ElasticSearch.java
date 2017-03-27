@@ -295,15 +295,14 @@ public class ElasticSearch {
     }
 
     /***
-     * Accept a follow request and add it to following list of the requester and
-     * followers list of user
+     * Send a follow request
      * @param username, requester_name
      * @return true if accepted successfully
      * else otherwise
      */
-    public boolean sendRequests (String username, String requester_name){
+    public boolean sendRequests (String username, String requested_name){
         try{
-            Profile profile = getProfile(requester_name);
+            Profile profile = getProfile(requested_name);
             if(profile != null){
                 profile.addRequests(username);
                 if(updateProfile(profile)){
@@ -363,6 +362,93 @@ public class ElasticSearch {
             Log.i("Error", "Cannot get profile");
         }
         return false;
+    }
+
+    /**
+     *  Gets Moods from the followed users from Elastic Search Database for a given user
+     *
+     * @param user
+     * @return moodsList
+     */
+    public ArrayList<Mood> getfollowingmoods(Profile user) throws ExecutionException, InterruptedException {
+        ArrayList<String> following = user.getFollowing();
+        ArrayList<Mood> moodsList = new ArrayList<Mood>();
+        for(String username : following){
+            ElasticSearchController.GetFollowingMoodsTask getFollowingMoods = new ElasticSearchController.GetFollowingMoodsTask();
+            getFollowingMoods.execute(username);
+            Mood mood = getFollowingMoods.get();
+            Log.i("Mood", mood.getEmoji());
+            moodsList.add(mood);
+        }
+        return moodsList;
+    }
+
+
+    /**
+     *  Gets Moods from the followed users for the most recent week from the Elastic Search Database for a given user
+     *
+     * @param user
+     * @return mymoodsList
+     */
+    public ArrayList<Mood> getrecentweekmoodsfeed(Profile user) throws ExecutionException, InterruptedException {
+        ArrayList<String> following = user.getFollowing();
+        ArrayList<Mood> moodsList = new ArrayList<Mood>();
+        for(String username : following){
+            ElasticSearchController.FilterFeedRecentWeekMoods filterFeedRecentWeekMoods = new ElasticSearchController.FilterFeedRecentWeekMoods();
+            filterFeedRecentWeekMoods.execute(username);
+            Mood mood = filterFeedRecentWeekMoods.get();
+            Log.i("Mood", mood.getEmoji());
+            moodsList.add(mood);
+        }
+        return moodsList;
+    }
+
+    /**
+     * Filters moods based on a given emotional state from the followed users
+     * @param user
+     * @param state
+     * @return mymoodsList
+     */
+    public ArrayList<Mood> emotionalstatefilteredmoodsfeed (Profile user, String state) throws ExecutionException, InterruptedException{
+        ArrayList<String> following = user.getFollowing();
+        ArrayList<Mood> moodsList = new ArrayList<Mood>();
+        for(String username : following){
+            ElasticSearchController.FilterFeedEmotionalState filterFeedEmotionalState = new ElasticSearchController.FilterFeedEmotionalState();
+            filterFeedEmotionalState.execute(username, state);
+            try{
+                Mood mood = filterFeedEmotionalState.get();
+                moodsList.add(mood);
+                Log.i("Mood", mood.getEmoji());
+            }
+            catch (Exception e){
+                Log.i("Error", "Failed to Filter Moods objects for emotional state!");
+            }
+        }
+        return moodsList;
+    }
+
+    /**
+     * Filters moods based on a given Trigger/Reason from the followed users
+     * @param user
+     * @param state
+     * @return mymoodsList
+     */
+    public ArrayList<Mood> triggerfilteredmoodsfeed(Profile user, String state) throws ExecutionException, InterruptedException{
+        ArrayList<String> following = user.getFollowing();
+        ArrayList<Mood> moodsList = new ArrayList<Mood>();
+        for(String username : following){
+            ElasticSearchController.FilterFeedTrigger filterFeedTrigger = new ElasticSearchController.FilterFeedTrigger();
+            filterFeedTrigger.execute(username, state);
+            try{
+                Mood mood = filterFeedTrigger.get();
+                moodsList.add(mood);
+                Log.i("Mood", mood.getEmoji());
+            }
+            catch (Exception e){
+                Log.i("Error", "Failed to Filter Moods objects for emotional state!");
+            }
+        }
+        return moodsList;
     }
 
 }
