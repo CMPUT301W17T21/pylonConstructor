@@ -71,10 +71,6 @@ public class MoodFeedActivity extends MoodHistoryActivity
         elasticSearch = new ElasticSearch();
         profile = Controller.getInstance().getProfile();
         moodList = Controller.getInstance().getAllMoodsFeed();
-        Mood moodt = new Mood();
-        moodt.setEmoji("HAPPY");
-        moodt.setUser(profile);
-        moodList.add(moodt);
         adapter = new MoodFeedAdapter(this, moodList);
 
         Log.d("ACTIV ST IS", "OnCreate");
