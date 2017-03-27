@@ -35,30 +35,13 @@ public class AccountSettingsTest  {
     public ActivityTestRule<LoginActivity> rule = new ActivityTestRule<>(LoginActivity.class, true, true);
 
     /**
-     * Check to ensure logged in.
-     * If logged-in continue to test,
-     * Otherwise login.
-     */
-    private void login() {
-        try {
-            onView(withId(R.id.login_button)).check(matches(isDisplayed()));
-            onView(withId(R.id.userinp)).perform(typeText("William"),
-                    closeSoftKeyboard());
-            onView(withId(R.id.login_button)).perform(click());
-        } catch (AssertionFailedError e) {
-            //Logged in, so do nothing
-            return;
-        }
-    }
-
-    /**
      * Tests logout.
      * User logs out, and is returned to login screen.
      */
     @Test
     public void logoutTest() {
         //Login first
-        login();
+        new Login().logUserIn();
 
         //The next line of code is a modified version of the code from
         //  http://stackoverflow.com/questions/27527988/how-do-i-test-the-home-button-on-the-action-bar-with-espresso
@@ -72,7 +55,8 @@ public class AccountSettingsTest  {
         try {
             onView(withId(R.id.login_button)).check(matches(isDisplayed()));
         } catch (AssertionFailedError e) {
-            Log.i("Check Login:", "On wrong activity");
+            Log.i("LogoutTest:", "Not logged out!");
         }
     }
+
 }
