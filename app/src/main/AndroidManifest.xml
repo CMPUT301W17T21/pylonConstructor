@@ -3,6 +3,7 @@
     package="team21.pylonconstructor">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -21,6 +22,10 @@
         <activity android:name=".MoodFeedActivity" />
         <activity android:name=".FilterActivity" />
         <activity android:name=".MoodHistoryActivity"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA2MbCcDBz_FvUq7l51_BEZFrchuiXTGFM"/>
+
     </application>
 
 </manifest>
