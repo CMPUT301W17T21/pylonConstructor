@@ -22,9 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -170,8 +167,6 @@ public class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> 
         holder.emoji.setImageDrawable(emoticon);
 
 
-        // loading album cover using Glide library
-        // Glide.with(mContext).load(R.drawable.ic_action_close).into(holder.overflow);
 
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override

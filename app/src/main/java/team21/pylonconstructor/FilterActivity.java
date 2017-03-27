@@ -85,9 +85,9 @@ public class FilterActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
-        /* Set Custom App bar title, centered */
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.mood_feed_appbar_title_layout);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         byMood = (RadioButton) findViewById(R.id.filter_mood_radio_button);

@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,58 +41,47 @@ import java.util.Date;
  * @version 1.0
  */
 public class UpdateMoodActivity extends AppCompatActivity {
-    Button happyButton;
-    Button sadButton;
-    Button angryButton;
-    Button confusedButton;
-    Button disgustedButton;
-    Button scaredButton;
-    Button surpriseButton;
-    Button shamefulButton;
+    Button happyButton, sadButton, angryButton, confusedButton, disgustedButton,
+            scaredButton, surpriseButton, shamefulButton, cancelButton, addMoodButton;
+
+    ImageButton socialSituationButton, removePhotoButton, goToCameraButton;
+
     Bitmap imageBitmap;
     DatePicker datePicker;
+    ImageView selectedImage;
 
     String username;
-    //ElasticSearch elasticSearch = new ElasticSearch();
     Mood mood;
 
     private TextView selectedMoodTextView;
     private EditText triggerEditText;
-    ImageButton goToCameraButton;
-
-    // should we leave this out for now??
-    ImageButton goToGalleryButton;
 
     Toast toast;
     Context context;
 
-
-    ImageButton socialSituationButton;
-
     CheckBox locationCheckBox;
-    Button cancelButton;
-    Button addMoodButton;
+
+    private boolean hasImg;
 
 
 
     @Override
     /** Called when the activity is first created. */
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_mood);
         selectedMoodTextView = (TextView) findViewById(R.id.selected_mood);
         triggerEditText = (EditText) findViewById(R.id.message);
         datePicker = (DatePicker) findViewById(R.id.datePicker);
+        selectedImage = (ImageView) findViewById(R.id.selected_photo);
+        hasImg = false;
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         Bitmap img;
         final int edt = getIntent().getExtras().getInt("EDIT");
 
-
-          /* Set Custom App bar title, centered */
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.update_mood_layout);
 
         username = getIntent().getStringExtra("username");
         mood = new Mood(Controller.getInstance().getProfile());
@@ -97,10 +89,6 @@ public class UpdateMoodActivity extends AppCompatActivity {
         if (id!= null){
             mood.setId(id);
         }
-
-
-        //TODO: IMPLEMENT THE MOOD OPTIONS & BUTTONS HERE that are laid out in activity_update_mood.xml
-
 
         if (edt == 1) {
             String emoj = getIntent().getExtras().getString("emoj");
@@ -122,6 +110,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
             if (img != null) {
                 try {
                     mood.setImage(img);
+                    selectedImage.setImageBitmap(img);
                 } catch (ImageTooLargeException e) {
                     /***
                      * REFACTORING
@@ -130,13 +119,10 @@ public class UpdateMoodActivity extends AppCompatActivity {
                      */
                 }
             }
-
-
-
+            removePhotoButton = (ImageButton) findViewById(R.id.remove_photo_button);
+            hasImg = hasImage(selectedImage);
+            changeRemovePhotoVisibility(hasImg);
         }
-
-
-
 
         happyButton = (Button) findViewById(R.id.happy_button);
         happyButton.setOnClickListener(new View.OnClickListener() {
@@ -233,12 +219,13 @@ public class UpdateMoodActivity extends AppCompatActivity {
 
         });
 
-        goToGalleryButton = (ImageButton) findViewById(R.id.browse_device_for_image_button);
-        goToGalleryButton.setOnClickListener(new View.OnClickListener() {
+        removePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: goto gallery
-
+                selectedImage.setImageDrawable(null);
+                imageBitmap = null;
+                hasImg = hasImage(selectedImage);
+                changeRemovePhotoVisibility(hasImg);
             }
         });
 
@@ -250,7 +237,6 @@ public class UpdateMoodActivity extends AppCompatActivity {
 
             }
         });
-
 
         locationCheckBox = (CheckBox) findViewById(R.id.checkBox3);
         locationCheckBox.setOnClickListener(new View.OnClickListener() {
@@ -276,7 +262,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
                 String trigger = triggerEditText.getText().toString();
                 boolean validMood = true;
 
-                if (mood.getEmoji()== null) {
+                if (mood.getEmoji() == null) {
                     validMood = false;
                     context = getApplicationContext();
                     CharSequence text = "No mood selected. Please select a mood";
@@ -303,17 +289,17 @@ public class UpdateMoodActivity extends AppCompatActivity {
                     toast.show();
                 }
 
-                if (imageBitmap != null) {
-                    try {
-                        mood.setImage(imageBitmap);
-                    } catch (ImageTooLargeException e) {
-                        validMood = false;
-                        CharSequence text = "Image is too large..";
-                        int duration = Toast.LENGTH_SHORT;
-                        toast = Toast.makeText(context, text, duration);
-                        toast.show();
-                    }
+                try {
+                    mood.setImage(imageBitmap);
+                } catch (ImageTooLargeException e) {
+                    validMood = false;
+                    CharSequence text = "Image is too large..";
+                    int duration = Toast.LENGTH_SHORT;
+                    toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
+
+
                 if (validMood){
                     if( edt == 1){
                         Controller.getInstance().editMood(mood);
@@ -343,7 +329,9 @@ public class UpdateMoodActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             imageBitmap = (Bitmap) extras.get("data");
-
+            selectedImage.setImageBitmap(imageBitmap);
+            hasImg = hasImage(selectedImage);
+            changeRemovePhotoVisibility(hasImg);
 
         }
     }
@@ -362,5 +350,33 @@ public class UpdateMoodActivity extends AppCompatActivity {
         calendar.set(year, month, day);
 
         return calendar.getTime();
+    }
+
+
+    /**
+     * Checks if inputted ImageView contains an image.
+     * From http://stackoverflow.com/questions/9113895/how-to-check-if-an-imageview-is-attached-with-image-in-android
+     * accessed on 03-26-2017 by rperez
+     * @param view
+     * @return whether ImageView is empty
+     */
+    private boolean hasImage(@NonNull ImageView view) {
+        Drawable drawable = view.getDrawable();
+        boolean hasImage = (drawable != null);
+
+        if (hasImage && (drawable instanceof BitmapDrawable)) {
+            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
+        }
+
+        return hasImage;
+    }
+
+    private void changeRemovePhotoVisibility(boolean hasImg) {
+        if (hasImg) {
+            removePhotoButton.setVisibility(View.VISIBLE); //To set visible
+        }
+        else {
+            removePhotoButton.setVisibility(View.GONE); //To set gone
+        }
     }
 }

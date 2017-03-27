@@ -10,9 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
-//TODO: logic of how to check if user is logged in...
-
 /**
  * This is the login activity.
  * <p>
