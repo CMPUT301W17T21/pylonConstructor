@@ -7,7 +7,7 @@
     <!-- Icon made by Freepik from www.flaticon.com -->
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/smile"
+        android:icon="@drawable/ic_noun_654393_cc"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
