@@ -295,15 +295,14 @@ public class ElasticSearch {
     }
 
     /***
-     * Accept a follow request and add it to following list of the requester and
-     * followers list of user
+     * Send a follow request
      * @param username, requester_name
      * @return true if accepted successfully
      * else otherwise
      */
-    public boolean sendRequests (String username, String requester_name){
+    public boolean sendRequests (String username, String requested_name){
         try{
-            Profile profile = getProfile(requester_name);
+            Profile profile = getProfile(requested_name);
             if(profile != null){
                 profile.addRequests(username);
                 if(updateProfile(profile)){

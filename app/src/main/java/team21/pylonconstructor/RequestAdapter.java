@@ -30,11 +30,9 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
 
     private Context mContext;
     private List<String> requestList;
-    private team21.pylonconstructor.RequestAdapter adapter;
+    private RequestAdapter adapter;
     Profile profile = Controller.getInstance().getProfile();
 
-    //Refactored this to include Locale.
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa", Locale.US);
     ElasticSearch elasticSearch = new ElasticSearch();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -71,7 +69,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final int pos = position;
-        final String request = requestList.get(position);
+        final String request = requestList.get(pos);
         holder.title.setText(request);
 
 
@@ -79,8 +77,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 elasticSearch.acceptRequests(profile.getUserName(), request);
-                requestList.clear();
-                requestList = elasticSearch.getFollowRequests(profile.getUserName());
+                requestList.remove(pos);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -88,8 +85,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.MyViewHo
             @Override
             public void onClick(View v) {
                 elasticSearch.declineRequests(profile.getUserName(), request);
-                requestList.clear();
-                requestList = elasticSearch.getFollowRequests(profile.getUserName());
+                requestList.remove(pos);
                 adapter.notifyDataSetChanged();
             }
         });

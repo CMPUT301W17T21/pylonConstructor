@@ -40,6 +40,12 @@ public class ViewRequestsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected  void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -48,4 +54,5 @@ public class ViewRequestsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

@@ -215,23 +215,26 @@ public class MoodHistoryActivity extends AppCompatActivity
                                         }
 
                                         if (usr == null) {
-                                            text = "User is not found!";
+                                            text = "User not found!";
                                             toast = Toast.makeText(ctxt, text, duration);
                                             toast.show();
                                             Log.i("Result:", "User not found!");
                                         }
 
                                         else {
-                                            Log.i("Result:", "User IS found!");
+                                            Log.i("Result:", "User is found!");
                                             ArrayList<String> following = profile.getFollowing();
 
-                                            if (following.contains(result)) {
+                                            if(result.equals(profile.getUserName())){
+                                                text = "You cannot follow ".concat(usr.getUserName().concat("!"));
+                                                toast = Toast.makeText(ctxt, text, duration);
+                                                toast.show();
+                                            }
+                                            else if (following.contains(result)) {
                                                 text = "You are already following ".concat(usr.getUserName());
                                                 toast = Toast.makeText(ctxt, text, duration);
                                                 toast.show();
-
                                             }
-
                                             else {
                                                 text = "You have sent a follow request to ".concat(usr.getUserName());
                                                 elasticSearch.sendRequests(profile.getUserName(), usr.getUserName());

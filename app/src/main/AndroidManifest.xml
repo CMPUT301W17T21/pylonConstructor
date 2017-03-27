@@ -38,9 +38,11 @@
             android:name=".ViewFollowersActivity"
             android:label="@string/title_followers" />
         <activity
+            android:name=".ViewRequestsActivity"
+            android:label="Follow Requests" />
+        <activity
             android:name=".NotificationsActivity"
             android:label="@string/title_notifications" />
-        <activity android:name=".ViewRequestsActivity"></activity>
     </application>
 
 </manifest>
