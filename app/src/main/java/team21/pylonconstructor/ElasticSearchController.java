@@ -575,6 +575,37 @@ public class ElasticSearchController {
     }
 
     /**
+     * A function which gets the latest Notification from elastic search
+     */
+    public static class GetNotificationTask extends AsyncTask<String, Void, Notification> {
+        @Override
+        protected Notification doInBackground(String... search_parameters) {
+            verifySettings();
+            Notification notification = null;
+            // Search for given Username
+            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\": {\"query_string\": {\"query\": \""+search_parameters[0]+"\",\"fields\": [\"user\"]}},\"filter\": {\"range\" : {\"date\": {\"gte\": \"now-1d/d\"}}},\"size\" : \"1\"}}}";
+            Search search = new Search.Builder(query)
+                    .addIndex("g21testing").addType("Notification").build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if(result.isSucceeded()) {
+                    notification = result.getSourceAsObject(Notification.class);
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any Profiles that matched!");
+                }
+            }
+            catch (Exception e) {
+                notification = null;
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+                //throw new ConnectionPendingException();
+            }
+            return notification;
+        }
+    }
+
+    /**
      * A function that sets up the communication with CMPUT 301 server
      */
     public static void verifySettings() {
