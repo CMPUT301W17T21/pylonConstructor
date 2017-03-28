@@ -99,7 +99,6 @@ public class MoodFeedActivity extends MoodHistoryActivity
             ActionBar.LayoutParams params = new
                     ActionBar.LayoutParams(Gravity.CENTER);
 
-            /*
             // Set the on click listener for the title
             customTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,7 +110,7 @@ public class MoodFeedActivity extends MoodHistoryActivity
                     startActivity(intent);
                 }
             });
-            */
+
             // Apply the custom view
             actionBar.setCustomView(customView, params);
         }

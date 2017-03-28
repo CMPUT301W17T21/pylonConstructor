@@ -25,7 +25,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class UpdateMoodTest {
 
     @Rule
-    public ActivityTestRule<MoodFeedActivity> rule = new ActivityTestRule<>(MoodFeedActivity.class);
+    public ActivityTestRule<LoginActivity> rule = new ActivityTestRule<>(LoginActivity.class);
 
     /**
      *  Custom click function for clicking invisible buttons
@@ -39,7 +39,10 @@ public class UpdateMoodTest {
      * Test Adding new mood
      */
     @Test
-    public void checkMoodOnly() {
+    public void checkMood() {
+        //Login first
+        new Login().logUserIn();
+
         onView(withId(R.id.fab_plus)).perform(click());
         onView(withId(R.id.fab_updateMood)).perform(customClick());
         onView(withId(R.id.happy_button)).perform(click());
@@ -53,6 +56,9 @@ public class UpdateMoodTest {
      */
     @Test
     public void withTrigger() {
+        //Login first
+        new Login().logUserIn();
+
         onView(withId(R.id.fab_plus)).perform(click());
         onView(withId(R.id.fab_updateMood)).perform(customClick());
         onView(withId(R.id.happy_button)).perform(click());
@@ -83,6 +89,9 @@ public class UpdateMoodTest {
 
     //TODO Check ChangeDate
     public void changeDate() {
+        //Login first
+        new Login().logUserIn();
+
         onView(withId(R.id.fab_plus)).perform(click());
         onView(withId(R.id.fab_updateMood)).perform(customClick());
         onView(withId(R.id.happy_button)).perform(click());
@@ -92,6 +101,9 @@ public class UpdateMoodTest {
 
     //TODO Check Change Time
     public void changeTime() {
+        //Login first
+        new Login().logUserIn();
+
         onView(withId(R.id.fab_plus)).perform(click());
         onView(withId(R.id.fab_updateMood)).perform(customClick());
         onView(withId(R.id.happy_button)).perform(click());
