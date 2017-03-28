@@ -51,13 +51,12 @@
 
             <ImageView
                 android:id="@+id/thumbnail"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:layout_below="@id/trigger"
                 android:layout_centerHorizontal="true"
                 android:paddingBottom="5sp"
-                />
+                android:layout_width="350dp" />
 
 
             <ImageView
