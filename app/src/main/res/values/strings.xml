@@ -19,7 +19,25 @@
     <string name="empty_mood">(Please select a mood)</string>
     <string name="history_edit_mood">Edit mood</string>
     <string name="history_delete_mood">Delete mood</string>
+    <string name="filter_mood_select_filter">by Mood</string>
+    <string name="filter_trigger_select_filter">by Trigger</string>
+    <string name="filter_week_select_filter">Only moods from past week</string>
+    <string name="clear_filter_button_label">CLEAR FILTER</string>
+    <string name="filtered_by">Filtered by: </string>
+    <string name="title_activity_mood_history2">MoodHistoryActivity2</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_mood_feed2">MoodFeedActivity2</string>
+    <string name="title_activity_view_my_followers">ViewMyFollowersActivity</string>
+    <string name="title_user_settings">Account Settings</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_followers">Followers</string>
+    <string name="title_following">Following</string>
+    <string name="title_filter">Filter</string>
+    <string name="title_update_mood">Update Mood</string>
 
 
 

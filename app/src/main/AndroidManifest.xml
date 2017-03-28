@@ -4,23 +4,61 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Icon made by Freepik from www.flaticon.com -->
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_noun_654393_cc"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UpdateMoodActivity" />
-        <activity android:name=".MoodFeedActivity" />
-        <activity android:name=".FilterActivity" />
-        <activity android:name=".MoodHistoryActivity"></activity>
+        <activity
+            android:name=".UpdateMoodActivity"
+            android:label="@string/title_update_mood"
+            />
+        <activity
+            android:name=".FilterActivity"
+            android:label="@string/title_filter"
+            />
+        <activity
+            android:name=".MoodHistoryActivity"
+            android:label="@string/title_activity_mood_history2"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
+            android:name=".MoodFeedActivity"
+            android:label="@string/title_activity_mood_feed2"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity
+            android:name=".ViewFollowingActivity"
+            android:label="@string/title_following"
+            />
+        <activity
+            android:name=".UserSettingsActivity"
+            android:label="@string/title_user_settings"
+            />
+        <activity
+            android:name=".ViewFollowersActivity"
+            android:label="@string/title_followers"
+            />
+        <activity
+            android:name=".ViewRequestsActivity"
+            android:label="Follow Requests"
+            />
+        <activity
+            android:name=".NotificationsActivity"
+            android:label="@string/title_notifications"
+            />
     </application>
 
 </manifest>
