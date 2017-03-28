@@ -458,10 +458,8 @@ public class ElasticSearchController {
             Mood moods = new Mood();
 
             // Most recent week moods arranged in reverse Chronological order
-            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"filtered\":{\"query\":{\"multi_match\":{\"query\":\""+ search_parameters[0]+"\",\"fields\":[\"user.userName\"]}},\"filter\":{\"range\":{\"date\":{\"gte\":\"now-7d/d\"}}},\"size\":\"1\"}}}";
-
+            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\": {\"query_string\": {\"query\": \""+search_parameters[0]+"\",\"fields\": [\"user.userName\"]}},\"filter\": {\"range\" : {\"date\": {\"gte\": \"now-7d/d\"}}},\"size\" : \"1\"}}}";
             Search search = new Search.Builder(query).addIndex("g21testing").addType("Mood").build();
-
             try {
                 SearchResult result = client.execute(search);
                 if(result.isSucceeded()){

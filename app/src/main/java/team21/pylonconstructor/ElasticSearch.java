@@ -403,8 +403,10 @@ public class ElasticSearch {
             ElasticSearchController.GetFollowingMoodsTask getFollowingMoods = new ElasticSearchController.GetFollowingMoodsTask();
             getFollowingMoods.execute(username);
             Mood mood = getFollowingMoods.get();
-            Log.i("Mood", mood.getEmoji());
-            moodsList.add(mood);
+            if (mood != null) {
+                Log.i("Mood", mood.getEmoji());
+                moodsList.add(mood);
+            }
         }
         return moodsList;
     }
@@ -419,12 +421,14 @@ public class ElasticSearch {
     public ArrayList<Mood> getrecentweekmoodsfeed(Profile user) throws ExecutionException, InterruptedException {
         ArrayList<String> following = user.getFollowing();
         ArrayList<Mood> moodsList = new ArrayList<Mood>();
-        for(String username : following){
+        for(String username : following) {
             ElasticSearchController.FilterFeedRecentWeekMoods filterFeedRecentWeekMoods = new ElasticSearchController.FilterFeedRecentWeekMoods();
             filterFeedRecentWeekMoods.execute(username);
             Mood mood = filterFeedRecentWeekMoods.get();
-            Log.i("Mood", mood.getEmoji());
-            moodsList.add(mood);
+            if (mood != null) {
+                Log.i("Mood", mood.getEmoji());
+                moodsList.add(mood);
+            }
         }
         return moodsList;
     }
@@ -443,8 +447,10 @@ public class ElasticSearch {
             filterFeedEmotionalState.execute(username, state);
             try{
                 Mood mood = filterFeedEmotionalState.get();
-                moodsList.add(mood);
-                Log.i("Mood", mood.getEmoji());
+                if (mood != null) {
+                    Log.i("Mood", mood.getEmoji());
+                    moodsList.add(mood);
+                }
             }
             catch (Exception e){
                 Log.i("Error", "Failed to Filter Moods objects for emotional state!");
@@ -467,8 +473,10 @@ public class ElasticSearch {
             filterFeedTrigger.execute(username, state);
             try{
                 Mood mood = filterFeedTrigger.get();
-                moodsList.add(mood);
-                Log.i("Mood", mood.getEmoji());
+                if (mood != null) {
+                    Log.i("Mood", mood.getEmoji());
+                    moodsList.add(mood);
+                }
             }
             catch (Exception e){
                 Log.i("Error", "Failed to Filter Moods objects for emotional state!");
