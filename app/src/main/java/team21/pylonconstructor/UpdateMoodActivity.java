@@ -111,6 +111,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
             if (img != null) {
                 try {
                     mood.setImage(img);
+                    imageBitmap = img;
                     selectedImage.setImageBitmap(img);
                 } catch (ImageTooLargeException e) {
                     /***

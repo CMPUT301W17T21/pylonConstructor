@@ -71,12 +71,20 @@ class Profile {
     public ArrayList<String> getFollowers() {
         return followers;
     }
+    public void removeFollower(String name) {
+        followers.remove(name);
+        Log.i("DELETED USER FOLLOWING", name);
+    }
 
     public void addFollowing(String follow) {
         following.add(follow);
     }
     public ArrayList<String> getFollowing() {
         return following;
+    }
+    public void removeFollowing(String name) {
+        following.remove(name);
+        Log.i("DELETED USER FOLLOWING", name);
     }
 
 }

@@ -298,4 +298,11 @@ public class MoodFeedActivity extends MoodHistoryActivity
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
+
+    @Override
+    protected  void onResume() {
+        super.onResume();
+        Log.d("ACTIV ST IS", "onResume");
+        adapter.notifyDataSetChanged();
+    }
 }

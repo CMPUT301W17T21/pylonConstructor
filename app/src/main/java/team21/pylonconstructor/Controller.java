@@ -163,7 +163,6 @@ public class Controller {
     }
 
     ArrayList<Mood> getAllMoodsFeed() {
-        this.update();
         try {
 
             ArrayList<Mood> received = new ArrayList<>();

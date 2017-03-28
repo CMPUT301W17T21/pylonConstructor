@@ -190,7 +190,7 @@ public class ElasticSearch {
             try {
                 p = getProfile(profile.getUserName());
                 ElasticSearchController.DeleteProfileTask deleteProfileTask = new ElasticSearchController.DeleteProfileTask();
-                deleteProfileTask.execute(profile);
+                deleteProfileTask.execute(p);
                 try {
                     deleteProfileTask.get();
                     return true;
@@ -317,6 +317,32 @@ public class ElasticSearch {
     }
 
     /***
+     * Accept a follow request and add it to following list of the requester and
+     * followers list of user
+     * @param username, requester_name
+     * @return true if accepted successfully
+     * else otherwise
+     */
+    public boolean unfollowUser (String username, String requested_name){
+        try{
+            Profile userprofile = getProfile(username);
+            if(userprofile != null){
+                userprofile.removeFollowing(requested_name);
+                Profile requestedprofile = getProfile(requested_name);
+                requestedprofile.removeFollower(username);
+                if(updateProfile(userprofile) && updateProfile(requestedprofile)){
+                    return true;
+                }
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Cannot get profile");
+        }
+        return false;
+    }
+
+
+    /***
      * Decline a follow request
      * @param username, requester_name
      * @return true if declined successfully,
@@ -377,8 +403,10 @@ public class ElasticSearch {
             ElasticSearchController.GetFollowingMoodsTask getFollowingMoods = new ElasticSearchController.GetFollowingMoodsTask();
             getFollowingMoods.execute(username);
             Mood mood = getFollowingMoods.get();
-            Log.i("Mood", mood.getEmoji());
-            moodsList.add(mood);
+            if (mood != null) {
+                Log.i("Mood", mood.getEmoji());
+                moodsList.add(mood);
+            }
         }
         return moodsList;
     }
@@ -393,12 +421,14 @@ public class ElasticSearch {
     public ArrayList<Mood> getrecentweekmoodsfeed(Profile user) throws ExecutionException, InterruptedException {
         ArrayList<String> following = user.getFollowing();
         ArrayList<Mood> moodsList = new ArrayList<Mood>();
-        for(String username : following){
+        for(String username : following) {
             ElasticSearchController.FilterFeedRecentWeekMoods filterFeedRecentWeekMoods = new ElasticSearchController.FilterFeedRecentWeekMoods();
             filterFeedRecentWeekMoods.execute(username);
             Mood mood = filterFeedRecentWeekMoods.get();
-            Log.i("Mood", mood.getEmoji());
-            moodsList.add(mood);
+            if (mood != null) {
+                Log.i("Mood", mood.getEmoji());
+                moodsList.add(mood);
+            }
         }
         return moodsList;
     }
@@ -417,8 +447,10 @@ public class ElasticSearch {
             filterFeedEmotionalState.execute(username, state);
             try{
                 Mood mood = filterFeedEmotionalState.get();
-                moodsList.add(mood);
-                Log.i("Mood", mood.getEmoji());
+                if (mood != null) {
+                    Log.i("Mood", mood.getEmoji());
+                    moodsList.add(mood);
+                }
             }
             catch (Exception e){
                 Log.i("Error", "Failed to Filter Moods objects for emotional state!");
@@ -441,14 +473,36 @@ public class ElasticSearch {
             filterFeedTrigger.execute(username, state);
             try{
                 Mood mood = filterFeedTrigger.get();
-                moodsList.add(mood);
-                Log.i("Mood", mood.getEmoji());
+                if (mood != null) {
+                    Log.i("Mood", mood.getEmoji());
+                    moodsList.add(mood);
+                }
             }
             catch (Exception e){
                 Log.i("Error", "Failed to Filter Moods objects for emotional state!");
             }
         }
         return moodsList;
+    }
+
+
+    /**
+     * Adds a notification to the Elastic Search Database
+     * @param notification
+     * @return true if the profile was successfully added
+     * false if unsuccessful
+     */
+    public boolean addNotification(Notification notification){
+        ElasticSearchController.AddNotificationTask addNotificationTask = new ElasticSearchController.AddNotificationTask();
+        addNotificationTask.execute(notification);
+        try {
+            addNotificationTask.get();
+            return true;
+        }
+        catch (Exception e){
+            Log.i("Error", "Failed to add mood");
+            return false;
+        }
     }
 
 }

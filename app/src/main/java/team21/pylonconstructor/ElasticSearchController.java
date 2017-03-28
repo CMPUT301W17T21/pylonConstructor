@@ -458,10 +458,8 @@ public class ElasticSearchController {
             Mood moods = new Mood();
 
             // Most recent week moods arranged in reverse Chronological order
-            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"filtered\":{\"query\":{\"multi_match\":{\"query\":\""+ search_parameters[0]+"\",\"fields\":[\"user.userName\"]}},\"filter\":{\"range\":{\"date\":{\"gte\":\"now-7d/d\"}}},\"size\":\"1\"}}}";
-
+            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\": {\"query_string\": {\"query\": \""+search_parameters[0]+"\",\"fields\": [\"user.userName\"]}},\"filter\": {\"range\" : {\"date\": {\"gte\": \"now-7d/d\"}}},\"size\" : \"1\"}}}";
             Search search = new Search.Builder(query).addIndex("g21testing").addType("Mood").build();
-
             try {
                 SearchResult result = client.execute(search);
                 if(result.isSucceeded()){
@@ -544,6 +542,35 @@ public class ElasticSearchController {
             }
 
             return moods;
+        }
+    }
+
+
+    /**
+     *  A function which adds a new notification to elastic search
+     */
+    public static class AddNotificationTask extends AsyncTask<Notification, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Notification... notifications) {
+            verifySettings();
+
+            Index index = new Index.Builder(notifications[0]).index("g21testing").type("Notification").build();
+            try {
+                // Execute the query
+                DocumentResult result = client.execute(index);
+                if (result.isSucceeded()) {
+                    notifications[0].setId(result.getId());
+                    Log.i("Success", "Added your profile!");
+                    return true;
+                } else {
+                    Log.i("Error", "Elastic search was not able to add profile!");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "The application failed to build and add profile");
+                return false;
+            }
         }
     }
 
