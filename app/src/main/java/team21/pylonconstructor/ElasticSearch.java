@@ -485,4 +485,24 @@ public class ElasticSearch {
         return moodsList;
     }
 
+
+    /**
+     * Adds a notification to the Elastic Search Database
+     * @param notification
+     * @return true if the profile was successfully added
+     * false if unsuccessful
+     */
+    public boolean addNotification(Notification notification){
+        ElasticSearchController.AddNotificationTask addNotificationTask = new ElasticSearchController.AddNotificationTask();
+        addNotificationTask.execute(notification);
+        try {
+            addNotificationTask.get();
+            return true;
+        }
+        catch (Exception e){
+            Log.i("Error", "Failed to add mood");
+            return false;
+        }
+    }
+
 }

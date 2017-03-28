@@ -545,6 +545,35 @@ public class ElasticSearchController {
         }
     }
 
+
+    /**
+     *  A function which adds a new notification to elastic search
+     */
+    public static class AddNotificationTask extends AsyncTask<Notification, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Notification... notifications) {
+            verifySettings();
+
+            Index index = new Index.Builder(notifications[0]).index("g21testing").type("Notification").build();
+            try {
+                // Execute the query
+                DocumentResult result = client.execute(index);
+                if (result.isSucceeded()) {
+                    notifications[0].setId(result.getId());
+                    Log.i("Success", "Added your profile!");
+                    return true;
+                } else {
+                    Log.i("Error", "Elastic search was not able to add profile!");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "The application failed to build and add profile");
+                return false;
+            }
+        }
+    }
+
     /**
      * A function that sets up the communication with CMPUT 301 server
      */
