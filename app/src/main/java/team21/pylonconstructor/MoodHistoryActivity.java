@@ -19,7 +19,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -175,6 +174,16 @@ public class MoodHistoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 setResult(RESULT_OK);
                 Intent intent = new Intent(MoodHistoryActivity.this, FilterActivity.class);
+                intent.putExtra("Username", profile.getUserName());
+                startActivity(intent);
+            }
+        });
+
+        fab_goToMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                Intent intent = new Intent(MoodHistoryActivity.this, MapFragmentActivity.class);
                 intent.putExtra("Username", profile.getUserName());
                 startActivity(intent);
             }
