@@ -226,13 +226,16 @@ class Mood {
     }
 
 
-    public LatLng getLocation(Location location) {
-        LatLng newLatLng = new LatLng(0, 0);
+    public Location getLocation() {
+        /*LatLng newLatLng = new LatLng(0, 0);
         if (location != null) {
             newLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         }
-        return newLatLng;
+        return newLatLng;*/
+        return this.location;
     }
+
+    //TODO: @jeff make a latlng getter and setter?
 
     public int getImageSize() {
         return 0;

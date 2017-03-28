@@ -23,7 +23,6 @@
         <activity android:name=".FilterActivity" />
         <activity android:name=".MoodHistoryActivity"/>
         <activity android:name=".MapFragmentActivity"/>
-        <activity android:name=".MapActivity"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD66aCTN5ooXfHJSjbVb6YrXDWJY5Z_W1k"/>

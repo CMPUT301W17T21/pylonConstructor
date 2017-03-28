@@ -76,6 +76,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
     ImageButton socialSituationButton;
 
     CheckBox locationCheckBox;
+    Boolean addLocation;
 
     Button cancelButton;
     Button addMoodButton;
@@ -255,17 +256,10 @@ public class UpdateMoodActivity extends AppCompatActivity {
         locationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //TODO: LOCATION INCLUDE (p5)
-                context = getApplicationContext();
-
                 if (isChecked) {
-                    /**
-                     * from: https://developers.google.com/maps/documentation/android-api/location
-                     * accessed on 20/03/2017
-                     */
-                    mood.setLocation(context);
+                    addLocation = true;
                 } else {
-                    //mood.setLocation(null);
+                    addLocation = false;
                 }
             }});
 
@@ -322,6 +316,10 @@ public class UpdateMoodActivity extends AppCompatActivity {
                         toast = Toast.makeText(context, text, duration);
                         toast.show();
                     }
+                }
+
+                if (addLocation) {
+                    mood.setLocation(context);
                 }
 
                 if (validMood) {

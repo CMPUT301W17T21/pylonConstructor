@@ -1,37 +1,30 @@
 package team21.pylonconstructor;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.os.AsyncTask;
+import android.location.Location;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by jeffreyroutledge on 2017-03-25.
  */
 
 public class MapFragmentActivity extends FragmentActivity implements OnMapReadyCallback {
-    private GoogleMap mMap;
+    //private GoogleMap mMap;
+    private String username;
+    private Profile profile;
+    private ArrayList<Mood> moodList;
+    private Location location;
+    private LatLng latlng;
+    private ElasticSearch elasticSearch = new ElasticSearch();
+    private Mood mood;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,9 +37,22 @@ public class MapFragmentActivity extends FragmentActivity implements OnMapReadyC
 
     @Override
     public void onMapReady(GoogleMap map) {
+        username = getIntent().getStringExtra("Username");
+        profile = elasticSearch.getProfile(username);
+        moodList = elasticSearch.getmymoods(profile);
+
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))
                 .title("Marker"));
+
+        for (Mood mood : moodList) {
+            location = mood.getLocation();
+            latlng = new LatLng(location.getLatitude(), location.getLongitude());
+            map.addMarker(new MarkerOptions()
+                    .position(latlng)
+                    .title(mood.getId()));
+        }
+
     }
         /**MarkerOptions markerOptions = new MarkerOptions()
                 .position(newLatLng)
