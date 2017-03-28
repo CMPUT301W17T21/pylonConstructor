@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        android:choiceMode="none"
+        <item
+            android:id="@+id/view_followers"
+            android:icon="@drawable/ic_people_followers_24dp"
+            android:title="My Followers" />
+        <item
+            android:id="@+id/view_following"
+            android:icon="@drawable/ic_contacts_following_24dp"
+            android:title="Following" />
+
+        <item
+            android:id="@+id/follow_requests"
+            android:icon="@drawable/ic_request_follow_24dp"
+            android:title="Follow Requests" />
+
+        <item
+            android:id="@+id/account_settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Account Settings" />
+
+    </group>
+
+</menu>

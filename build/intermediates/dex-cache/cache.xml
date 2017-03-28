@@ -3,6 +3,7 @@
 
     <item
         is-multidex="true"
+<<<<<<< HEAD
         jar="/Users/jeffreyroutledge/.android/build-cache/a0c7bd4c70856b63e5e425a8c0a877ad6c869c48/output/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -90,11 +91,20 @@
         revision="25.0.2"
         sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
         <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_9ebda7bb33806a1e4d723028d95bc82d0b338ab3/classes.dex" />
+=======
+        jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2dbfbe95f839c6b123e5f5ff6a208b86e3d88f82">
+        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_e85aa1b95538e02ef7fc855b7ff5596ccc2e7b70/classes.dex" />
+>>>>>>> master
     </item>
     <item
         is-multidex="true"
         jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/src/include/jest-droid-2.0.1-SNAPSHOT.jar"
         jumboMode="true"
+<<<<<<< HEAD
         optimize="true"
         revision="25.0.2"
         sha1="e1199e84d8d3907b8262330dd6976ce04d37f6de">
@@ -225,6 +235,21 @@
         revision="25.0.2"
         sha1="152de8da301561dcb0946471697a420d8f7a68c5">
         <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c16dfa59b5ca0aece1818ec3319731b7847d4a25/classes.dex" />
+=======
+        optimize="true"
+        revision="25.0.2"
+        sha1="e1199e84d8d3907b8262330dd6976ce04d37f6de">
+        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/2/jest-droid-2.0.1-SNAPSHOT_53a07ada7184bdb9913ac49ef9ac4f978e0d9968/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_99825d4d88700f2cbbe9504ddc6a0191095e5492/classes.dex" />
+>>>>>>> master
     </item>
 
 </items>

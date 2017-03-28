@@ -8,4 +8,21 @@
     <color name="fab3_color">#F44336</color>
     <color name="fab4_color">#00C853</color>
 
+    <color name="happy_color">#FFF176</color>
+    <color name="sad_color">#5C6BC0</color>
+    <color name="angry_color">#EF5350</color>
+    <color name="confused_color">#F06292</color>
+    <color name="disgusted_color">#8BC34A</color>
+    <color name="scared_color">#7E57C2</color>
+    <color name="surprised_color">#F57C00</color>
+    <color name="shameful_color">#64B5F6</color>
+
+
+
+
+
+
+
+
+
 </resources>

@@ -23,13 +23,8 @@ import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
-import org.apache.commons.lang3.SystemUtils;
-
 import java.io.ByteArrayOutputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 
 import java.util.Date;
 
@@ -78,7 +73,6 @@ class Mood {
         this.id = id;
     }
 
-    // RYAN added null default values
     public Mood() {
         this.emoji = null;
         this.trigger = null;
@@ -93,16 +87,6 @@ class Mood {
     public String getEmoji() {
         return emoji;
     }
-
-    /*public void setDate(String date) {
-        DateFormat dateformat = new SimpleDateFormat("DD MM YYYY");  //TODO: decide on date format.
-
-        try {
-            this.date = dateformat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace(); //TODO: Actually handle this.
-        }
-    }*/
 
     public void setDate(Date date) {
         this.date = date;
@@ -144,7 +128,6 @@ class Mood {
     }
 
 
-    //TODO: USER PROFILE
     public void setUser(Profile user) {
         this.user = user;
     }
@@ -153,9 +136,17 @@ class Mood {
         return user;
     }
 
+<<<<<<< HEAD
     //TODO: IMAGES
     public void setImage(Bitmap bmp) throws ImageTooLargeException {
+=======
+    public void setImage(Bitmap bmp)  throws ImageTooLargeException{
+>>>>>>> master
 
+        if (bmp == null) {
+            this.image = null;
+            return;
+        }
 
         String encoded = encodeToBase64(bmp, Bitmap.CompressFormat.JPEG, 100);
 
@@ -166,10 +157,12 @@ class Mood {
         } else {
             this.image = encoded;
         }
+
     }
 
     /**
-     *     returns the image decoded back to a bitmap.
+     * returns the image decoded back to a bitmap.
+     * @return bitmap, or null if stored image is null.
      */
     public Bitmap getImage() {
         if (this.image != null) {
@@ -242,6 +235,20 @@ class Mood {
     }
 
 
+    //http://stackoverflow.com/questions/185937/overriding-the-java-equals-method-quirk
+    //March 17th 2017, Joshua did this.
+    //Don't think we'l' have issues but this looks really safe in case.
+    @Override
+    public boolean equals(Object other) {
+        if (this.id == null) return false;
+        if (other == null) return false;
+        if (other == this) return true;
+        if (!(other instanceof Mood)) return false;
+        if (((Mood) other).getId() == null) return false;
+        if (this.getId().equals(((Mood) other).getId())) return true;
+        return false;
+    }
+
     public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality)
     {
         ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
@@ -255,8 +262,6 @@ class Mood {
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 }
-
-
 
 
 

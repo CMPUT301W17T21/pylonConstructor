@@ -1,5 +1,7 @@
 package team21.pylonconstructor;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -20,8 +22,9 @@ import io.searchbox.annotations.JestId;
 
 class Profile {
     String userName;
-    ArrayList<Profile> followers;
-    ArrayList<Profile> following;
+    ArrayList<String> requests;
+    ArrayList<String> followers;
+    ArrayList<String> following;
 
     @JestId
     private String id;
@@ -33,8 +36,10 @@ class Profile {
     }
 
     public Profile () {
+        requests = new ArrayList<>();
         followers = new ArrayList<>();
         following = new ArrayList<>();
+
     }
 
     public Profile (String userName) {
@@ -49,18 +54,37 @@ class Profile {
     }
 
 
-    public void addFollowers(Profile follower) {
-        followers.add(follower);
+    public void addRequests(String name) {
+        requests.add(name);
     }
-    public ArrayList<Profile> getFollowers() {
-        return followers;
+    public void removeRequests(String name) {
+        requests.remove(name);
+        Log.i("DELETED REQ", name);
+    }
+    public ArrayList<String> getRequests() {
+        return requests;
     }
 
-    public void addFollowing(Profile follow) {
+    public void addFollowers(String follow) {
+        followers.add(follow);
+    }
+    public ArrayList<String> getFollowers() {
+        return followers;
+    }
+    public void removeFollower(String name) {
+        followers.remove(name);
+        Log.i("DELETED USER FOLLOWING", name);
+    }
+
+    public void addFollowing(String follow) {
         following.add(follow);
     }
-    public ArrayList<Profile> getFollowing() {
+    public ArrayList<String> getFollowing() {
         return following;
+    }
+    public void removeFollowing(String name) {
+        following.remove(name);
+        Log.i("DELETED USER FOLLOWING", name);
     }
 
 }
