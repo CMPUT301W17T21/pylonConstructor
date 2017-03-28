@@ -50,9 +50,12 @@ public class MoodFeedAdapter extends MoodAdapter {
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             if (menuItem.getItemId() == R.id.action_unfollow_user) {
-                Profile unfollowee = moodList.get(pos).getUser();
-                //TODO: implement unfollow here
-
+                super.getClass();
+                Profile unfollow = moodList.get(pos).getUser();
+                if(elasticSearch.unfollowUser(Controller.getInstance().getProfile().getUserName(),unfollow.getUserName())){
+                    moodList.remove(pos);
+//                  moodList = Controller.getInstance().getAllMoodsFeed();
+                }
                 adapter.notifyDataSetChanged();
                 return true;
             }

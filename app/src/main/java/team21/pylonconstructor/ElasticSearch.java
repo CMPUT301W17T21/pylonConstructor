@@ -317,6 +317,32 @@ public class ElasticSearch {
     }
 
     /***
+     * Accept a follow request and add it to following list of the requester and
+     * followers list of user
+     * @param username, requester_name
+     * @return true if accepted successfully
+     * else otherwise
+     */
+    public boolean unfollowUser (String username, String requested_name){
+        try{
+            Profile userprofile = getProfile(username);
+            if(userprofile != null){
+                userprofile.removeFollowing(requested_name);
+                Profile requestedprofile = getProfile(requested_name);
+                requestedprofile.removeFollower(username);
+                if(updateProfile(userprofile) && updateProfile(requestedprofile)){
+                    return true;
+                }
+            }
+        }
+        catch (Exception e){
+            Log.i("Error", "Cannot get profile");
+        }
+        return false;
+    }
+
+
+    /***
      * Decline a follow request
      * @param username, requester_name
      * @return true if declined successfully,
