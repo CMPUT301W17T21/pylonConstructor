@@ -190,7 +190,7 @@ public class ElasticSearch {
             try {
                 p = getProfile(profile.getUserName());
                 ElasticSearchController.DeleteProfileTask deleteProfileTask = new ElasticSearchController.DeleteProfileTask();
-                deleteProfileTask.execute(profile);
+                deleteProfileTask.execute(p);
                 try {
                     deleteProfileTask.get();
                     return true;
