@@ -1,9 +1,20 @@
 package team21.pylonconstructor;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
@@ -16,12 +27,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.GoogleMap;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -60,6 +76,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
     Toast toast;
     Context context;
 
+    Boolean addLocation;
     CheckBox locationCheckBox;
 
     private boolean hasImg;
@@ -244,12 +261,15 @@ public class UpdateMoodActivity extends AppCompatActivity {
         });
 
         locationCheckBox = (CheckBox) findViewById(R.id.checkBox3);
-        locationCheckBox.setOnClickListener(new View.OnClickListener() {
+        locationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                //TODO: LOCATION INCLUDE (p5)
-            }
-        });
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    addLocation = true;
+                } else {
+                    addLocation = false;
+                }
+            }});
 
         cancelButton = (Button) findViewById(R.id.cancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -304,6 +324,11 @@ public class UpdateMoodActivity extends AppCompatActivity {
                     toast.show();
                 }
 
+                if (addLocation) {
+                    context = getApplicationContext();
+                    mood.setLocation(context);
+                }
+
 
                 if (validMood){
                     if( edt == 1){
@@ -356,6 +381,28 @@ public class UpdateMoodActivity extends AppCompatActivity {
 
         return calendar.getTime();
     }
+
+
+    /**
+     * from: https://developers.google.com/maps/documentation/android-api/location
+     * accessed on 20/03/2017
+     */
+    /*@Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (1 == 1) {//requestCode == MY_LOCATION_REQUEST_CODE) {
+            if (permissions.length == 1 &&
+                    permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //mMap.setMyLocationEnabled(true);
+            } else {
+                context = getApplicationContext();
+                CharSequence text = "Location permission denied.";
+                int duration = Toast.LENGTH_SHORT;
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        }
+    }*/
 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

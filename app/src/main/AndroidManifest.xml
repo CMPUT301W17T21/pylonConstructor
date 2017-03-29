@@ -3,6 +3,7 @@
     package="team21.pylonconstructor">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <!-- Icon made by Freepik from www.flaticon.com -->
     <application
@@ -59,6 +60,13 @@
             android:name=".NotificationsActivity"
             android:label="@string/title_notifications"
             />
+        <activity
+            android:name=".MapFragmentActivity"
+            android:label="Map"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD66aCTN5ooXfHJSjbVb6YrXDWJY5Z_W1k"/>
+
     </application>
 
 </manifest>
