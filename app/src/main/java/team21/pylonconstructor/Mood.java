@@ -1,9 +1,28 @@
 package team21.pylonconstructor;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.os.Bundle;
+import android.os.Looper;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.IntentCompat;
 import android.util.Base64;
 import android.util.Log;
+import android.location.LocationManager;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+
 
 import java.io.ByteArrayOutputStream;
 
@@ -31,6 +50,10 @@ class Mood {
     private Profile user;
     private int imageSize;
     private String image;
+    private Location location;
+
+    Toast toast;
+    Context context;
 
     @JestId
     private String id;
@@ -74,17 +97,18 @@ class Mood {
     }
 
 
-    public void setTrigger(String trigger) throws ReasonTooLongException{
+    public void setTrigger(String trigger) throws ReasonTooLongException {
         /**This snippet was taken from
-        * http://stackoverflow.com/questions/8924599/how-to-count-the-exact-number-of-words-in-a-string-that-has-empty-spaces-between
-        * on 10th March, 2017 **/
+         * http://stackoverflow.com/questions/8924599/how-to-count-the-exact-number-of-words-in-a-string-that-has-empty-spaces-between
+         * on 10th March, 2017 **/
         String trimmed = trigger.trim();
         int words = trimmed.isEmpty() ? 0 : trimmed.split("\\s+").length;
-        if(trigger.length() > 20 || words > 3){
+        if (trigger.length() > 20 || words > 3) {
             throw new ReasonTooLongException();
         }
         this.trigger = trigger;
     }
+
     public String getTrigger() {
         return this.trigger;
     }
@@ -98,6 +122,7 @@ class Mood {
         //TODO: check for valid input
         this.situation = situation;
     }
+
     public String getSituation() {
         return situation;
     }
@@ -112,7 +137,6 @@ class Mood {
     }
 
     public void setImage(Bitmap bmp)  throws ImageTooLargeException{
-
         if (bmp == null) {
             this.image = null;
             return;
@@ -138,17 +162,65 @@ class Mood {
         if (this.image != null) {
             Bitmap bp = decodeBase64(this.image);
             return bp;
+        } else return null;
+
+
+    }
+
+    public void setLocation(Context context) {
+        /**
+         * from: https://developers.google.com/maps/documentation/android-api/location
+         * accessed on 20/03/2017
+         */
+        if (ContextCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            int duration = Toast.LENGTH_SHORT;
+            toast = Toast.makeText(context, "Location Enabled!", duration);
+            toast.show();
+            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            LocationListener locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    Log.i("Error", "Halpppp");
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+                    Log.i("Error", "panic/cry");
+                }
+            };
+            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,
+                     locationListener, Looper.getMainLooper());
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            this.location = location;
+        } else {
+            // Show rationale and request permission.
+            int duration = Toast.LENGTH_SHORT;
+            toast = Toast.makeText(context, "Location not Enabled!", duration);
+            toast.show();
         }
-        else return null;
-
 
     }
 
-    //TODO: LOCATION
-    public void setLocation() {
+    public Location getLocation() {
+        return this.location;
     }
 
-    public void getLocation() {
+    public LatLng getLatLng() {
+        LatLng newLatLng = new LatLng(0, 0);
+        if (location != null) {
+            newLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        }
+        return newLatLng;
     }
 
     public int getImageSize() {
