@@ -35,11 +35,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
 import java.util.Date;
->>>>>>> master
+
 import java.util.List;
 
 public class MoodHistoryActivity extends AppCompatActivity
@@ -321,22 +319,20 @@ public class MoodHistoryActivity extends AppCompatActivity
             }
         });
 
-<<<<<<< HEAD
         fab_goToMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
                 Intent intent = new Intent(MoodHistoryActivity.this, MapFragmentActivity.class);
-                intent.putExtra("Username", profile.getUserName());
+                //intent.putExtra("Username", profile.getUserName());
                 startActivity(intent);
             }
         });
-=======
+
         clearFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
-                Controller.getInstance().addFilters(null, 0);
                 filteredByText.setText(getResources().getString(R.string.filtered_by));
 
                 moodList = Controller.getInstance().getAllMoods();
@@ -357,7 +353,6 @@ public class MoodHistoryActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
->>>>>>> master
     }
 
     @Override

@@ -23,8 +23,6 @@ public class SychronizerTest {
     public void testSync() throws Exception {
         Profile u = new Profile();
 
-<<<<<<< HEAD
-=======
         /**
          * check that the synchronizer is returning a state
          */
@@ -40,7 +38,6 @@ public class SychronizerTest {
         //assertNotNull(fs.sync());
         //UserSync us = new UserSync();
         //assertNotNull(us.sync());
->>>>>>> master
 
         //TODO: Commented out so that I could run the DataTests
 

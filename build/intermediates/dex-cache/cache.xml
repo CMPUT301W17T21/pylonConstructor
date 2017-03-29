@@ -3,151 +3,6 @@
 
     <item
         is-multidex="true"
-<<<<<<< HEAD
-        jar="/Users/jeffreyroutledge/.android/build-cache/a0c7bd4c70856b63e5e425a8c0a877ad6c869c48/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="b2c07cdb814fe988ad05f7b4d767a841514a5991">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_1b3cf1a296c7b6813e263f3511a8d0bff601d50a/classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jeffreyroutledge/.android/build-cache/a0c7bd4c70856b63e5e425a8c0a877ad6c869c48/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="b2c07cdb814fe988ad05f7b4d767a841514a5991">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/pre-dexed/debug/classes_1b3cf1a296c7b6813e263f3511a8d0bff601d50a.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jeffreyroutledge/.android/build-cache/4cec7101cac8c3b7d91d091a87abee6d0d923479/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="fe3e0c6de7cceed888b277487238b6af9a1cc299">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/pre-dexed/debug/classes_5537ba5918b22d22ee211f1024da10b0e05557d9.jar" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/30921e46d83a1458fb5eb61a46d9a0a16b2548df/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="c7626a9aa507bbbdc16188bc9a9f9bf3370c1ddd">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_ea5943c2de38ba6a271f24399ba32809093abcff/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/09f1519f483f6ad06409b354824835efbed8fba8/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_35ae60a69c802950275428216f933439a33225d6/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/b48df5c544c7e589f8097c3f99468591691d395b/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="67eb33110dbacb46a48175b08ae0c96761d2c17d">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_6913717cce649fb92f203efcd75f7b5529b4ca15/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/34154454871266e27351780401bd538028cc1735/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="bdcc2a9572f18b8c90a3a157cab6cdfc97c6c736">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_fcabc6e0a9614cc1895227e364dff779691cba5e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/84f7cc214fe04cd3882c952730ca69b099e150d9/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="810f41e5b7fd99f196ebeabe865ba2c54e7e76dc">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_960128fabfe0a203effc23afef6e5e1b4dbb04ac/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/f2269f8fdf18f788cd5e73a9e0070d8776477f9c/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e51c2f662bb72419632af5192553c37e33890a99">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_a1d4f4166267b69055f5fc0dfdbea4e835c47f3f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/a73994b857c11b224c54f308eea407547b2d4798/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_9ebda7bb33806a1e4d723028d95bc82d0b338ab3/classes.dex" />
-=======
-        jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="2dbfbe95f839c6b123e5f5ff6a208b86e3d88f82">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_e85aa1b95538e02ef7fc855b7ff5596ccc2e7b70/classes.dex" />
->>>>>>> master
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/src/include/jest-droid-2.0.1-SNAPSHOT.jar"
-        jumboMode="true"
-<<<<<<< HEAD
-        optimize="true"
-        revision="25.0.2"
-        sha1="e1199e84d8d3907b8262330dd6976ce04d37f6de">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/2/jest-droid-2.0.1-SNAPSHOT_53a07ada7184bdb9913ac49ef9ac4f978e0d9968/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/ee878fd391aa24bbea8c36e603664c8aa3d4cb7c/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="6003d64df88a6ce5e961fa2bad7f1b9b97689ac1">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_a64ca26a7a431eb7fcb435e1e1b268e4f39a287e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/ab6e39d4013c61036ba371056a2485ee5a7aa568/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="30a4938ea5235ccf532b3e9f04200e68547e36ad">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_cf7ad18bae8c4ddc4e6592a1c89d8fcef5b0a2eb/classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/src/include/jest-droid-2.0.1-SNAPSHOT.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e1199e84d8d3907b8262330dd6976ce04d37f6de">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/pre-dexed/debug/jest-droid-2.0.1-SNAPSHOT_53a07ada7184bdb9913ac49ef9ac4f978e0d9968.jar" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/5b5c14636b827111f1fafa8483e8fa929a70d651/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="fa0446a14ed5dd3725047d6399ffea771a564b30">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_051967aed1657c2fafed600311d2274383bee9a3/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         optimize="true"
@@ -157,85 +12,17 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/03e3eafb67e87c159bb0d442eb7030670d1046b8/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="702d339bc0a81d21354cd7e2cf2b67225fa4a16c">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_1fae2681b57267ecfcda2d313503e4b75eb5c613/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/0ac3ad2da636e62f8e61ad502f2eaf2e6ac2f96d/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ea6a989b83d19b1b461281e0475a6cd6514897f8">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_51fdd61a49f951bcc9b321347aba2607ddd59865/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/f83021d7cc8a2a4129551cbd7864a279a8ce13e2/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_2b6639ff57f44fd1a2eda41bc76aed50ea1d4e7e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/c070bc738211e0a96484a514f62e027fa9149913/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="cb454b52545859ed2f24a6c01366805b0fa04b22">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_42b2ce85ee8cfac28a0f736216240714222a519e/classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jeffreyroutledge/.android/build-cache/c3dcd2a4bbb7442f01bd7172f9f3e42454555b57/output/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="f2f7ec211ce4d244ee97a57523eeb4526dc3cf8a">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/pre-dexed/debug/classes_9a3470ae15f44f1fcc97a86ca4f64a0433b83d91.jar" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="bb5ac7d4ca0e38c7f2e042737f6358e52585101f">
+        sha1="021e7753ff0e1db0618418e7b2e8a6f178b18d91">
         <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_e85aa1b95538e02ef7fc855b7ff5596ccc2e7b70/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/4ec6dbaab1f3cae5e6e33b0d617c26b91b3a19df/output/jars/classes.jar"
+        jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/src/include/jest-droid-2.0.1-SNAPSHOT.jar"
         jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="19696dc358ac668e341f28c41e3387d61ccdb81d">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c85c27563d4586dac471a34cfa4bae16b9f788c0/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/178bffa3995f3d68c59bca8577ca9a5e4480854b/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="8fe8a8f77d651982ce5e18f6187dc4daf914ac57">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_8c94d6a5a1888affb7cf7e97bb6476c0e8cf4617/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/jeffreyroutledge/.android/build-cache/aebcb01f198f721e4f21cdb902de6e83d69a011f/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="152de8da301561dcb0946471697a420d8f7a68c5">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c16dfa59b5ca0aece1818ec3319731b7847d4a25/classes.dex" />
-=======
         optimize="true"
         revision="25.0.2"
         sha1="e1199e84d8d3907b8262330dd6976ce04d37f6de">
@@ -243,13 +30,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jar="/Users/jeffreyroutledge/.android/build-cache/32cc5af894f842c60802c7a9efbb26084c79144a/output/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
-        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_99825d4d88700f2cbbe9504ddc6a0191095e5492/classes.dex" />
->>>>>>> master
+        sha1="bb115a110992b254f767f337da233071f6f940b8">
+        <dex dex="/Users/jeffreyroutledge/StudioProjects/pylonConstructor/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_f68613a7507d26d3d7d2efb8db85a2dcfc87702f/classes.dex" />
     </item>
 
 </items>

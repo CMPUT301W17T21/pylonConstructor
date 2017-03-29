@@ -51,7 +51,6 @@ class Mood {
     private String image;
     private Location location;
 
-    private GoogleMap mMap;
     Toast toast;
     Context context;
 
@@ -136,13 +135,7 @@ class Mood {
         return user;
     }
 
-<<<<<<< HEAD
-    //TODO: IMAGES
-    public void setImage(Bitmap bmp) throws ImageTooLargeException {
-=======
     public void setImage(Bitmap bmp)  throws ImageTooLargeException{
->>>>>>> master
-
         if (bmp == null) {
             this.image = null;
             return;
@@ -173,7 +166,6 @@ class Mood {
 
     }
 
-    //TODO: LOCATION
     public void setLocation(Context context) {
         /**
          * from: https://developers.google.com/maps/documentation/android-api/location
@@ -218,17 +210,17 @@ class Mood {
 
     }
 
-
     public Location getLocation() {
-        /*LatLng newLatLng = new LatLng(0, 0);
-        if (location != null) {
-            newLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-        }
-        return newLatLng;*/
         return this.location;
     }
 
-    //TODO: @jeff make a latlng getter and setter?
+    public LatLng getLatLng() {
+        LatLng newLatLng = new LatLng(0, 0);
+        if (location != null) {
+            newLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        }
+        return newLatLng;
+    }
 
     public int getImageSize() {
         return 0;

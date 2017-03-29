@@ -22,17 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
-        <activity android:name=".UpdateMoodActivity" />
-        <activity android:name=".MoodFeedActivity" />
-        <activity android:name=".FilterActivity" />
-        <activity android:name=".MoodHistoryActivity"/>
-        <activity android:name=".MapFragmentActivity"/>
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD66aCTN5ooXfHJSjbVb6YrXDWJY5Z_W1k"/>
-
-=======
         <activity
             android:name=".UpdateMoodActivity"
             android:label="@string/title_update_mood"
@@ -71,7 +60,13 @@
             android:name=".NotificationsActivity"
             android:label="@string/title_notifications"
             />
->>>>>>> master
+        <activity
+            android:name=".MapFragmentActivity"
+            android:label="Map"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD66aCTN5ooXfHJSjbVb6YrXDWJY5Z_W1k"/>
+
     </application>
 
 </manifest>

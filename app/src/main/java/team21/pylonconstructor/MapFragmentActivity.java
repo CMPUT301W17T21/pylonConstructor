@@ -11,20 +11,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by jeffreyroutledge on 2017-03-25.
  */
 
 public class MapFragmentActivity extends FragmentActivity implements OnMapReadyCallback {
-    //private GoogleMap mMap;
-    private String username;
-    private Profile profile;
     private ArrayList<Mood> moodList;
     private Location location;
     private LatLng latlng;
-    private ElasticSearch elasticSearch = new ElasticSearch();
-    private Mood mood;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,9 +33,7 @@ public class MapFragmentActivity extends FragmentActivity implements OnMapReadyC
 
     @Override
     public void onMapReady(GoogleMap map) {
-        username = getIntent().getStringExtra("Username");
-        profile = elasticSearch.getProfile(username);
-        moodList = elasticSearch.getmymoods(profile);
+        moodList = Controller.getInstance().getAllMoods();
 
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(0, 0))

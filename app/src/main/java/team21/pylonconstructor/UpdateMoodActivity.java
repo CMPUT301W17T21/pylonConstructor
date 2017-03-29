@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-<<<<<<< HEAD
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-=======
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
@@ -25,7 +23,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
->>>>>>> master
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -33,6 +30,7 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,18 +75,10 @@ public class UpdateMoodActivity extends AppCompatActivity {
     Toast toast;
     Context context;
 
-    CheckBox locationCheckBox;
-
     private boolean hasImg;
 
-<<<<<<< HEAD
     CheckBox locationCheckBox;
     Boolean addLocation;
-
-    Button cancelButton;
-    Button addMoodButton;
-=======
->>>>>>> master
 
 
     @Override
@@ -332,15 +322,9 @@ public class UpdateMoodActivity extends AppCompatActivity {
                     toast.show();
                 }
 
-<<<<<<< HEAD
                 if (addLocation) {
                     mood.setLocation(context);
                 }
-
-                if (validMood) {
-                    elasticSearch.addMood(mood);
-                    finish();
-=======
 
                 if (validMood){
                     if( edt == 1){
@@ -351,7 +335,6 @@ public class UpdateMoodActivity extends AppCompatActivity {
                         Controller.getInstance().addMood(mood);
                         finish();
                     }
->>>>>>> master
                 }
             }
         });
@@ -395,7 +378,6 @@ public class UpdateMoodActivity extends AppCompatActivity {
         return calendar.getTime();
     }
 
-<<<<<<< HEAD
     /**
      * from: https://developers.google.com/maps/documentation/android-api/location
      * accessed on 20/03/2017
@@ -416,7 +398,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
             }
         }
     }*/
-=======
+
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -453,5 +435,4 @@ public class UpdateMoodActivity extends AppCompatActivity {
             removePhotoButton.setVisibility(View.GONE); //To set gone
         }
     }
->>>>>>> master
 }
