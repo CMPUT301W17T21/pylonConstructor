@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
@@ -75,10 +76,11 @@ public class UpdateMoodActivity extends AppCompatActivity {
     Toast toast;
     Context context;
 
+    Boolean addLocation;
+    CheckBox locationCheckBox;
+
     private boolean hasImg;
 
-    CheckBox locationCheckBox;
-    Boolean addLocation;
 
 
     @Override
@@ -327,6 +329,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
                     mood.setLocation(context);
                 }
 
+
                 if (validMood){
                     if( edt == 1){
                         Controller.getInstance().editMood(mood);
@@ -378,6 +381,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
 
         return calendar.getTime();
     }
+
 
     /**
      * from: https://developers.google.com/maps/documentation/android-api/location

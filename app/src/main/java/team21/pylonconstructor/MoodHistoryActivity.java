@@ -170,7 +170,6 @@ public class MoodHistoryActivity extends AppCompatActivity
 
 
 
-
         clearFilterButton = (Button) findViewById(R.id.clearfilter);
         filteredByText = (TextView) findViewById(R.id.filtered_by_label);
         fab_plus = (FloatingActionButton) findViewById(R.id.fab_plus);
@@ -326,6 +325,7 @@ public class MoodHistoryActivity extends AppCompatActivity
                 Intent intent = new Intent(MoodHistoryActivity.this, MapFragmentActivity.class);
                 //intent.putExtra("Username", profile.getUserName());
                 startActivity(intent);
+
             }
         });
 
@@ -333,6 +333,8 @@ public class MoodHistoryActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
+
+                Controller.getInstance().addFilters(null, 0);
                 filteredByText.setText(getResources().getString(R.string.filtered_by));
 
                 moodList = Controller.getInstance().getAllMoods();

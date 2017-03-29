@@ -206,13 +206,13 @@ public class DataTest {
         Mood mood = new Mood();
 
         //Add location test
-        mood.setLocation();
+        //mood.setLocation();
         //assertTrue(moodList.hasLocation(0));
 
         //Test 5km radius
-        mood.setLocation(/* TODO: Add location here */); //Set location within 5km
+        //mood.setLocation(/* TODO: Add location here */); //Set location within 5km
         //assertTrue(mood.isIn5km());
-        mood.setLocation(/* TODO: Add location here */); //Set location out of 5km
+        //mood.setLocation(/* TODO: Add location here */); //Set location out of 5km
        // assertFalse(moodList.isIn5km());
     }
 
