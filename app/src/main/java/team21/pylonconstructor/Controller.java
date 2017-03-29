@@ -53,9 +53,6 @@ public class Controller {
         filterTerm = null;
         filterOption = 0;
         filterDate = null;
-
-
-
     }
 
 
@@ -217,5 +214,8 @@ public class Controller {
 
     Date getFilterDate() {
         return this.getFilterDate();
+    }
+
+    public void reset() {
     }
 }
