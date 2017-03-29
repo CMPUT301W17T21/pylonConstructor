@@ -324,11 +324,12 @@ public class UpdateMoodActivity extends AppCompatActivity {
                     toast.show();
                 }
 
+                /*
                 if (addLocation) {
                     context = getApplicationContext();
                     mood.setLocation(context);
                 }
-
+                */
 
                 if (validMood){
                     if( edt == 1){

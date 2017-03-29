@@ -1,56 +1,96 @@
 package team21.pylonconstructor;
 
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.text.style.UpdateAppearance;
 
 import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.Intents.intending;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.Matchers.not;
 
 /**
- * Created by Willi_000 on 2017-03-28.
+ * Tests camera
+ *  -Adding an photo/image to mood
+ *  -User decides to add a mood without a photo (Remove photo)
+ *
+ * User Stories Tested: US 02.02.01
+ *  - User can add photo to express the reason for the mood event
+ *  -
+ *
+ * Assumptions:
+ *  1. TestHelper functions works
+ *      @see TestHelper
+ *  2. All other functions are working correctly
+ *
+ * @author William
  */
-
 public class CameraTest {
-    // IntentsTestRule is an extension of ActivityTestRule. IntentsTestRule sets up Espresso-Intents
-    // before each Test is executed to allow stubbing and validation of intents.
+    private TestHelper testHelper = new TestHelper();
+
+    //Allows intent usage (for camera)
     @Rule
-    public IntentsTestRule<UpdateMoodActivity> intentsRule = new IntentsTestRule<>(UpdateMoodActivity.class);
+    public IntentsTestRule<LoginActivity> rule = new IntentsTestRule(LoginActivity.class);
 
+    /**
+     * Test adding a photo to a mood
+     */
     @Test
-    public void validateCameraScenario() {
-        // Create a bitmap we can use for our simulated camera image
-        Bitmap icon = BitmapFactory.decodeResource(
-                InstrumentationRegistry.getTargetContext().getResources(),
-                R.mipmap.ic_launcher_code);
+    public void addMoodWithPhoto() {
+        //Login first
+        testHelper.logUserIn();
 
-        // Build a result to return from the Camera app
-        Intent resultData = new Intent();
-        resultData.putExtra("data", icon);
-        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+        onView(withId(R.id.fab_plus)).perform(click());
+        onView(withId(R.id.fab_updateMood)).perform(testHelper.customClick());
 
-        // Stub out the Camera. When an intent is sent to the Camera, this tells Espresso to respond
-        // with the ActivityResult we just created
-        intending(toPackage("com.android.camera2")).respondWith(result);
+        onView(withId(R.id.take_photo_button)).check(matches(isDisplayed()));
+        testHelper.camera();
 
-        // Now that we have the stub in place, click on the button in our app that launches into the Camera
-        onView(withId(R.id.take_photo_button)).perform(click());
+        //Remove Photo Button only exists if image does
+        onView(withId(R.id.remove_photo_button)).check(matches(isDisplayed()));
 
-        // We can also validate that an intent resolving to the "camera" activity has been sent out by our app
-        intended(toPackage("com.android.camera2"));
+        //Add mood
+        onView(withId(R.id.happy_button)).perform(click());
+        onView(withId(R.id.add_mood_event)).perform(click());
 
-        // ... additional test steps and validation ...
+        //Check the added mood (At top of list view)
+        onView(withId(R.id.thumbnail)).check(matches(isDisplayed()));
+
+        //TODO: Assert the correct image
+    }
+
+    /**
+     * Tests deleting photo after its taken
+     */
+    @Test
+    public void removePhoto() {
+        //Login first
+        testHelper.logUserIn();
+
+        onView(withId(R.id.fab_plus)).perform(click());
+        onView(withId(R.id.fab_updateMood)).perform(testHelper.customClick());
+
+        onView(withId(R.id.take_photo_button)).check(matches(isDisplayed()));
+        testHelper.camera();
+
+        //Remove Photo Button only exists if image does
+        onView(withId(R.id.remove_photo_button)).check(matches(isDisplayed()));
+
+        //Remove photo
+        onView(withId(R.id.remove_photo_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.remove_photo_button)).perform(click());
+
+        //Remove Photo Button only exists if image does
+        onView(withId(R.id.remove_photo_button)).check(matches(not(isDisplayed())));
+
+        //Add mood
+        onView(withId(R.id.happy_button)).perform(click());
+        onView(withId(R.id.add_mood_event)).perform(click());
+
+        //TODO: Assert no image
+        //onView(withId(R.id.thumbnail)).check(matches(not(isDisplayed())));
     }
 }

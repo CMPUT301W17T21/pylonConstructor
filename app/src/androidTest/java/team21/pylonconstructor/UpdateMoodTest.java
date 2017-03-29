@@ -38,11 +38,6 @@ public class UpdateMoodTest {
     @Rule
     public ActivityTestRule<LoginActivity> rule = new ActivityTestRule<>(LoginActivity.class);
 
-    //To test camera
-    //@Rule
-   // public IntentsTestRule<UpdateMoodActivity> intentsRule = new IntentsTestRule<>(UpdateMoodActivity.class);
-
-
     /**
      *  Custom click function for clicking invisible buttons
      */
@@ -57,7 +52,7 @@ public class UpdateMoodTest {
     @Test
     public void checkMood() {
         //Login first
-        new Login().logUserIn();
+        //new Login().logUserIn();
 
         onView(withId(R.id.fab_plus)).perform(click());
         onView(withId(R.id.fab_updateMood)).perform(customClick());
@@ -73,7 +68,7 @@ public class UpdateMoodTest {
     @Test
     public void withTrigger() {
         //Login first
-        new Login().logUserIn();
+        //new Login().logUserIn();
 
         onView(withId(R.id.fab_plus)).perform(click());
         onView(withId(R.id.fab_updateMood)).perform(customClick());
@@ -98,7 +93,7 @@ public class UpdateMoodTest {
     //TODO Check ChangeDate
     public void changeDate() {
         //Login first
-        new Login().logUserIn();
+        //new Login().logUserIn();
 
         onView(withId(R.id.fab_plus)).perform(click());
         onView(withId(R.id.fab_updateMood)).perform(customClick());
@@ -110,7 +105,7 @@ public class UpdateMoodTest {
     //TODO Check Change Time
     public void changeTime() {
         //Login first
-        new Login().logUserIn();
+        //new Login().logUserIn();
 
         onView(withId(R.id.fab_plus)).perform(click());
         onView(withId(R.id.fab_updateMood)).perform(customClick());

@@ -39,6 +39,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 public class LoginTest {
 
+    private String userName = "LoginTest";
+
     @Rule
     public ActivityTestRule<LoginActivity> rule = new ActivityTestRule<>(LoginActivity.class, true, true);
 
@@ -61,6 +63,46 @@ public class LoginTest {
         }
     }
 
+    private void delete() {
+        //The next line of code is a modified version of the code from
+        //  http://stackoverflow.com/questions/27527988/how-do-i-test-the-home-button-on-the-action-bar-with-espresso
+        onView(withContentDescription(getInstrumentation().getTargetContext().
+                getString(R.string.navigation_drawer_open))).perform(click());
+        onView(withText("Account Settings")).perform(click());
+
+        //Delete
+        onView(withId(R.id.delete_account_option)).perform(click());
+        onView(withText("Delete")).perform(click());
+    }
+
+    /**
+     * Checks if a user has been registered
+     *
+     * @param userName - A string representing the user profile
+     * @return - True if user is registered, False if user is not registered
+     */
+    private boolean registered(String userName) {
+        logout();
+
+        onView(withId(R.id.userinp)).perform(typeText(userName),
+                closeSoftKeyboard());
+        onView(withId(R.id.register_user_button)).perform(click());
+
+        try {
+            //UserName exists
+            onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+            return (true);
+        } catch (Exception NoMatchingViewException) {
+            //UserName does not exist
+            delete();
+            logout();
+            return (false);
+        }
+    }
+
+
+
+
     /**
      * Test Login with a non-existing user.
      *
@@ -68,40 +110,68 @@ public class LoginTest {
      * Refactoring
      * do not need @test already extending JUNIT3 test class.
      */
-    @Test
+     @Test
     public void checkLoginNoUser() {
         logout();
-        onView(withId(R.id.userinp)).perform(typeText("Test"),
+
+        //Delete User if registered
+        if(registered(userName)) {
+            onView(withId(R.id.userinp)).perform(typeText(userName),
+                    closeSoftKeyboard());
+            onView(withId(R.id.login_button)).perform(click());
+
+            delete();
+            logout();
+        }
+
+        //Attempt to login
+        onView(withId(R.id.userinp)).perform(typeText(userName),
                 closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
 
         //Ensure that nothing has changed
-        try {
-            onView(withId(R.id.login_button)).check(matches(isDisplayed()));
-        } catch (Exception NoMatchingViewException) {
-            Log.i("CheckLoginNoUser:", "Not on Login screen.");
-        }
+        onView(withId(R.id.login_button)).check(matches(isDisplayed()));
     }
 
     /**
      * Login with an existing user.
      * Logout after logging in.
      */
-    @Test
+    //@Test
     public void checkLoginExistingUser() {
         logout();
-        onView(withId(R.id.userinp)).perform(typeText("William"),
+
+        //Register a user if the user is not registered
+        if(!registered(userName)) {
+            onView(withId(R.id.userinp)).perform(typeText(userName),
+                    closeSoftKeyboard());
+            onView(withId(R.id.register_user_button)).perform(click());
+
+            logout();
+        }
+
+        //Attempt to log in with user
+        onView(withId(R.id.userinp)).perform(typeText(userName),
                 closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
 
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
+        /*
         //Ensure that MoodHistoryFeed is loaded by checking for button that exists in that activity
         try {
             onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
-        } catch (AssertionError e) {
+        } catch (Exception NoMatchingViewException) {
             Log.i("CheckLogInExsitingUser:", "Should be in mood activity");
+
+            //Have a non-existing user, so just register a new user
+            userName = "RegUser";
+            onView(withId(R.id.userinp)).perform(typeText(userName),
+                    closeSoftKeyboard());
+            onView(withId(R.id.register_user_button)).perform(click());
+            checkLoginExistingUser();
         }
 
-
+*/
         //Logout, to continue tests
         logout();
     }
@@ -110,18 +180,23 @@ public class LoginTest {
      * Register with an existing user.
      * No changes, except for prompt telling you that user exists
      */
-    @Test
+    //@Test
     public void registerWithExisting() {
         logout();
-        onView(withId(R.id.userinp)).perform(typeText("William"),
+        userName = "William";
+
+        onView(withId(R.id.userinp)).perform(typeText(userName),
                 closeSoftKeyboard());
         onView(withId(R.id.register_user_button)).perform(click());
 
         //Ensure that the view/ activity stays the same
         try {
             onView(withId(R.id.login_button)).check(matches(isDisplayed()));
-        } catch (AssertionError e) {
+        } catch (Exception NoMatchingViewException) {
             Log.i("RegisterWithExisting:", "Should still be on login activity");
+
+            //Username doesn't exist, and was registered. Retry again.
+            registerWithExisting();
         }
     }
 
@@ -129,7 +204,7 @@ public class LoginTest {
      * Register a new user.
      * Delete new user.
      */
-    //TODO Uncomment once delete works @Test
+    //@Test
     public void registerNewUser() {
         logout();
         onView(withId(R.id.userinp)).perform(typeText("RegUser"),
@@ -143,21 +218,14 @@ public class LoginTest {
             Log.i("RegisterNewUser:", "Not on mood activity");
         }
 
-        //The next line of code is a modified version of the code from
-        //  http://stackoverflow.com/questions/27527988/how-do-i-test-the-home-button-on-the-action-bar-with-espresso
-        onView(withContentDescription(getInstrumentation().getTargetContext().
-                getString(R.string.navigation_drawer_open))).perform(click());
-        onView(withText("Account Settings")).perform(click());
 
-        //Delete
-        onView(withId(R.id.delete_account_option)).perform(click());
-        onView(withText("Delete")).perform(click());
-
+        /*
         //Ensure that LoginActivity is loaded by checking for button that exists in that activity
         try {
             onView(withId(R.id.login_button)).check(matches(isDisplayed()));
         } catch (AssertionError e) {
             Log.i("RegisterNewUser:", "Not on mood activity");
         }
+        */
     }
 }

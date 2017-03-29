@@ -41,7 +41,7 @@ public class AccountSettingsTest  {
     @Test
     public void logoutTest() {
         //Login first
-        new Login().logUserIn();
+        //new Login().logUserIn();
 
         //The next line of code is a modified version of the code from
         //  http://stackoverflow.com/questions/27527988/how-do-i-test-the-home-button-on-the-action-bar-with-espresso
