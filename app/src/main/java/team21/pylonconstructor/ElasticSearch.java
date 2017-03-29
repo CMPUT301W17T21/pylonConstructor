@@ -505,4 +505,15 @@ public class ElasticSearch {
         }
     }
 
+    /**
+     *  Gets a notification from the Elastic Search Database from a given username
+     * @param username
+     * @return Profile object
+     */
+    public Notification getNotification(String username) throws ExecutionException, InterruptedException {
+        ElasticSearchController.GetNotificationTask getNotificationTask = new ElasticSearchController.GetNotificationTask();
+        getNotificationTask.execute(username);
+        return getNotificationTask.get();
+    }
+
 }

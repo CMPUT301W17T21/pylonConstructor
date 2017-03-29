@@ -1,5 +1,7 @@
 package team21.pylonconstructor;
 
+import java.util.Date;
+
 import io.searchbox.annotations.JestId;
 
 /**
@@ -22,6 +24,8 @@ public class Notification {
     private String user;
     private String moodid;
     private String taggedby;
+    private Date date;
+    private String seenflag;
 
     @JestId
     private String id;
@@ -55,6 +59,8 @@ public class Notification {
         this.user = user;
         this.taggedby = taggedby;
         this.moodid = moodid;
+        this.date = new Date();
+        this.seenflag = "0";
     }
 
     /**
@@ -109,5 +115,21 @@ public class Notification {
      */
     public void setTaggedby(String taggedby) {
         this.taggedby = taggedby;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getSeenflag() {
+        return seenflag;
+    }
+
+    public void setSeenflag() {
+        this.seenflag = "1";
     }
 }
