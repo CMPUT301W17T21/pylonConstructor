@@ -19,12 +19,12 @@ import static org.hamcrest.Matchers.not;
  *
  * User Stories Tested: US 02.02.01
  *  - User can add photo to express the reason for the mood event
- *  -
  *
  * Assumptions:
  *  1. TestHelper functions works
  *      @see TestHelper
  *  2. All other functions are working correctly
+ *  3. All photos taken do not exceed the limit from US 02.03.01
  *
  * @author William
  */

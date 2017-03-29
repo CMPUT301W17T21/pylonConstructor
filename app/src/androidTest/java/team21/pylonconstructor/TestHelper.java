@@ -31,6 +31,10 @@ public class TestHelper {
 
     public TestHelper() {}
 
+    public void setUserName(String name) {
+        this.username = name;
+    }
+
     /**
      * Attempts to log in user
      */
