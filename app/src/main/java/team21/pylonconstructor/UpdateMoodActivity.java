@@ -323,6 +323,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
                 }
 
                 if (addLocation) {
+                    context = getApplicationContext();
                     mood.setLocation(context);
                 }
 
