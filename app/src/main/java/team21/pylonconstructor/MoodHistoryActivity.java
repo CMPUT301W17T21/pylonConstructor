@@ -318,6 +318,16 @@ public class MoodHistoryActivity extends AppCompatActivity
             }
         });
 
+        fab_goToMap.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MoodHistoryActivity.this, MapsActivity.class);
+                intent.putExtra("username", profile.getUserName());
+                collapseFAB();
+                startActivity(intent);
+            }
+        });
+
         clearFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

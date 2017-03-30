@@ -38,9 +38,7 @@
     <string name="title_following">Following</string>
     <string name="title_filter">Filter</string>
     <string name="title_update_mood">Update Mood</string>
-
-
-
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>
