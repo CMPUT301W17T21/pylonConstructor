@@ -1,9 +1,21 @@
 package team21.pylonconstructor;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.Looper;
+import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.ByteArrayOutputStream;
 
@@ -29,8 +41,9 @@ class Mood {
     private String trigger;
     private Date date;
     private Profile user;
-    private int imageSize;
     private String image;
+    private double latitude;
+    private double longitude;
 
     @JestId
     private String id;
@@ -144,17 +157,25 @@ class Mood {
 
     }
 
-    //TODO: LOCATION
-    public void setLocation() {
+    public void setLocation(Double lat, Double lon) {
+        this.latitude = lat;
+        this.longitude = lon;
     }
-
-    public void getLocation() {
+    public double getLatitude() {
+        return this.latitude;
     }
-
-    public int getImageSize() {
-        return 0;
+    public double getLongitude() {
+        return this.longitude;
     }
-
+/*
+    public LatLng getLatLng() {
+        LatLng newLatLng = new LatLng(0, 0);
+        if (location != null) {
+            newLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        }
+        return newLatLng;
+    }
+*/
 
     //http://stackoverflow.com/questions/185937/overriding-the-java-equals-method-quirk
     //March 17th 2017, Joshua did this.

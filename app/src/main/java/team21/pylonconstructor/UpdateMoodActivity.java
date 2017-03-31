@@ -2,12 +2,15 @@ package team21.pylonconstructor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +19,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -41,7 +55,8 @@ import java.util.Date;
  *
  * @version 1.0
  */
-public class UpdateMoodActivity extends AppCompatActivity {
+public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+
     Button happyButton, sadButton, angryButton, confusedButton, disgustedButton,
             scaredButton, surpriseButton, shamefulButton, cancelButton, addMoodButton;
 
@@ -63,6 +78,14 @@ public class UpdateMoodActivity extends AppCompatActivity {
     CheckBox locationCheckBox;
 
     private boolean hasImg;
+    private boolean addLocation = false;
+
+    // Google client to interact with Google API
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private static final String TAG = UpdateMoodActivity.class.getSimpleName();
+    private LocationRequest mLocationRequest;
 
 
 
@@ -82,7 +105,6 @@ public class UpdateMoodActivity extends AppCompatActivity {
 
         Bitmap img;
         final int edt = getIntent().getExtras().getInt("EDIT");
-
 
         username = getIntent().getStringExtra("username");
         mood = new Mood(Controller.getInstance().getProfile());
@@ -244,12 +266,16 @@ public class UpdateMoodActivity extends AppCompatActivity {
         });
 
         locationCheckBox = (CheckBox) findViewById(R.id.checkBox3);
-        locationCheckBox.setOnClickListener(new View.OnClickListener() {
+        locationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                //TODO: LOCATION INCLUDE (p5)
-            }
-        });
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    addLocation = true;
+                } else {
+                    addLocation = false;
+                }
+            }}
+        );
 
         cancelButton = (Button) findViewById(R.id.cancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -303,8 +329,20 @@ public class UpdateMoodActivity extends AppCompatActivity {
                     toast = Toast.makeText(context, text, duration);
                     toast.show();
                 }
+                if (addLocation) {
+                    mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                    if (mLastLocation != null) {
+                        double latitude = mLastLocation.getLatitude();
+                        double longitude = mLastLocation.getLongitude();
+                        mood.setLocation(latitude, longitude);
 
-
+                    } else {
+                        CharSequence text = "Couldn't get the location. Make sure location is enabled on the device";
+                        int duration = Toast.LENGTH_LONG;
+                        toast = Toast.makeText(UpdateMoodActivity.this, text, duration);
+                        toast.show();
+                    }
+                }
                 if (validMood){
                     if( edt == 1){
                         Controller.getInstance().editMood(mood);
@@ -317,8 +355,33 @@ public class UpdateMoodActivity extends AppCompatActivity {
                 }
             }
         });
+        // Create the LocationRequest object
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
+                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mGoogleApiClient.connect();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            mGoogleApiClient.disconnect();
+        }
+    }
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -392,5 +455,43 @@ public class UpdateMoodActivity extends AppCompatActivity {
         else {
             removePhotoButton.setVisibility(View.GONE); //To set gone
         }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (location == null) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
+        else {
+            handleNewLocation(location);
+        }
+    }
+    private void handleNewLocation(Location location) {
+        Log.d(TAG, location.toString());
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "Location services suspended. Please reconnect.");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                // Start an Activity that tries to resolve the error
+                connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        handleNewLocation(location);
     }
 }
