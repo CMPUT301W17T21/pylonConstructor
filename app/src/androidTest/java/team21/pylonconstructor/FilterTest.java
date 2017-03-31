@@ -11,17 +11,34 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.Matchers.not;
 
 /**
+ * Tests the filter activity
+ *  1. Filter by Mood
+ *  2. Filter by Trigger
+ *  3. Filter by Most Recent Week
+ *  4. Tests the cancel button
  *
+ * User Stories Tested: US 04.02.01, US 04.03.01, US 04.04.01
+ *  -User can filter mood events according to mood, trigger (word), or by most recent week
+ *
+ * Assumptions:
+ *  1. TestHelper functions works
+ *      @see TestHelper
+ *  2. All other functions are working correctly
+ *
+ * @author William
  */
 @RunWith(AndroidJUnit4.class)
 public class FilterTest {
     private TestHelper testHelper = new TestHelper();
 
     @Rule
-    public ActivityTestRule<MoodFeedActivity> rule = new ActivityTestRule<>(MoodFeedActivity.class);
+    public ActivityTestRule<LoginActivity> rule = new ActivityTestRule<>(LoginActivity.class);
 
     /**
      * Test cases for mood filter
@@ -31,13 +48,30 @@ public class FilterTest {
         //Login first
         testHelper.logUserIn();
 
+        //Click on the plus button
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
         onView(withId(R.id.fab_plus)).perform(click());
+
+        //Click on the filter button
+        onView(withId(R.id.fab_filter)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fab_filter)).perform(testHelper.customClick());
+
+        //Click on mood radio button
+        onView(withId(R.id.filter_mood_radio_button)).check(matches(isDisplayed()));
         onView(withId(R.id.filter_mood_radio_button)).perform((click()));
+
+        //Select mood
+        onView(withId(R.id.happy_button)).check(matches(isDisplayed()));
         onView(withId(R.id.happy_button)).perform(click());
+
+        //Filter
+        onView(withId(R.id.filter)).check(matches(isDisplayed()));
         onView(withId(R.id.filter)).perform(click());
 
         //TODO: Check final output, and other moods
+
+        //Go back to mood history
+        onView(withId(R.id.clearfilter)).check(matches(isDisplayed()));
         onView(withId(R.id.clearfilter)).perform(click());
     }
 
@@ -49,14 +83,28 @@ public class FilterTest {
         //Login first
         testHelper.logUserIn();
 
+        //Click on the plus button
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
         onView(withId(R.id.fab_plus)).perform(click());
+
+        //Click on the filter button
+        onView(withId(R.id.fab_filter)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fab_filter)).perform(testHelper.customClick());
+
+        //Click on trigger radio button and enter text
+        onView(withId(R.id.filter_trigger_radio_button)).check(matches(isDisplayed()));
         onView(withId(R.id.filter_trigger_radio_button)).perform(testHelper.customClick());
         onView(withId(R.id.message)).perform(typeText("Hello"),
                 closeSoftKeyboard());
+
+        //Filter
+        onView(withId(R.id.filter)).check(matches(isDisplayed()));
         onView(withId(R.id.filter)).perform(click());
 
-        //TODO: Check final output, and other inputs
+        //TODO: Check final output and other input
+
+        //Go back to mood history
+        onView(withId(R.id.clearfilter)).check(matches(isDisplayed()));
         onView(withId(R.id.clearfilter)).perform(click());
     }
 
@@ -68,13 +116,26 @@ public class FilterTest {
         //Login first
         testHelper.logUserIn();
 
-        //Check recent week filter
+        //Click on the plus button
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
         onView(withId(R.id.fab_plus)).perform(click());
+
+        //Click on the filter button
+        onView(withId(R.id.fab_filter)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fab_filter)).perform(testHelper.customClick());
+
+        //Click the Week Radio Button
+        onView(withId(R.id.filter_week_radio_button)).check(matches(isDisplayed()));
         onView(withId(R.id.filter_week_radio_button)).perform(click());
+
+        //Filter
+        onView(withId(R.id.filter)).check(matches(isDisplayed()));
         onView(withId(R.id.filter)).perform(click());
 
         //TODO: Check final output
+
+        //Go back to mood history
+        onView(withId(R.id.clearfilter)).check(matches(isDisplayed()));
         onView(withId(R.id.clearfilter)).perform(click());
     }
 
@@ -85,10 +146,21 @@ public class FilterTest {
     public void cancel() {
         //Login first
         testHelper.logUserIn();
-        
+
+        //Click on the plus button
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
         onView(withId(R.id.fab_plus)).perform(click());
+
+        //Click on the filter button
+        onView(withId(R.id.fab_filter)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fab_filter)).perform(testHelper.customClick());
+
+        //Click on the mood filter button
+        onView(withId(R.id.filter_mood_radio_button)).check(matches(isDisplayed()));
         onView(withId(R.id.filter_mood_radio_button)).perform(click());
+
+        //Cancel the filter
+        onView(withId(R.id.cancel)).check(matches(isDisplayed()));
         onView(withId(R.id.cancel)).perform(click());
 
         //TODO: Check final output

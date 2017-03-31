@@ -11,17 +11,22 @@ import android.support.test.espresso.action.GeneralLocation;
 import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Tap;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.actionWithAssertions;
+import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.Intents.times;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Created by Willi_000 on 2017-03-29.
@@ -31,9 +36,14 @@ public class TestHelper {
 
     public TestHelper() {}
 
+    public String getUsername() {
+        return this.username;
+    }
+
     public void setUserName(String name) {
         this.username = name;
     }
+
 
     /**
      * Attempts to log in user
@@ -41,6 +51,7 @@ public class TestHelper {
     public void logUserIn() {
         try {
             onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+            onView(withId(R.id.userinp)).perform(clearText());
             onView(withId(R.id.userinp)).perform(typeText(username),
                     closeSoftKeyboard());
             onView(withId(R.id.login_button)).perform(click());
@@ -64,6 +75,7 @@ public class TestHelper {
             return;
         } catch (Exception NoMatchingViewException){
             //Register as new user
+            onView(withId(R.id.userinp)).perform(clearText());
             onView(withId(R.id.userinp)).perform(typeText(username),
                     closeSoftKeyboard());
             onView(withId(R.id.register_user_button)).perform(click());
@@ -74,7 +86,23 @@ public class TestHelper {
     }
 
     /**
-     *  Custom click function for clicking invisible buttons
+     * Log the user out of system
+     */
+    public void logout () {
+        //The next line of code is a modified version of the code from
+        //  http://stackoverflow.com/questions/27527988/how-do-i-test-the-home-button-on-the-action-bar-with-espresso
+        onView(withContentDescription(getInstrumentation().getTargetContext().
+                getString(R.string.navigation_drawer_open))).perform(click());
+        onView(withText("Account Settings")).perform(click());
+        onView(withId(R.id.logout_option)).perform(click());
+        onView(withText("Logout")).perform(click());
+
+        //Ensure logged out
+        onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Custom click function for clicking invisible buttons
      */
     public static ViewAction customClick() {
         return actionWithAssertions(
