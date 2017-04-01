@@ -1,16 +1,15 @@
 package team21.pylonconstructor;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,14 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -69,7 +66,7 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
     String username;
     Mood mood;
 
-    private TextView selectedMoodTextView;
+    private TextView selectedMoodTextView, socialSituationTextView;
     private EditText triggerEditText;
 
     Toast toast;
@@ -86,6 +83,8 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private static final String TAG = UpdateMoodActivity.class.getSimpleName();
     private LocationRequest mLocationRequest;
+    private ArrayList<String> socialSitList;
+    private boolean hasSocialSit;
 
 
 
@@ -98,7 +97,9 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
         triggerEditText = (EditText) findViewById(R.id.message);
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         selectedImage = (ImageView) findViewById(R.id.selected_photo);
+        socialSituationTextView = (TextView) findViewById(R.id.social_situation_list);
         hasImg = false;
+        hasSocialSit = false;
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -121,9 +122,12 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
 
             triggerEditText.setText(trig);
 
-            String situ = getIntent().getExtras().getString("situ");
+            ArrayList<String> situ = getIntent().getStringArrayListExtra("situ");
             mood.setSituation(situ);
 
+            if (situ != null) {
+                setSocialSituationUsersList(situ);
+            }
 
             Date dt = new Date();
             dt.setTime(getIntent().getLongExtra("date",-1));
@@ -260,7 +264,9 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
         socialSituationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: goto social user selector
+                FragmentManager fragmentManager = getFragmentManager();
+                SocialSituationPickerFragment dialogo = new SocialSituationPickerFragment();
+                dialogo.show(fragmentManager, "tagSelect");
 
             }
         });
@@ -285,6 +291,8 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
 
             }
         });
+
+
 
         addMoodButton = (Button) findViewById(R.id.add_mood_event);
         addMoodButton.setOnClickListener(new View.OnClickListener() {
@@ -328,6 +336,13 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
                     int duration = Toast.LENGTH_SHORT;
                     toast = Toast.makeText(context, text, duration);
                     toast.show();
+                }
+
+                if (hasSocialSit) {
+                    mood.setSituation(socialSitList);
+                }
+                else {
+                    mood.setSituation(null);
                 }
                 if (addLocation) {
                     mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
@@ -390,6 +405,29 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
+    }
+
+    public void setSocialSituationUsersList(ArrayList<String> userNameList) {
+        int size = userNameList.size();
+        int i;
+        Log.i("UpdateMoodActivity:", "SocialSituation list:"+ userNameList.toString());
+
+        if (!userNameList.isEmpty()) {
+            hasSocialSit = true;
+            for (i = 0; i < size; i++) {
+                this.socialSitList = userNameList;
+                if (i == 0) {
+                    socialSituationTextView.setText(userNameList.get(i));
+                } else {
+                    socialSituationTextView.append(", " + userNameList.get(i));
+                }
+            }
+        }
+        else {
+            socialSituationTextView.setText("");
+            hasSocialSit = false;
+        }
+
     }
 
     @Override

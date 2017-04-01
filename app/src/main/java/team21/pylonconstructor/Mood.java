@@ -20,6 +20,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.ByteArrayOutputStream;
 
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
 
 import io.searchbox.annotations.JestId;
@@ -37,7 +39,8 @@ import io.searchbox.annotations.JestId;
  */
 
 class Mood {
-    private String emoji, situation;
+    private String emoji;
+    private ArrayList<String> situation;
     private String trigger;
     private Date date;
     private Profile user;
@@ -53,6 +56,7 @@ class Mood {
         this.emoji = null;
         this.trigger = null;
         this.date = new Date();
+        this.situation = null;
     }
 
     public String getId() {
@@ -107,11 +111,11 @@ class Mood {
     }
 
 
-    public void setSituation(String situation) {
+    public void setSituation(ArrayList<String> situation) {
         //TODO: check for valid input
         this.situation = situation;
     }
-    public String getSituation() {
+    public ArrayList<String> getSituation() {
         return situation;
     }
 

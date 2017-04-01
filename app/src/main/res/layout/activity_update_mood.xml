@@ -223,6 +223,10 @@
                     android:textStyle="bold"
                     android:text="@string/add_social_situation_header"
                     android:id="@+id/bust_label" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/social_situation_list"/>
                 <ImageButton
                     android:layout_margin="10dp"
                     android:layout_width="60dp"

@@ -6,15 +6,14 @@ package team21.pylonconstructor;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,7 +49,7 @@ public abstract class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyVie
     ElasticSearch elasticSearch = new ElasticSearch();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, trigger, dtView;
+        public TextView title, trigger, dtView, socialSituationTextView;
         public ImageView thumbnail, overflow, emoji;
         private CardView mCardView;
 
@@ -62,6 +62,7 @@ public abstract class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyVie
             trigger = (TextView) view.findViewById(R.id.trigger);
             dtView = (TextView) view.findViewById(R.id.dt);
             mCardView = (CardView) itemView.findViewById(R.id.card_view);
+            socialSituationTextView = (TextView) view.findViewById(R.id.social_situation_mood_display);
 
         }
     }
@@ -84,6 +85,7 @@ public abstract class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyVie
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final int pos = position;
+        ArrayList<String> situation;
         Mood mood = moodList.get(position);
         holder.title.setText(mood.getUser().getUserName());
         holder.title.append(" is feeling ");
@@ -93,6 +95,24 @@ public abstract class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyVie
 
         holder.thumbnail.setImageBitmap(mood.getImage());
         holder.mCardView.setCardBackgroundColor(Color.GREEN);
+
+        situation = mood.getSituation();
+        if (situation != null) {
+            holder.socialSituationTextView.setText("with ");
+            int size = situation.size();
+            int i;
+
+            for (i = 0; i < size; i++) {
+                if (i == 0) {
+                    holder.socialSituationTextView.append(situation.get(i));
+                } else {
+                    holder.socialSituationTextView.append(", " + situation.get(i));
+                }
+            }
+            holder.socialSituationTextView
+                    .setPaintFlags(holder.socialSituationTextView
+                    .getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+        }
 
         String dateStr = sdf.format(mood.getDate());
         holder.dtView.setText(dateStr);
