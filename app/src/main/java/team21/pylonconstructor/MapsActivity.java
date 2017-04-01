@@ -48,10 +48,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         String key = getIntent().getStringExtra("key");
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         ArrayList<Mood> moodArrayList = new ArrayList<Mood>();
 
         if (key.equals("history")) {
@@ -90,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     icon = BitmapDescriptorFactory.fromResource(R.drawable.shameful_1f612);
                 }
                 mMap.addMarker(new MarkerOptions().position(moodLatLng).title(mood.getTrigger()).icon(icon));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(moodLatLng));
             }
         }
     }
