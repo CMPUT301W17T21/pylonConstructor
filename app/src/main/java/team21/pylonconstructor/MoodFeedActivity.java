@@ -265,6 +265,16 @@ public class MoodFeedActivity extends MoodHistoryActivity
             }
         });
 
+        fab_goToMap.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MoodFeedActivity.this, MapsActivity.class);
+                intent.putExtra("key", "feed");
+                collapseFAB();
+                startActivity(intent);
+            }
+        });
+
         clearFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

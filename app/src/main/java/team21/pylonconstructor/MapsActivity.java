@@ -1,14 +1,24 @@
 package team21.pylonconstructor;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -37,10 +47,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        String key = getIntent().getStringExtra("key");
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        ArrayList<Mood> moodArrayList = new ArrayList<Mood>();
+
+        if (key.equals("history")) {
+            moodArrayList = Controller.getInstance().getAllMoods();
+        } else if (key.equals("feed")) {
+            moodArrayList = Controller.getInstance().getAllMoodsFeed();
+        }
+
+        for (Mood mood : moodArrayList) {
+            if (mood.getLatitude() != 0 && mood.getLongitude() != 0) {
+                LatLng moodLatLng = new LatLng(mood.getLatitude(), mood.getLongitude());
+                String e = mood.getEmoji();
+                BitmapDescriptor icon = null;
+                if (e.equals("HAPPY")){
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.happy_263a);
+                }
+                if (e.equals("SAD")){
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.sad_2639);
+                }
+                if (e.equals("ANGRY")){
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.angry_1f620);
+                }
+                if (e.equals("CONFUSED")){
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.confused_1f615);
+                }
+                if (e.equals("DISGUSTED")){
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.confused_1f615);
+                }
+                if (e.equals("SCARED")){
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.scared_1f631);
+                }
+                if (e.equals("SURPRISED")){
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.surprised_1f632);
+                }
+                if (e.equals("SHAMEFUL")){
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.shameful_1f612);
+                }
+                mMap.addMarker(new MarkerOptions().position(moodLatLng).title(mood.getTrigger()).icon(icon));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            }
+        }
     }
 }
