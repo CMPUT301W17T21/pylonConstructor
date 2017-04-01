@@ -46,12 +46,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        ArrayList<Mood> moodArrayList = Controller.getInstance().getAllMoods();
+        String key = getIntent().getStringExtra("key");
+        ArrayList<Mood> moodArrayList = new ArrayList<>();
+        if (key.equals("history")) {
+            moodArrayList = Controller.getInstance().getAllMoods();
+        } else if (key.equals("feed")) {
+            moodArrayList = Controller.getInstance().getAllMoodsFeed();
+        }
         for (Mood mood : moodArrayList) {
             LatLng moodLatLng = new LatLng(mood.getLatitude(), mood.getLongitude());
             mMap.addMarker(new MarkerOptions().position(moodLatLng).title(mood.getTrigger()));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-            Log.e("d", "working");
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(moodLatLng));
         }
     }
 }
