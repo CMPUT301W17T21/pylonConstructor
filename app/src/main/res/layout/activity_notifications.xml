@@ -6,4 +6,8 @@
     android:layout_height="match_parent"
     tools:context="team21.pylonconstructor.NotificationsActivity">
 
+    <include
+        layout="@layout/content_notification_list_display"
+        />
+
 </android.support.constraint.ConstraintLayout>
