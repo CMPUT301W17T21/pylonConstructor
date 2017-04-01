@@ -322,7 +322,7 @@ public class MoodHistoryActivity extends AppCompatActivity
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(MoodHistoryActivity.this, MapsActivity.class);
-                intent.putExtra("username", profile.getUserName());
+                intent.putExtra("key", "history");
                 collapseFAB();
                 startActivity(intent);
             }

@@ -20,8 +20,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.ByteArrayOutputStream;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 
 import io.searchbox.annotations.JestId;
@@ -38,7 +38,7 @@ import io.searchbox.annotations.JestId;
  *
  */
 
-class Mood {
+class Mood implements Comparable<Mood> {
     private String emoji;
     private ArrayList<String> situation;
     private String trigger;
@@ -206,6 +206,11 @@ class Mood {
     {
         byte[] decodedBytes = Base64.decode(input, 0);
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
+
+    @Override
+    public int compareTo(Mood mood) {
+        return getDate().compareTo(mood.getDate());
     }
 }
 

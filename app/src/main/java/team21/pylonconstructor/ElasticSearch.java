@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.nio.channels.ConnectionPendingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutionException;
 
@@ -408,6 +409,7 @@ public class ElasticSearch {
                 moodsList.add(mood);
             }
         }
+        Collections.sort(moodsList, Collections.<Mood>reverseOrder());
         return moodsList;
     }
 
@@ -430,6 +432,7 @@ public class ElasticSearch {
                 moodsList.add(mood);
             }
         }
+        Collections.sort(moodsList, Collections.<Mood>reverseOrder());
         return moodsList;
     }
 
@@ -456,6 +459,7 @@ public class ElasticSearch {
                 Log.i("Error", "Failed to Filter Moods objects for emotional state!");
             }
         }
+        Collections.sort(moodsList,Collections.<Mood>reverseOrder());
         return moodsList;
     }
 
