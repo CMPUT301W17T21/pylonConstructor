@@ -121,6 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 fromFeedHistButton.setText("MOODS FROM MOOD FEED");
 
                 //TODO: ESEARCH QUERY WITHIN 5 KM HERE
+
             }
         }
 
