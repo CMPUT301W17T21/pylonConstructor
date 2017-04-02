@@ -1,8 +1,10 @@
 package team21.pylonconstructor;
 
+import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import org.hamcrest.Matchers;
 import org.junit.Rule;
@@ -12,6 +14,7 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -116,7 +119,10 @@ public class UpdateMoodTest {
         onView(withId(R.id.happy_button)).check(matches(isDisplayed()));
         onView(withId(R.id.happy_button)).perform(click());
 
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(1984, 10 + 1, 23));
+        //Change date
+        //Code adapted from: http://stackoverflow.com/questions/30597680/android-epresso-datepicker-click-on-ok-add-a-year-instead-of-validate
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
+                .perform(scrollTo(), PickerActions.setDate(2017, 04, 03));
         onView(withId(R.id.datePicker)).perform(click());
 
         //Click on add mood
@@ -125,14 +131,30 @@ public class UpdateMoodTest {
     }
 
     //TODO Check Change Time
+    //@Test
     public void changeTime() {
         //Login first
-        //new Login().logUserIn();
+        testHelper.logUserIn();
 
+        //Click on the plus button
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
         onView(withId(R.id.fab_plus)).perform(click());
+
+        //Click on update mood button
+        onView(withId(R.id.fab_updateMood)).check(matches(not(isDisplayed())));
         onView(withId(R.id.fab_updateMood)).perform(testHelper.customClick());
+
+        //Select mood
+        onView(withId(R.id.happy_button)).check(matches(isDisplayed()));
         onView(withId(R.id.happy_button)).perform(click());
+
+        //Change time
+        onView(withClassName(Matchers.equalTo(TimePicker.class.getName())))
+                .perform(scrollTo(), PickerActions.setTime(10, 00));
         onView(withId(R.id.datePicker)).perform(click());
+
+        //Click on add mood
+        onView(withId(R.id.add_mood_event)).check(matches(isDisplayed()));
         onView(withId(R.id.add_mood_event)).perform(click());
     }
 }
