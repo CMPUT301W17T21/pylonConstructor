@@ -409,10 +409,24 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
                 if (validMood){
                     if( edt == 1){
                         Controller.getInstance().editMood(mood);
+                        if(mood.isHasTag()){
+                            for(String user : socialSitList){
+                                Notification notification = new Notification(user, Controller.getInstance().getProfile().getUserName(),mood.getId());
+                                ElasticSearch elasticSearch = new ElasticSearch();
+                                elasticSearch.addNotification(notification);
+                            }
+                        }
                         finish();
                     }
                     else {
                         Controller.getInstance().addMood(mood);
+                        if(mood.isHasTag()){
+                            for(String user : socialSitList){
+                                Notification notification = new Notification(user, Controller.getInstance().getProfile().getUserName(),mood.getId());
+                                ElasticSearch elasticSearch = new ElasticSearch();
+                                elasticSearch.addNotification(notification);
+                            }
+                        }
                         finish();
                     }
                 }
