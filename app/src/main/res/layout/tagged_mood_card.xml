@@ -66,10 +66,9 @@
                 android:layout_centerHorizontal="true"
                 android:clickable="true"
                 android:paddingBottom="5sp" />
-
-
             <ImageView
                 android:id="@+id/overflow"
+                android:visibility="invisible"
                 android:layout_width="@dimen/ic_album_overflow_width"
                 android:layout_height="@dimen/ic_album_overflow_height"
                 android:layout_alignBottom="@+id/title"

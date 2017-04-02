@@ -36,8 +36,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
-
 import java.util.List;
 
 public class MoodHistoryActivity extends AppCompatActivity
@@ -55,8 +56,6 @@ public class MoodHistoryActivity extends AppCompatActivity
     //Controller controller = Controller.getInstance();
     ElasticSearch elasticSearch;
     Profile profile;
-    NotificationCompat.Builder notification;
-    private static final int uniqueID = 45612;
 
     boolean isOpen = false;
     Context context = this;
@@ -71,6 +70,8 @@ public class MoodHistoryActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_history);
+        Intent notification_intent = new Intent(MoodHistoryActivity.this, NotificationService.class);
+        startService(notification_intent);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -100,42 +101,14 @@ public class MoodHistoryActivity extends AppCompatActivity
 
         Log.d("ACTIV ST IS", "OnCreate");
 
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        elasticSearch.addNotification(new Notification("Qq","Shivansh","AVsOSHJOBp_VgXF_udJU"));
-        /**
-         * The following makes an object that is used for push notifications
-         * adapted from https://www.youtube.com/watch?v=NgQzJ0s0XmM#t=2.883802
-         * accessed on 28-03-2017 by Shivansh
-         **/
-        notification = new NotificationCompat.Builder(this);
-        notification.setAutoCancel(true);
-        try{
-            Notification ntf = elasticSearch.getNotification(profile.getUserName());
-            if(ntf != null && ntf.getSeenflag().equals("0")){
-                //Build the notification
-                notification.setSmallIcon(R.drawable.ic_noun_654393_cc);
-                notification.setTicker("New mood activity");
-                notification.setWhen(System.currentTimeMillis());
-                notification.setContentTitle("PylonConstructor");
-                notification.setContentText(ntf.getTaggedby().concat(" tagged you in a post"));
-                Intent intent = new Intent(this, NotificationsActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                notification.setContentIntent(pendingIntent);
+        //elasticSearch.addNotification(new Notification("Qq","Shivansh","AVsOSHJOBp_VgXF_udJU"));
 
-                //Build and Issue notification
-                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                nm.notify(uniqueID, notification.build());
-            }
-        }
-        catch (Exception e){
-            Log.i("Error","Notification could not be obtained!");
-        }
         /**
          * The following sets a clickable app title, which toggles between mood history and mood feed.
          * adapted from http://stackoverflow.com/questions/24838155/set-onclick-listener-on-action-bar-title-in-android
@@ -167,6 +140,7 @@ public class MoodHistoryActivity extends AppCompatActivity
             // Apply the custom view
             actionBar.setCustomView(customView, params);
         }
+
 
 
 
@@ -318,14 +292,14 @@ public class MoodHistoryActivity extends AppCompatActivity
             }
         });
 
-        fab_goToMap.setOnClickListener(new View.OnClickListener() {
+        fab_goToMap.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                setResult(RESULT_OK);
-                Intent intent = new Intent(MoodHistoryActivity.this, MapFragmentActivity.class);
-                //intent.putExtra("Username", profile.getUserName());
+            public void onClick(View v){
+                Intent intent = new Intent(MoodHistoryActivity.this, MapsActivity.class);
+                intent.putExtra("key", "history");
+                intent.putExtra("mapEntranceKey", "history");
+                collapseFAB();
                 startActivity(intent);
-
             }
         });
 
@@ -333,7 +307,6 @@ public class MoodHistoryActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 setResult(RESULT_OK);
-
                 Controller.getInstance().addFilters(null, 0);
                 filteredByText.setText(getResources().getString(R.string.filtered_by));
 
@@ -432,11 +405,10 @@ public class MoodHistoryActivity extends AppCompatActivity
     protected  void onResume() {
         super.onResume();
         Log.d("ACTIV ST IS", "onResume");
-
         changeClearFilterVisibility();
         //moodList.clear();
-        //moodList.addAll(Controller.getInstance().getAllMoods());
-        //moodList = Controller.getInstance().getAllMoods();
+        //moodList  = Controller.getInstance().getAllMoods();
+        Collections.sort(moodList, Collections.<Mood>reverseOrder());
         adapter.notifyDataSetChanged();
     }
 
@@ -459,7 +431,6 @@ public class MoodHistoryActivity extends AppCompatActivity
                         filteredByText.append(" Mood - ");
                         String byMood = Controller.getInstance().getFilterTerm();
                         filteredByText.append(byMood);
-                        filteredByText.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_happy_263a,0,0,0);
 
                     }
                     if (filterOption == 2) {

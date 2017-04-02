@@ -3,7 +3,12 @@
     package="team21.pylonconstructor">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- Icon made by Freepik from www.flaticon.com -->
     <application
@@ -14,8 +19,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,49 +28,54 @@
         </activity>
         <activity
             android:name=".UpdateMoodActivity"
-            android:label="@string/title_update_mood"
-            />
+            android:label="@string/title_update_mood" />
         <activity
             android:name=".FilterActivity"
-            android:label="@string/title_filter"
-            />
+            android:label="@string/title_filter" />
         <activity
             android:name=".MoodHistoryActivity"
             android:label="@string/title_activity_mood_history2"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MoodFeedActivity"
             android:label="@string/title_activity_mood_feed2"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ViewFollowingActivity"
-            android:label="@string/title_following"
-            />
+            android:label="@string/title_following" />
         <activity
             android:name=".UserSettingsActivity"
-            android:label="@string/title_user_settings"
-            />
+            android:label="@string/title_user_settings" />
         <activity
             android:name=".ViewFollowersActivity"
-            android:label="@string/title_followers"
-            />
+            android:label="@string/title_followers" />
         <activity
             android:name=".ViewRequestsActivity"
-            android:label="Follow Requests"
-            />
+            android:label="Follow Requests" />
         <activity
             android:name=".NotificationsActivity"
-            android:label="@string/title_notifications"
-            />
-        <activity
-            android:name=".MapFragmentActivity"
-            android:label="Map"/>
+            android:label="@string/title_notifications" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD66aCTN5ooXfHJSjbVb6YrXDWJY5Z_W1k"/>
+            android:value="@string/google_maps_key" />
 
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".GetSocialSituationActivity" />
+        <activity
+            android:name=".ViewTaggedMoodActivity"
+            android:label="Mood I'm tagged in"/>
+        <service android:name=".NotificationService"></service>
     </application>
 
 </manifest>

@@ -19,7 +19,7 @@ import io.searchbox.annotations.JestId;
  *
  * @version 1.0
  */
-public class Notification {
+public class Notification implements Comparable<Notification> {
 
     private String user;
     private String moodid;
@@ -132,4 +132,11 @@ public class Notification {
     public void setSeenflag() {
         this.seenflag = "1";
     }
+
+
+    @Override
+    public int compareTo(Notification notification) {
+        return getDate().compareTo(notification.getDate());
+    }
+
 }

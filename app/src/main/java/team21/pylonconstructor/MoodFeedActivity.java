@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -266,6 +267,17 @@ public class MoodFeedActivity extends MoodHistoryActivity
             }
         });
 
+        fab_goToMap.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MoodFeedActivity.this, MapsActivity.class);
+                intent.putExtra("key", "feed");
+                intent.putExtra("mapEntranceKey", "feed");
+                collapseFAB();
+                startActivity(intent);
+            }
+        });
+
         clearFilterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -303,6 +315,11 @@ public class MoodFeedActivity extends MoodHistoryActivity
     protected  void onResume() {
         super.onResume();
         Log.d("ACTIV ST IS", "onResume");
+       // moodList.clear();
+       // moodList = Controller.getInstance().getAllMoodsFeed();
+        Collections.sort(moodList, Collections.<Mood>reverseOrder());
+        //adapter = new MoodFeedAdapter(this, moodList);
+        //recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 }

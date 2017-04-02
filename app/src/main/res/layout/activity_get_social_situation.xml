@@ -4,10 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="team21.pylonconstructor.NotificationsActivity">
+    tools:context="team21.pylonconstructor.ViewFollowingActivity">
 
     <include
-        layout="@layout/content_notification_list_display"
+        layout="@layout/content_profile_list_display"
         />
+
+
+
+
 
 </android.support.constraint.ConstraintLayout>

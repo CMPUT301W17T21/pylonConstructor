@@ -38,9 +38,13 @@
     <string name="title_following">Following</string>
     <string name="title_filter">Filter</string>
     <string name="title_update_mood">Update Mood</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="specify_soc_label">Specify social situation</string>
 
-
-
+    <string name="alone">Alone</string>
+    <string name="w_1_person">With 1 Person</string>
+    <string name="w_2_people">With 2 to  People</string>
+    <string name="tag_users_label">Tag users from your Following List!</string>
 
 
 </resources>
