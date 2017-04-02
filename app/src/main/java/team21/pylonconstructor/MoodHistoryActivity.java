@@ -36,6 +36,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -430,11 +432,10 @@ public class MoodHistoryActivity extends AppCompatActivity
     protected  void onResume() {
         super.onResume();
         Log.d("ACTIV ST IS", "onResume");
-
         changeClearFilterVisibility();
         //moodList.clear();
-        //moodList.addAll(Controller.getInstance().getAllMoods());
-        //moodList = Controller.getInstance().getAllMoods();
+        //moodList  = Controller.getInstance().getAllMoods();
+        Collections.sort(moodList, Collections.<Mood>reverseOrder());
         adapter.notifyDataSetChanged();
     }
 
