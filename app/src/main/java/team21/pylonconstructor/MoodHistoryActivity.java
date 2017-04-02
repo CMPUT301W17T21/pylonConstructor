@@ -323,6 +323,7 @@ public class MoodHistoryActivity extends AppCompatActivity
             public void onClick(View v){
                 Intent intent = new Intent(MoodHistoryActivity.this, MapsActivity.class);
                 intent.putExtra("key", "history");
+                intent.putExtra("mapEntranceKey", "history");
                 collapseFAB();
                 startActivity(intent);
             }
