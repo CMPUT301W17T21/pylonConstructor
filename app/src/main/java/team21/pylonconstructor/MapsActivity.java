@@ -1,5 +1,16 @@
 package team21.pylonconstructor;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -70,6 +81,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        final String key = getIntent().getStringExtra("key");
+        final String mapEntranceKey = getIntent().getStringExtra("mapEntranceKey");
         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         //Initialize Google Play Services
@@ -85,20 +98,64 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
         }
-        String key = getIntent().getStringExtra("key");
         ArrayList<Mood> moodArrayList = new ArrayList<Mood>();
+        String moodLabel = "me";
+        Button nearMeButton = (Button) findViewById(R.id.radius_button);
+        Button fromFeedHistButton = (Button) findViewById(R.id.from_history_feed);
 
         if (key.equals("history")) {
             moodArrayList = Controller.getInstance().getAllMoods();
+            fromFeedHistButton.setText("MOODS FROM MOOD HISTORY");
+            fromFeedHistButton.setBackgroundColor(getResources().getColor(R.color.shameful_color));
         } else if (key.equals("feed")) {
             moodArrayList = Controller.getInstance().getAllMoodsFeed();
+            fromFeedHistButton.setText("MOODS FROM MOOD FEED");
+            fromFeedHistButton.setBackgroundColor(getResources().getColor(R.color.shameful_color));
+
         }
+        else if (key.equals("nearMe")) {
+            nearMeButton.setBackgroundColor(getResources().getColor(R.color.shameful_color));
+            if (mapEntranceKey.equals("history")) {
+                fromFeedHistButton.setText("MOODS FROM MOOD HISTORY");
+            } else if (mapEntranceKey.equals("feed")) {
+                fromFeedHistButton.setText("MOODS FROM MOOD FEED");
+
+                //TODO: ESEARCH QUERY WITHIN 5 KM HERE
+            }
+        }
+
+
+        fromFeedHistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapsActivity.this, MapsActivity.class);
+                intent.putExtra("key", mapEntranceKey);
+                intent.putExtra("mapEntranceKey", mapEntranceKey);
+                finish();
+                startActivity(intent);
+            }
+        });
+
+        nearMeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapsActivity.this, MapsActivity.class);
+                intent.putExtra("key", "nearMe");
+                intent.putExtra("mapEntranceKey", mapEntranceKey);
+                finish();
+                startActivity(intent);
+
+            }
+        });
 
         for (Mood mood : moodArrayList) {
             if (mood.getLatitude() != 0 && mood.getLongitude() != 0) {
                 LatLng moodLatLng = new LatLng(mood.getLatitude(), mood.getLongitude());
                 String e = mood.getEmoji();
                 BitmapDescriptor icon = null;
+                if (key.equals("feed")) {
+                    moodLabel = mood.getUser().getUserName();
+                }
                 if (e.equals("HAPPY")){
                     icon = BitmapDescriptorFactory.fromResource(R.drawable.happy_263a);
                 }
@@ -123,7 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (e.equals("SHAMEFUL")){
                     icon = BitmapDescriptorFactory.fromResource(R.drawable.shameful_1f612);
                 }
-                mMap.addMarker(new MarkerOptions().position(moodLatLng).title(mood.getTrigger()).icon(icon));
+                mMap.addMarker(new MarkerOptions().position(moodLatLng).title(moodLabel).icon(icon));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(moodLatLng));
             }
         }

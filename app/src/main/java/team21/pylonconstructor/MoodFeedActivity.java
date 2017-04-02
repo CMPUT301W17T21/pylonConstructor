@@ -271,6 +271,7 @@ public class MoodFeedActivity extends MoodHistoryActivity
             public void onClick(View v){
                 Intent intent = new Intent(MoodFeedActivity.this, MapsActivity.class);
                 intent.putExtra("key", "feed");
+                intent.putExtra("mapEntranceKey", "feed");
                 collapseFAB();
                 startActivity(intent);
             }
