@@ -530,10 +530,17 @@ public class ElasticSearch {
      * @param username
      * @return Profile object
      */
-    public Notification getNotification(String username) throws ExecutionException, InterruptedException {
+    public ArrayList<Notification> getNotification(String username) throws ExecutionException, InterruptedException {
         ElasticSearchController.GetNotificationTask getNotificationTask = new ElasticSearchController.GetNotificationTask();
         getNotificationTask.execute(username);
-        return getNotificationTask.get();
+        try{
+            ArrayList<Notification> notifications = getNotificationTask.get();
+            Collections.sort(notifications, Collections.<Notification>reverseOrder());
+            return notifications;
+        }
+        catch (Exception e){
+            Log.i("e", "notifications could not be received");
+        }
+        return null;
     }
-
 }
