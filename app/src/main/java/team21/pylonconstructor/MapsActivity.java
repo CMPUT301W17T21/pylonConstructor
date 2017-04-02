@@ -37,6 +37,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -55,6 +56,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Location mLastLocation;
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
+    ElasticSearch elasticSearch;
+    Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +122,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 fromFeedHistButton.setText("MOODS FROM MOOD HISTORY");
             } else if (mapEntranceKey.equals("feed")) {
                 fromFeedHistButton.setText("MOODS FROM MOOD FEED");
+                try {
+                    moodArrayList = elasticSearch.distancefilteredmoods(Controller.getInstance().getProfile());
+                } catch (ExecutionException ee) {
+                    Log.i("Error", "ExecutionException");
+                } catch (InterruptedException ie) {
+                    Log.i("Error", "InterruptedException");
+                }
+
 
                 //TODO: ESEARCH QUERY WITHIN 5 KM HERE
+
             }
         }
 

@@ -192,6 +192,13 @@ public abstract class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyVie
                 showPopupMenu(holder.overflow, pos);
             }
         });
+
+        holder.socialSituationTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     /**

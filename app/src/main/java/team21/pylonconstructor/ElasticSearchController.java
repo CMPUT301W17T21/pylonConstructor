@@ -299,6 +299,41 @@ public class ElasticSearchController {
     }
 
     /**
+     *  A function which filters moods from elastic search from within 5km of the user
+     */
+    public static class FilterDistance extends AsyncTask<String, Void, ArrayList<Mood>> {
+        @Override
+        protected ArrayList<Mood> doInBackground(String... search_parameters) {
+            verifySettings();
+
+            ArrayList<Mood> moods = new ArrayList<Mood>();
+
+            // Arranged in some order I actually have no clue //TODO @jeff maybe figure out the order?
+            String query = "{\"query\": { \"bool\" : { \"must\" : { \"match_all\" : {}},\"filter\" : {\"geo_distance\" : {\"distance\" : \"5km\",\"pin.location\" : {\"lat\" : 40,\"lon\" : -70}}}}}}";
+            Search search = new Search.Builder(query)
+                    .addIndex("g21testing").addType("Mood").build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if(result.isSucceeded()){
+                    List<Mood> foundmoods = result.getSourceAsObjectList(Mood.class);
+                    moods.addAll(foundmoods);
+                    Log.i("Found", "mood matched!");
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any moods that matched!");
+
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+
+            return moods;
+        }
+    }
+
+    /**
      *  A function which adds profiles to elastic search
      */
     public static class AddProfileTask extends AsyncTask<Profile, Void, Boolean> {
