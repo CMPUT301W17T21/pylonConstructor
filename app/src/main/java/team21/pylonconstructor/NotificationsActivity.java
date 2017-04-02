@@ -1,5 +1,8 @@
 package team21.pylonconstructor;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,32 +28,36 @@ public class NotificationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
         elasticSearch = new ElasticSearch();
-         ArrayList<Notification> notificationsList = new ArrayList<>();
+        ArrayList<Notification> notification_List = new ArrayList<>();
 
 
-        try {
-            Notification notification = elasticSearch.getNotification(profile.getUserName());
-            notificationsList.add(notification);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        try{
+            ArrayList<Notification> notificationsList = elasticSearch.getNotification(profile.getUserName());
+            if(notificationsList != null){
+                for(Notification ntf : notificationsList){
+                    if(ntf != null && ntf.getSeenflag().equals("0")){
+                        notification_List.add(ntf);
+                    }
+                }
+
+            }
+        }
+        catch (Exception e){
+            Log.i("Error","Notification could not be obtained!");
         }
 
-        Log.i("notifications: ", String.valueOf(notificationsList.size()));
+        if(notification_List != null){
+            Log.i("notifications: ", String.valueOf(notification_List.size()));
+            adapter = new NotificationsAdapter(this, notification_List);
+            recyclerView = (RecyclerView) findViewById(R.id.ntf_recycler_view);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
 
-
-        adapter = new NotificationsAdapter(this, notificationsList);
-        recyclerView = (RecyclerView) findViewById(R.id.ntf_recycler_view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adapter);
+        }
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
 
     }
 

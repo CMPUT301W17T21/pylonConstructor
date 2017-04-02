@@ -72,6 +72,8 @@
             android:label="@string/title_activity_maps" />
         <activity android:name=".GetSocialSituationActivity" />
         <activity android:name=".ViewTaggedMoodActivity"></activity>
+        <activity android:name=".GetSocialSituationActivity"></activity>
+        <service android:name=".NotificationService"></service>
     </application>
 
 </manifest>

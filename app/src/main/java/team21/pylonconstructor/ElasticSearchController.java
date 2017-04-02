@@ -612,20 +612,21 @@ public class ElasticSearchController {
     /**
      * A function which gets the latest Notification from elastic search
      */
-    public static class GetNotificationTask extends AsyncTask<String, Void, Notification> {
+    public static class GetNotificationTask extends AsyncTask<String, Void, ArrayList<Notification>> {
         @Override
-        protected Notification doInBackground(String... search_parameters) {
+        protected ArrayList<Notification> doInBackground(String... search_parameters) {
             verifySettings();
-            Notification notification = null;
+            ArrayList<Notification> notification = new ArrayList<Notification>();
             // Search for given Username
-            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\": {\"query_string\": {\"query\": \""+search_parameters[0]+"\",\"fields\": [\"user\"]}},\"filter\": {\"range\" : {\"date\": {\"gte\": \"now-1d/d\"}}},\"size\" : \"1\"}}}";
+            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\": {\"query_string\": {\"query\": \""+search_parameters[0]+"\",\"fields\": [\"user\"]}},\"filter\": {\"range\" : {\"date\": {\"gte\": \"now-1d/d\"}}},\"size\" : \"5\"}}}";
             Search search = new Search.Builder(query)
                     .addIndex("g21testing").addType("Notification").build();
 
             try {
                 SearchResult result = client.execute(search);
                 if(result.isSucceeded()) {
-                    notification = result.getSourceAsObject(Notification.class);
+                    List<Notification> ntf = result.getSourceAsObjectList(Notification.class);
+                    notification.addAll(ntf);
                 }
                 else{
                     Log.i("Error", "Search query failed to find any Profiles that matched!");
