@@ -41,6 +41,7 @@ import io.searchbox.annotations.JestId;
 class Mood implements Comparable<Mood> {
     private String emoji;
     private ArrayList<String> situation;
+    private boolean hasTag;
     private String trigger;
     private Date date;
     private Profile user;
@@ -57,6 +58,7 @@ class Mood implements Comparable<Mood> {
         this.trigger = null;
         this.date = new Date();
         this.situation = null;
+        this.hasTag = false;
     }
 
     public String getId() {
@@ -211,6 +213,14 @@ class Mood implements Comparable<Mood> {
     @Override
     public int compareTo(Mood mood) {
         return getDate().compareTo(mood.getDate());
+    }
+
+    public boolean isHasTag() {
+        return hasTag;
+    }
+
+    public void setHasTag(boolean hasTag) {
+        this.hasTag = hasTag;
     }
 }
 

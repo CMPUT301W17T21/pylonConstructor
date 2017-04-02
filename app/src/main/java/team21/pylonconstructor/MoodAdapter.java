@@ -1,7 +1,7 @@
 package team21.pylonconstructor;
 
 /**
- * Created by ryanp on 2017-03-12.
+ * Created by rperez on 2017-03-12.
  */
 
 
@@ -26,19 +26,15 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by Ravi Tamada on 18/05/16.
- */
-
-/**
  * This class extracts the data from the mood objects and passes it to the views to be displayed.
- * From https://github.com/CMPUT301W17T21/pylonConstructor/tree/master/doc
- * accessed 03-13-2017 by rperez
  * @see Mood
  *
+ * RecyclerView with card views adapted from
+ * http://www.androidhive.info/2016/05/android-working-with-card-view-and-recycler-view/
+ * accessed 03-13-2017 by rperez
  * @version 1.0
  */
 public abstract class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyViewHolder> {
-
 
     Context mContext;
     List<Mood> moodList;
@@ -109,9 +105,9 @@ public abstract class MoodAdapter extends RecyclerView.Adapter<MoodAdapter.MyVie
                     holder.socialSituationTextView.append(", " + situation.get(i));
                 }
             }
-            holder.socialSituationTextView
-                    .setPaintFlags(holder.socialSituationTextView
-                    .getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+//            holder.socialSituationTextView
+//                    .setPaintFlags(holder.socialSituationTextView
+//                    .getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
         }
 
         String dateStr = sdf.format(mood.getDate());

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -23,6 +24,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +67,14 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
     DatePicker datePicker;
     ImageView selectedImage;
 
+
+    private RadioGroup radioGroup;
+    private RadioButton specifySocRdg;
+    private RadioButton tagUsersRdg;
+    private RadioButton rb;
+
+
+
     String username;
     Mood mood;
 
@@ -85,6 +97,7 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
     private LocationRequest mLocationRequest;
     private ArrayList<String> socialSitList;
     private boolean hasSocialSit;
+    private  int socialSitOp;
 
 
 
@@ -101,8 +114,22 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
         hasImg = false;
         hasSocialSit = false;
 
+        radioGroup = (RadioGroup) findViewById(R.id.rdg);
+        specifySocRdg = (RadioButton) findViewById(R.id.specify_soc_rb);
+        tagUsersRdg = (RadioButton) findViewById(R.id.tag_user_rb);
+
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        final Spinner spinner = (Spinner) findViewById(R.id.planets_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.planets_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
 
         Bitmap img;
         final int edt = getIntent().getExtras().getInt("EDIT");
@@ -119,13 +146,14 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
             mood.setEmoji(getIntent().getExtras().getString("emoj"));
             selectedMoodTextView.setText(emoj);
             String trig = getIntent().getExtras().getString("trig");
+            boolean hasTag = getIntent().getExtras().getBoolean("has_tag");
 
             triggerEditText.setText(trig);
 
             ArrayList<String> situ = getIntent().getStringArrayListExtra("situ");
             mood.setSituation(situ);
 
-            if (situ != null) {
+            if (situ != null && hasTag) {
                 setSocialSituationUsersList(situ);
             }
 
@@ -259,6 +287,18 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
             }
         });
 
+        tagUsersRdg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            }
+        });
+
+        specifySocRdg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            }
+        });
+
 
         socialSituationButton = (ImageButton) findViewById(R.id.add_social_situation);
         socialSituationButton.setOnClickListener(new View.OnClickListener() {
@@ -291,8 +331,6 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
 
             }
         });
-
-
 
         addMoodButton = (Button) findViewById(R.id.add_mood_event);
         addMoodButton.setOnClickListener(new View.OnClickListener() {
@@ -338,11 +376,21 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
                     toast.show();
                 }
 
-                if (hasSocialSit) {
-                    mood.setSituation(socialSitList);
+                if (socialSitOp == 2) {
+                    mood.setHasTag(true);
+                    if (hasSocialSit) {
+                        mood.setSituation(socialSitList);
+                    } else {
+                        mood.setSituation(null);
+                    }
                 }
-                else {
-                    mood.setSituation(null);
+                if (socialSitOp == 1) {
+
+                    socialSitList = new ArrayList<String>();
+                    String socialSpec = spinner.getSelectedItem().toString();
+                    socialSitList.add(socialSpec);
+                    mood.setSituation(socialSitList);
+                    mood.setHasTag(false);
                 }
                 if (addLocation) {
                     mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
@@ -381,6 +429,7 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
     }
 
 
@@ -514,6 +563,8 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
         Log.i(TAG, "Location services suspended. Please reconnect.");
     }
 
+
+
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
@@ -525,6 +576,19 @@ public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiC
             }
         } else {
             Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
+        }
+    }
+
+    public void rbClick(View v) {
+        int rbId = radioGroup.getCheckedRadioButtonId();
+        rb = (RadioButton) findViewById(rbId);
+
+        if (rb.getText() == getResources().getString(R.string.specify_soc_label)) {
+            socialSitOp = 1;
+        }
+
+        if (rb.getText() == getResources().getString(R.string.tag_users_label)) {
+            socialSitOp = 2;
         }
     }
 
