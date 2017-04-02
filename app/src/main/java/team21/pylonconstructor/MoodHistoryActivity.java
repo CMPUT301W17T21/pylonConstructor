@@ -431,7 +431,6 @@ public class MoodHistoryActivity extends AppCompatActivity
                         filteredByText.append(" Mood - ");
                         String byMood = Controller.getInstance().getFilterTerm();
                         filteredByText.append(byMood);
-                        filteredByText.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_happy_263a,0,0,0);
 
                     }
                     if (filterOption == 2) {
