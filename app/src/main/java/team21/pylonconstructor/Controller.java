@@ -147,10 +147,6 @@ public class Controller {
                     received = this.elasticSearch.getrecentweekmoods(this.profile);
                 }
 
-                if (filterOption == 4) {
-                    received = this.elasticSearch.distancefilteredmoods(this.profile);
-                }
-
                 if (received != null) {
                     //Got a mood list
                     this.moodList = received;
@@ -185,10 +181,6 @@ public class Controller {
 
             if (filterOption == 3) {
                 received = this.elasticSearch.getrecentweekmoodsfeed(this.profile);
-            }
-
-            if (filterOption == 4) {
-                received = this.elasticSearch.distancefilteredmoods(this.profile);
             }
 
             if (received != null) {
