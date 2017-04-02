@@ -36,15 +36,13 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     ElasticSearch elasticSearch = new ElasticSearch();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, dtView;
+        public TextView title;
         private CardView mCardView;
-        private Button acceptButton, declineButton;
 
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.ntf_title);
-            //dtView = (TextView) view.findViewById(R.id.req_dt);
             mCardView = (CardView) view.findViewById(R.id.card_view);
 
         }
@@ -81,11 +79,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
         if (mood != null) {
             final String follower = mood.getUser().getUserName();
-            holder.title.setText(moodId + follower);
-        }
-        else {
-            holder.title.setText(moodId);
-
+            holder.title.setText(follower + " tagged you in a mood event");
         }
 
 
