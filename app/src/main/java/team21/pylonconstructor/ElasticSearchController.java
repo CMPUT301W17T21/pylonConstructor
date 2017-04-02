@@ -580,6 +580,38 @@ public class ElasticSearchController {
         }
     }
 
+    /**
+     *  A function which filters moods from a followed user from elastic search based on given emotional state
+     */
+    public static class FilterMoodFromId extends AsyncTask<String, Void, Mood> {
+        @Override
+        protected Mood doInBackground(String... search_parameters) {
+            verifySettings();
+
+            Mood moods = new Mood();
+
+            // Arranged in reverse Chronological order
+            String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"id\"],\"query\" :\""+ search_parameters[0]+"\"}}}";
+            Search search = new Search.Builder(query)
+                    .addIndex("g21testing").addType("Mood").build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if(result.isSucceeded()){
+                    moods = result.getSourceAsObject(Mood.class);
+                    Log.i("Found", "mood matched!");
+                }
+                else{
+                    Log.i("Error", "Search query failed to find any moods that matched!");
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+            return moods;
+        }
+    }
+
 
     /**
      *  A function which adds a new notification to elastic search

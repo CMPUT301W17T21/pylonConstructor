@@ -543,4 +543,17 @@ public class ElasticSearch {
         }
         return null;
     }
+
+    /**
+     *  Gets Mood from the Elastic Search Database with a given mood id
+     ** @param mood_id
+     * @return mymoodsList
+     */
+    public Mood getmoodfromid(String mood_id) throws ExecutionException, InterruptedException {
+        ElasticSearchController.FilterMoodFromId filterMoodFromId = new ElasticSearchController.FilterMoodFromId();
+        filterMoodFromId.execute(mood_id);
+        Mood mood = filterMoodFromId.get();
+        return mood;
+    }
+
 }
