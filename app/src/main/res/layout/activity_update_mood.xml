@@ -153,6 +153,12 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"
+                android:layout_marginTop="5sp"/>
+
             <LinearLayout
                 android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
@@ -173,6 +179,12 @@
                     android:ems="10"
                     android:id="@+id/message" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"
+                android:layout_marginTop="5sp"/>
 
             <TextView
                 android:paddingTop="15sp"
@@ -209,12 +221,17 @@
             </LinearLayout>
 
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"
+                android:layout_marginTop="5sp"/>
 
             <LinearLayout
                 android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 <TextView
                     android:textSize="30sp"
                     android:fontFamily="sans-serif-condensed"
@@ -223,27 +240,81 @@
                     android:textStyle="bold"
                     android:text="@string/add_social_situation_header"
                     android:id="@+id/bust_label" />
+
+                <RadioGroup
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:weightSum="1"
+                    android:id="@+id/rdg"
+                    >
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:onClick="rbClick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/specify_soc_label"
+                        android:id="@+id/specify_soc_rb"
+                        android:textSize="14sp"/>
+
+                    <Spinner
+                        android:id="@+id/planets_spinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+
+
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:onClick="rbClick"
+                        android:layout_marginTop="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tag_users_label"
+                        android:id="@+id/tag_user_rb"
+                        android:textSize="14sp"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/social_situation_list"/>
                 <ImageButton
-                    android:layout_margin="10dp"
+                    android:layout_marginBottom="10sp"
                     android:layout_width="60dp"
                     android:contentDescription="HELLO"
                     android:layout_height="60dp"
                     android:src="@drawable/ic_group_add_black_24dp"
                     android:id="@+id/add_social_situation"
                     />
+                </RadioGroup>
+
             </LinearLayout>
 
-            <CheckBox
-                android:layout_marginTop="10dp"
-                android:id="@+id/checkBox3"
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"
+                android:layout_marginTop="5sp"/>
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="@string/include_location_checkbox_message" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20sp"
+                android:layout_marginBottom="20sp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_location_on_black_24dp"/>
+                <CheckBox
+                    android:id="@+id/checkBox3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/include_location_checkbox_message" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"
+                android:layout_marginTop="5sp"/>
 
             <TextView
                 android:paddingTop="20sp"

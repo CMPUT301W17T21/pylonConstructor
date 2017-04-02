@@ -39,12 +39,13 @@
 
             <ImageView
                 android:id="@+id/emoji"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_alignStart="@+id/title"
                 android:layout_below="@id/social_situation_mood_display"
                 android:layout_marginLeft="3dp"
-                android:paddingTop="15dp" />
+                android:paddingTop="5dp"
+                />
 
 
             <TextView
@@ -59,7 +60,7 @@
 
             <ImageView
                 android:id="@+id/thumbnail"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/trigger"
                 android:layout_centerHorizontal="true"

@@ -21,8 +21,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.MyViewHo
     private ProfileAdapter adapter;
     Profile profile = Controller.getInstance().getProfile();
 
-    //Refactored this to include Locale.
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa", Locale.US);
     ElasticSearch elasticSearch = new ElasticSearch();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

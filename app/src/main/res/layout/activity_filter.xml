@@ -170,6 +170,12 @@
 
             </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?android:attr/listDivider"
+                    android:layout_marginTop="5sp"/>
+
 
             <android.support.v7.widget.AppCompatRadioButton
                 android:onClick="rbClick"
@@ -199,6 +205,12 @@
                     android:ems="10"
                     android:id="@+id/message" />
             </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?android:attr/listDivider"
+                    android:layout_marginTop="5sp"/>
 
             <android.support.v7.widget.AppCompatRadioButton
                 android:onClick="rbClick"

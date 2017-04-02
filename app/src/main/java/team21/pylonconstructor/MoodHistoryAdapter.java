@@ -73,6 +73,7 @@ public class MoodHistoryAdapter extends MoodAdapter {
                         slideStart.putExtra("trig", moodList.get(pos).getTrigger());
                         slideStart.putExtra("date", moodList.get(pos).getDate().getTime());
                         slideStart.putExtra("id", moodList.get(pos).getId());
+                        slideStart.putExtra("has_tag", moodList.get(pos).isHasTag());
 
                         slideStart.putExtra("username", moodList.get(pos).getUser().getUserName());
                         slideStart.putExtra("image",  moodList.get(pos).getImage());

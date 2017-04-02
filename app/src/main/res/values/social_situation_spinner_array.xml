@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="planets_array">
+        <item>nobody</item>
+        <item>one other person</item>
+        <item>two people</item>
+        <item>several people</item>
+        <item>a crowd!</item>
+    </string-array>
+</resources>
