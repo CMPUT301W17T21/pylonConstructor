@@ -40,6 +40,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ViewTaggedMoodActivity extends AppCompatActivity {
     private TaggedMoodAdapter adapter;
@@ -53,24 +54,32 @@ public class ViewTaggedMoodActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_tagged_mood);
+        String moodid = getIntent().getExtras().getString("mood_id");
+        Mood mood = null;
+
+
+
 
 
 
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
 
-
-
         //TODO: replace these with notification query to populate moodList
         elasticSearch = new ElasticSearch();
-        profile = Controller.getInstance().getProfile();
-        moodList = Controller.getInstance().getAllMoods();
 
+        try {
+            mood = elasticSearch.getmoodfromid(moodid);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        moodList = new ArrayList<Mood>();
+        moodList.add(mood);
 
         adapter = new TaggedMoodAdapter(this, moodList);
-
-
-
         recyclerView = (RecyclerView) findViewById(R.id.prf_recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);

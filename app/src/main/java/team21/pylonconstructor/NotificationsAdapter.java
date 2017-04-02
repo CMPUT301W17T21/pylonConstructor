@@ -1,6 +1,8 @@
 package team21.pylonconstructor;
 
+import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by ryanp on 2017-04-01.
@@ -25,6 +28,8 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     private List<Notification> notificationList;
     private NotificationsAdapter adapter;
     Profile profile = Controller.getInstance().getProfile();
+    public View view;
+    public ClipData.Item currentItem;
 
     //Refactored this to include Locale.
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm aaa", Locale.US);
@@ -40,6 +45,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             super(view);
             title = (TextView) view.findViewById(R.id.ntf_title);
             //dtView = (TextView) view.findViewById(R.id.req_dt);
+            mCardView = (CardView) view.findViewById(R.id.card_view);
 
         }
     }
@@ -53,7 +59,6 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.i("NotificationsAdapter", "notifs received: " +notificationList.get(0).getMoodid());
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.notification_card, parent, false);
 
@@ -61,10 +66,42 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final int pos = position;
-        final String follower = notificationList.get(position).getMoodid();
-        holder.title.setText(follower);
+        Mood mood = null;
+        final String moodId = notificationList.get(position).getMoodid();
+
+        try {
+            mood = elasticSearch.getmoodfromid(moodId);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (mood != null) {
+            final String follower = mood.getUser().getUserName();
+            holder.title.setText(moodId + follower);
+        }
+        else {
+            holder.title.setText(moodId);
+
+        }
+
+
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //implement onClick
+                Log.i("NotificationsAdapter", notificationList.get(position).getSeenflag());
+                String moodId = notificationList.get(position).getMoodid();
+                System.out.println("Clicked " + moodId);
+
+                Intent intent = new Intent(mContext, ViewTaggedMoodActivity.class);
+                intent.putExtra("mood_id", moodId);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
