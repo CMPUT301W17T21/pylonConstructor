@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (result) {
                             Log.i("LoginRegister", "Created the profile");
                             Log.i("Controller", "set a profile: " + username);
-                            Controller.getInstance().setProfile(new Profile(user));
+                            Controller.getInstance().setProfile(new Profile(username));
                             Log.d("Controller: Username = ", Controller.getInstance().getProfile().getUserName());
                             SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
