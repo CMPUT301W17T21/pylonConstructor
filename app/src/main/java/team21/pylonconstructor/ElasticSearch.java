@@ -556,4 +556,20 @@ public class ElasticSearch {
         return mood;
     }
 
+    /**
+     * Updates a notification in the Elastic Search Database
+     * @param notification
+     */
+
+    public boolean updateNotification(Notification notification){
+        ElasticSearchController.UpdateNotificationTask updateNotificationTask = new ElasticSearchController.UpdateNotificationTask();
+        updateNotificationTask.execute(notification);
+        try {
+            return updateNotificationTask.get();
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
+
 }

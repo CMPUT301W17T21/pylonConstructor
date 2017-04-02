@@ -65,7 +65,7 @@ public class NotificationService extends IntentService {
             }
             // Wait 3s before trying again
             try {
-                Thread.sleep(30000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

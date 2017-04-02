@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
 public class NotificationsActivity extends AppCompatActivity {
@@ -35,11 +36,11 @@ public class NotificationsActivity extends AppCompatActivity {
             ArrayList<Notification> notificationsList = elasticSearch.getNotification(profile.getUserName());
             if(notificationsList != null){
                 for(Notification ntf : notificationsList){
-                    if(ntf != null && ntf.getSeenflag().equals("0")){
+                    if(ntf != null ){
                         notification_List.add(ntf);
                     }
                 }
-
+                Collections.sort(notification_List,Collections.<Notification>reverseOrder());
             }
         }
         catch (Exception e){

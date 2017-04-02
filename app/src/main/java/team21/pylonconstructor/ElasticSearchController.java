@@ -44,7 +44,7 @@ public class ElasticSearchController {
         protected Boolean doInBackground(Mood... moods) {
             verifySettings();
 
-            Index index = new Index.Builder(moods[0]).index("g21testing").type("Mood").build();
+            Index index = new Index.Builder(moods[0]).index("g21").type("Mood").build();
             try {
                 // Execute the query
                 DocumentResult result = client.execute(index);
@@ -73,7 +73,7 @@ public class ElasticSearchController {
         protected Boolean doInBackground(Mood... moods) {
             verifySettings();
             // Delete the mood
-            Delete delete = new Delete.Builder(moods[0].getId()).index("g21testing").type("Mood").build();
+            Delete delete = new Delete.Builder(moods[0].getId()).index("g21").type("Mood").build();
             try {
                 DocumentResult result = client.execute(delete);
                 if (result.isSucceeded()) {
@@ -101,7 +101,7 @@ public class ElasticSearchController {
         protected Void doInBackground(Mood... moods) {
             verifySettings();
             //Edit the mood
-            Index index = new Index.Builder(moods[0]).index("g21testing").type("Mood").id(moods[0].getId()).build();
+            Index index = new Index.Builder(moods[0]).index("g21").type("Mood").id(moods[0].getId()).build();
 
             try {
                 // Execute the query
@@ -134,7 +134,7 @@ public class ElasticSearchController {
             // Arranged in reverse Chronological order
             String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"user.userName\"],\"query\" :\""+ search_parameters[0]+"\"}}}";
             Search search = new Search.Builder(query)
-                    .addIndex("g21testing").addType("Mood").build();
+                    .addIndex("g21").addType("Mood").build();
 
             try {
                 SearchResult result = client.execute(search);
@@ -166,7 +166,7 @@ public class ElasticSearchController {
 
             verifySettings();
             //Get the requested mood
-            Get get = new Get.Builder("g21testing",moods[0].getId()).type("Mood").build();
+            Get get = new Get.Builder("g21",moods[0].getId()).type("Mood").build();
 
             try {
                 JestResult result = client.execute(get);
@@ -206,7 +206,7 @@ public class ElasticSearchController {
             // Most recent week moods arranged in reverse Chronological order
             String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"filtered\":{\"query\":{\"multi_match\":{\"query\":\""+ search_parameters[0]+"\",\"fields\":[\"user.userName\"]}},\"filter\":{\"range\":{\"date\":{\"gte\":\"now-7d/d\"}}}}}}";
 
-            Search search = new Search.Builder(query).addIndex("g21testing").addType("Mood").build();
+            Search search = new Search.Builder(query).addIndex("g21").addType("Mood").build();
 
             try {
                 SearchResult result = client.execute(search);
@@ -241,7 +241,7 @@ public class ElasticSearchController {
             // Arranged in reverse Chronological order
             String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"user.userName\", \"emoji\"],\"query\" :\""+ search_parameters[0]+" AND " +search_parameters[1]+"\"}}}";
             Search search = new Search.Builder(query)
-                    .addIndex("g21testing").addType("Mood").build();
+                    .addIndex("g21").addType("Mood").build();
 
             try {
                 SearchResult result = client.execute(search);
@@ -276,7 +276,7 @@ public class ElasticSearchController {
             // Arranged in reverse Chronological order
             String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"user.userName\", \"trigger\"],\"query\" :\""+ search_parameters[0]+" AND " +search_parameters[1]+"\"}}}";
             Search search = new Search.Builder(query)
-                    .addIndex("g21testing").addType("Mood").build();
+                    .addIndex("g21").addType("Mood").build();
 
             try {
                 SearchResult result = client.execute(search);
@@ -311,7 +311,7 @@ public class ElasticSearchController {
             // Arranged in some order I actually have no clue //TODO @jeff maybe figure out the order?
             String query = "{\"query\": { \"bool\" : { \"must\" : { \"match_all\" : {}},\"filter\" : {\"geo_distance\" : {\"distance\" : \"5km\",\"pin.location\" : {\"lat\" : 40,\"lon\" : -70}}}}}}";
             Search search = new Search.Builder(query)
-                    .addIndex("g21testing").addType("Mood").build();
+                    .addIndex("g21").addType("Mood").build();
 
             try {
                 SearchResult result = client.execute(search);
@@ -342,7 +342,7 @@ public class ElasticSearchController {
         protected Boolean doInBackground(Profile... profiles) {
             verifySettings();
 
-            Index index = new Index.Builder(profiles[0]).index("g21testing").type("Profile").build();
+            Index index = new Index.Builder(profiles[0]).index("g21").type("Profile").build();
             try {
                 // Execute the query
                 DocumentResult result = client.execute(index);
@@ -370,7 +370,7 @@ public class ElasticSearchController {
         protected Boolean doInBackground(Profile... profiles) {
             verifySettings();
             // Delete the Profile
-            Delete delete = new Delete.Builder(profiles[0].getId()).index("g21testing").type("Profile").build();
+            Delete delete = new Delete.Builder(profiles[0].getId()).index("g21").type("Profile").build();
             try {
                 DocumentResult result = client.execute(delete);
                 if (result.isSucceeded()) {
@@ -398,7 +398,7 @@ public class ElasticSearchController {
         protected Boolean doInBackground(Profile... profiles) {
             verifySettings();
             //Edit the profile
-            Index index = new Index.Builder(profiles[0]).index("g21testing").type("Profile").id(profiles[0].getId()).build();
+            Index index = new Index.Builder(profiles[0]).index("g21").type("Profile").id(profiles[0].getId()).build();
 
             try {
                 // Execute the query
@@ -429,7 +429,7 @@ public class ElasticSearchController {
             // Search for given Username
             String query = "{\"query\":{\"query_string\" :{\"fields\" : [\"userName\"],\"query\" :\""+ search_parameters[0]+"\"}}}";
             Search search = new Search.Builder(query)
-                    .addIndex("g21testing").addType("Profile").build();
+                    .addIndex("g21").addType("Profile").build();
 
             try {
                 SearchResult result = client.execute(search);
@@ -463,7 +463,7 @@ public class ElasticSearchController {
             // Arranged in reverse Chronological order
             String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"user.userName\"],\"query\" :\""+ search_parameters[0]+"\"}},\"size\": \"1\"}";
             Search search = new Search.Builder(query)
-                    .addIndex("g21testing").addType("Mood").build();
+                    .addIndex("g21").addType("Mood").build();
 
             try {
                 SearchResult result = client.execute(search);
@@ -494,7 +494,7 @@ public class ElasticSearchController {
 
             // Most recent week moods arranged in reverse Chronological order
             String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\": {\"query_string\": {\"query\": \""+search_parameters[0]+"\",\"fields\": [\"user.userName\"]}},\"filter\": {\"range\" : {\"date\": {\"gte\": \"now-7d/d\"}}},\"size\" : \"1\"}}}";
-            Search search = new Search.Builder(query).addIndex("g21testing").addType("Mood").build();
+            Search search = new Search.Builder(query).addIndex("g21").addType("Mood").build();
             try {
                 SearchResult result = client.execute(search);
                 if(result.isSucceeded()){
@@ -527,7 +527,7 @@ public class ElasticSearchController {
             // Arranged in reverse Chronological order
             String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"user.userName\", \"emoji\"],\"query\" :\""+ search_parameters[0]+" AND " +search_parameters[1]+"\"}},\"size\": \"1\"}";
             Search search = new Search.Builder(query)
-                    .addIndex("g21testing").addType("Mood").build();
+                    .addIndex("g21").addType("Mood").build();
 
             try {
                 SearchResult result = client.execute(search);
@@ -559,7 +559,7 @@ public class ElasticSearchController {
             // Arranged in reverse Chronological order
             String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"user.userName\", \"trigger\"],\"query\" :\""+ search_parameters[0]+" AND " +search_parameters[1]+"\"}},\"size\": \"1\"}";
             Search search = new Search.Builder(query)
-                    .addIndex("g21testing").addType("Mood").build();
+                    .addIndex("g21").addType("Mood").build();
 
             try {
                 SearchResult result = client.execute(search);
@@ -593,7 +593,7 @@ public class ElasticSearchController {
             // Arranged in reverse Chronological order
             String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\":{\"query_string\" :{\"fields\" : [\"id\"],\"query\" :\""+ search_parameters[0]+"\"}}}";
             Search search = new Search.Builder(query)
-                    .addIndex("g21testing").addType("Mood").build();
+                    .addIndex("g21").addType("Mood").build();
 
             try {
                 SearchResult result = client.execute(search);
@@ -622,7 +622,7 @@ public class ElasticSearchController {
         protected Boolean doInBackground(Notification... notifications) {
             verifySettings();
 
-            Index index = new Index.Builder(notifications[0]).index("g21testing").type("Notification").build();
+            Index index = new Index.Builder(notifications[0]).index("g21").type("Notification").build();
             try {
                 // Execute the query
                 DocumentResult result = client.execute(index);
@@ -642,6 +642,36 @@ public class ElasticSearchController {
     }
 
     /**
+     *  A function which updates notifications stored on elastic search
+     */
+    public static class UpdateNotificationTask extends AsyncTask<Notification, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Notification... notifications) {
+            verifySettings();
+            //Edit the profile
+            Index index = new Index.Builder(notifications[0]).index("g21").type("Notification").id(notifications[0].getId()).build();
+
+            try {
+                // Execute the query
+                DocumentResult result = client.execute(index);
+                if(result.isSucceeded()){
+                    Log.i("Success", "Updated your profile!");
+                    return true;
+                }
+                else{
+                    Log.i("Error", "Elastic search was not able to update profile!");
+                    return false;
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "The application failed to build and update the profile");
+                return false;
+            }
+        }
+    }
+
+    /**
      * A function which gets the latest Notification from elastic search
      */
     public static class GetNotificationTask extends AsyncTask<String, Void, ArrayList<Notification>> {
@@ -652,7 +682,7 @@ public class ElasticSearchController {
             // Search for given Username
             String query = "{\"sort\" : [{\"date\" : {\"order\" : \"desc\"}}],\"query\": {\"query_string\": {\"query\": \""+search_parameters[0]+"\",\"fields\": [\"user\"]}},\"filter\": {\"range\" : {\"date\": {\"gte\": \"now-1d/d\"}}},\"size\" : \"5\"}}}";
             Search search = new Search.Builder(query)
-                    .addIndex("g21testing").addType("Notification").build();
+                    .addIndex("g21").addType("Notification").build();
 
             try {
                 SearchResult result = client.execute(search);

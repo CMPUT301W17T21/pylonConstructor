@@ -90,7 +90,8 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
                 Log.i("NotificationsAdapter", notificationList.get(position).getSeenflag());
                 String moodId = notificationList.get(position).getMoodid();
                 System.out.println("Clicked " + moodId);
-
+                notificationList.get(position).setSeenflag();
+                elasticSearch.updateNotification(notificationList.get(position));
                 Intent intent = new Intent(mContext, ViewTaggedMoodActivity.class);
                 intent.putExtra("mood_id", moodId);
                 mContext.startActivity(intent);
