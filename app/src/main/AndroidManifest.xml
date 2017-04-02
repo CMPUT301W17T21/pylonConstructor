@@ -70,7 +70,8 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".GetSocialSituationActivity"></activity>
+        <activity android:name=".GetSocialSituationActivity" />
+        <activity android:name=".ViewTaggedMoodActivity"></activity>
     </application>
 
 </manifest>
