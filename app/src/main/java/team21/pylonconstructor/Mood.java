@@ -141,7 +141,7 @@ class Mood implements Comparable<Mood> {
 
         int bytecount = encoded.getBytes().length;
         Log.d("STATE", Integer.toString(bytecount));
-        if (bytecount > 66636) {
+        if (bytecount > 65536) {
             throw new ImageTooLargeException();
         } else {
             this.image = encoded;
