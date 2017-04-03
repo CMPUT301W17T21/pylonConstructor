@@ -12,8 +12,10 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
 /**
@@ -47,6 +49,8 @@ public class FilterTest {
     public void moodFilterTest() {
         //Login first
         testHelper.logUserIn();
+        testHelper.ensureMood();
+        testHelper.addSimpleHappy();
 
         //Click on the plus button
         onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
@@ -68,7 +72,15 @@ public class FilterTest {
         onView(withId(R.id.filter)).check(matches(isDisplayed()));
         onView(withId(R.id.filter)).perform(click());
 
-        //TODO: Check final output, and other moods
+        //Check for a mood card, and the correct mood added
+        //Code adapted from: https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.title))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant
+                (withText(testHelper.getUsername() + " is feeling HAPPY"))));
+
+        //Ensure that another mood isn't showing up
+        onView(withId(R.id.recycler_view)).check(matches(not(hasDescendant
+                (withText(testHelper.getUsername() + " is feeling SAD")))));
 
         //Go back to mood history
         onView(withId(R.id.clearfilter)).check(matches(isDisplayed()));
@@ -80,8 +92,20 @@ public class FilterTest {
      */
     @Test
     public void triggerFilterTest() {
+        String trigger = "Hello";
+
         //Login first
         testHelper.logUserIn();
+        testHelper.ensureMood();
+        testHelper.addSimpleHappy();
+
+        //Add mood with filter
+        onView(withId(R.id.fab_plus)).perform(click());
+        onView(withId(R.id.fab_updateMood)).perform(testHelper.customClick());
+        onView(withId(R.id.sad_button)).perform(click());
+        onView(withId(R.id.message)).perform(typeText(trigger), closeSoftKeyboard());
+        onView(withId(R.id.add_mood_event)).perform(click());
+
 
         //Click on the plus button
         onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
@@ -94,14 +118,29 @@ public class FilterTest {
         //Click on trigger radio button and enter text
         onView(withId(R.id.filter_trigger_radio_button)).check(matches(isDisplayed()));
         onView(withId(R.id.filter_trigger_radio_button)).perform(testHelper.customClick());
-        onView(withId(R.id.message)).perform(typeText("Hello"),
+        onView(withId(R.id.message)).perform(typeText(trigger),
                 closeSoftKeyboard());
 
         //Filter
         onView(withId(R.id.filter)).check(matches(isDisplayed()));
         onView(withId(R.id.filter)).perform(click());
 
-        //TODO: Check final output and other input
+        //Check correct mood (Sad was added)
+        //Code adapted from: https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.title))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant
+                (withText(testHelper.getUsername() + " is feeling SAD"))));
+
+        //Check for correct trigger
+        //Code adapted from: https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.trigger))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withText(trigger))));
+
+        //Ensure some other mood and trigger don't exists
+        //Code adapted from: https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
+        onView(withId(R.id.recycler_view)).check(matches(not(hasDescendant
+                (withText(testHelper.getUsername() + " is feeling HAPPY")))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(not(withText("Hello")))));
 
         //Go back to mood history
         onView(withId(R.id.clearfilter)).check(matches(isDisplayed()));
@@ -115,6 +154,8 @@ public class FilterTest {
     public void weekFilterTest() {
         //Login first
         testHelper.logUserIn();
+        testHelper.ensureMood();
+        testHelper.addSimpleHappy();
 
         //Click on the plus button
         onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
@@ -132,8 +173,13 @@ public class FilterTest {
         onView(withId(R.id.filter)).check(matches(isDisplayed()));
         onView(withId(R.id.filter)).perform(click());
 
-        //TODO: Check final output
-
+        //Check correct mood (Sad was added)
+        //Code adapted from: https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.title))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant
+                (withText(testHelper.getUsername() + " is feeling HAPPY"))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.dt))));
+        
         //Go back to mood history
         onView(withId(R.id.clearfilter)).check(matches(isDisplayed()));
         onView(withId(R.id.clearfilter)).perform(click());
@@ -146,6 +192,7 @@ public class FilterTest {
     public void cancel() {
         //Login first
         testHelper.logUserIn();
+        testHelper.ensureMood();
 
         //Click on the plus button
         onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
@@ -163,6 +210,7 @@ public class FilterTest {
         onView(withId(R.id.cancel)).check(matches(isDisplayed()));
         onView(withId(R.id.cancel)).perform(click());
 
-        //TODO: Check final output
+        //If plus button exists, on the right activity
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
     }
 }

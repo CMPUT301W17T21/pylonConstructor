@@ -21,7 +21,6 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
-import static android.support.test.espresso.intent.Intents.times;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -102,13 +101,37 @@ public class TestHelper {
     }
 
     /**
+     * Ensure on the mood history or mood feed activities
+     * Ensure not on filter activity
+     */
+    public void ensureMood() {
+        try {
+            onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
+        } catch (Exception NoMatchingViewException) {
+            //Go back to mood history
+            onView(withId(R.id.clearfilter)).check(matches(isDisplayed()));
+            onView(withId(R.id.clearfilter)).perform(click());
+        }
+    }
+
+    /**
+     * Add a plain happy mood
+     *  -Plain meaning no trigger, tags, location, etc
+     */
+    public void addSimpleHappy() {
+        onView(withId(R.id.fab_plus)).perform(click());
+        onView(withId(R.id.fab_updateMood)).perform(customClick());
+        onView(withId(R.id.happy_button)).perform(click());
+        onView(withId(R.id.add_mood_event)).perform(click());
+    }
+
+    /**
      * Custom click function for clicking invisible buttons
      */
     public static ViewAction customClick() {
         return actionWithAssertions(
                 new CustomClick(Tap.SINGLE, GeneralLocation.VISIBLE_CENTER, Press.FINGER));
     }
-
 
     /**
      * Stimulates running the camera

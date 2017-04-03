@@ -117,7 +117,7 @@ public class UpdateMoodActivity extends AppCompatActivity {
             triggerEditText.setText(trig);
 
             String situ = getIntent().getExtras().getString("situ");
-            mood.setSituation(situ);
+            //mood.setSituation(situ);
 
 
             Date dt = new Date();

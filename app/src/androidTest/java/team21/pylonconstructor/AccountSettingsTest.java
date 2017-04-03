@@ -53,6 +53,7 @@ public class AccountSettingsTest  {
         onView(withContentDescription(getInstrumentation().getTargetContext().
                 getString(R.string.navigation_drawer_open))).perform(click());
 
+        //Logout
         onView(withText("Account Settings")).perform(click());
         onView(withId(R.id.logout_option)).check(matches(isDisplayed()));
         onView(withId(R.id.logout_option)).perform(click());
@@ -62,15 +63,13 @@ public class AccountSettingsTest  {
         onView(withId(R.id.login_button)).check(matches(isDisplayed()));
     }
 
-
-    //TODO: Fix delete account.
     /**
      * Delete Account
      *
      * Login with new account, or if logged in already do nothing
      *  Deletes account after.
      */
-    //@Test
+    @Test
     public void deleteAccount() {
         //Login first
         testHelper.setUserName("TestDel");
@@ -81,12 +80,13 @@ public class AccountSettingsTest  {
         onView(withContentDescription(getInstrumentation().getTargetContext().
                 getString(R.string.navigation_drawer_open))).perform(click());
 
+        //Delete account
         onView(withText("Account Settings")).perform(click());
         onView(withId(R.id.delete_account_option)).check(matches(isDisplayed()));
         onView(withId(R.id.delete_account_option)).perform(click());
         onView(withText("Delete")).perform(click());
 
         //Deleted if back on the login screen
-        //onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.login_button)).check(matches(isDisplayed()));
     }
 }
