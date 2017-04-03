@@ -8,16 +8,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.not;
 
 /**
  * Tests the login activity
@@ -31,77 +29,19 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  *  -Each user must be registered to login
  *
  * Assumptions:
- *  1. Logout function works correctly
- *  2. Delete account works correctly
+ *  1. TestHelper functions works
+ *      @see TestHelper
+ *  2. All other functions are working correctly
  *
  * @author William
  */
 @RunWith(AndroidJUnit4.class)
 public class LoginTest {
-
+    private TestHelper testHelper = new TestHelper();
     private String userName = "LoginTest";
 
     @Rule
     public ActivityTestRule<LoginActivity> rule = new ActivityTestRule<>(LoginActivity.class, true, true);
-
-    /**
-     * Ensures the login activity is actually loaded by:
-     *  -If logged in already, logout
-     *  -If not logged in, do nothing.
-     */
-    private void logout() {
-        try {
-            onView(withId(R.id.login_button)).check(matches(isDisplayed()));
-        } catch (Exception NoMatchingViewException) {
-            //The next line of code is a modified version of the code from
-            //  http://stackoverflow.com/questions/27527988/how-do-i-test-the-home-button-on-the-action-bar-with-espresso
-            onView(withContentDescription(getInstrumentation().getTargetContext().
-                    getString(R.string.navigation_drawer_open))).perform(click());
-            onView(withText("Account Settings")).perform(click());
-            onView(withId(R.id.logout_option)).perform(click());
-            onView(withText("Logout")).perform(click());
-        }
-    }
-
-    private void delete() {
-        //The next line of code is a modified version of the code from
-        //  http://stackoverflow.com/questions/27527988/how-do-i-test-the-home-button-on-the-action-bar-with-espresso
-        onView(withContentDescription(getInstrumentation().getTargetContext().
-                getString(R.string.navigation_drawer_open))).perform(click());
-        onView(withText("Account Settings")).perform(click());
-
-        //Delete
-        onView(withId(R.id.delete_account_option)).perform(click());
-        onView(withText("Delete")).perform(click());
-    }
-
-    /**
-     * Checks if a user has been registered
-     *
-     * @param userName - A string representing the user profile
-     * @return - True if user is registered, False if user is not registered
-     */
-    private boolean registered(String userName) {
-        logout();
-
-        onView(withId(R.id.userinp)).perform(typeText(userName),
-                closeSoftKeyboard());
-        onView(withId(R.id.register_user_button)).perform(click());
-
-        try {
-            //UserName exists
-            onView(withId(R.id.login_button)).check(matches(isDisplayed()));
-            return (true);
-        } catch (Exception NoMatchingViewException) {
-            //UserName does not exist
-            delete();
-            logout();
-            return (false);
-        }
-    }
-
-
-
 
     /**
      * Test Login with a non-existing user.
@@ -112,92 +52,76 @@ public class LoginTest {
      */
      @Test
     public void checkLoginNoUser() {
-        logout();
+         //Check if logged in already, if so logout otherwise do nothing
+         try {
+             onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+         } catch (Exception NoMatchingViewException) {
+             testHelper.logout();
+         }
 
-        //Delete User if registered
-        if(registered(userName)) {
-            onView(withId(R.id.userinp)).perform(typeText(userName),
-                    closeSoftKeyboard());
-            onView(withId(R.id.login_button)).perform(click());
+         //Find an unregisterd/ new user
+         testHelper.newUser(userName);
+         userName = testHelper.getUsername();
 
-            delete();
-            logout();
-        }
-
-        //Attempt to login
-        onView(withId(R.id.userinp)).perform(typeText(userName),
+         //Attempt to login
+         onView(withId(R.id.userinp)).check(matches(isDisplayed()));
+         onView(withId(R.id.userinp)).perform(typeText(userName),
                 closeSoftKeyboard());
-        onView(withId(R.id.login_button)).perform(click());
+         onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+         onView(withId(R.id.login_button)).perform(click());
 
-        //Ensure that nothing has changed
-        onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+         //Ensure that nothing has changed
+         onView(withId(R.id.login_button)).check(matches(isDisplayed()));
     }
 
     /**
      * Login with an existing user.
      * Logout after logging in.
      */
-    //@Test
+    @Test
     public void checkLoginExistingUser() {
-        logout();
-
-        //Register a user if the user is not registered
-        if(!registered(userName)) {
-            onView(withId(R.id.userinp)).perform(typeText(userName),
-                    closeSoftKeyboard());
-            onView(withId(R.id.register_user_button)).perform(click());
-
-            logout();
+        //Check if logged in already, if so logout otherwise do nothing
+        try {
+            onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+        } catch (Exception NoMatchingViewException) {
+            testHelper.logout();
         }
+
+        //Find an unregisterd/ new user
+        testHelper.newUser(userName);
+        userName = testHelper.getUsername();
 
         //Attempt to log in with user
-        onView(withId(R.id.userinp)).perform(typeText(userName),
-                closeSoftKeyboard());
+        onView(withId(R.id.userinp)).check(matches(isDisplayed()));
+        onView(withId(R.id.userinp)).perform(typeText(userName), closeSoftKeyboard());
+        onView(withId(R.id.login_button)).check(matches(isDisplayed()));
         onView(withId(R.id.login_button)).perform(click());
 
+        //Ensure on mood history or feed activity
         onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
-        /*
-        //Ensure that MoodHistoryFeed is loaded by checking for button that exists in that activity
-        try {
-            onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
-        } catch (Exception NoMatchingViewException) {
-            Log.i("CheckLogInExsitingUser:", "Should be in mood activity");
 
-            //Have a non-existing user, so just register a new user
-            userName = "RegUser";
-            onView(withId(R.id.userinp)).perform(typeText(userName),
-                    closeSoftKeyboard());
-            onView(withId(R.id.register_user_button)).perform(click());
-            checkLoginExistingUser();
-        }
-
-*/
         //Logout, to continue tests
-        logout();
+        testHelper.logout();
     }
 
     /**
      * Register with an existing user.
      * No changes, except for prompt telling you that user exists
      */
-    //@Test
+    @Test
     public void registerWithExisting() {
-        logout();
         userName = "William";
+        testHelper.setUserName(userName);
+        testHelper.logUserIn(); //Will register user if not registered.
+        testHelper.logout();
 
-        onView(withId(R.id.userinp)).perform(typeText(userName),
-                closeSoftKeyboard());
+        onView(withId(R.id.userinp)).check(matches(isDisplayed()));
+        onView(withId(R.id.userinp)).perform(typeText(userName), closeSoftKeyboard());
+        onView(withId(R.id.register_user_button)).check(matches(isDisplayed()));
         onView(withId(R.id.register_user_button)).perform(click());
 
         //Ensure that the view/ activity stays the same
-        try {
-            onView(withId(R.id.login_button)).check(matches(isDisplayed()));
-        } catch (Exception NoMatchingViewException) {
-            Log.i("RegisterWithExisting:", "Should still be on login activity");
-
-            //Username doesn't exist, and was registered. Retry again.
-            registerWithExisting();
-        }
+        onView(withId(R.id.login_button)).check(matches(isDisplayed()));
     }
 
     /**
@@ -206,7 +130,7 @@ public class LoginTest {
      */
     //@Test
     public void registerNewUser() {
-        logout();
+        //logout();
         onView(withId(R.id.userinp)).perform(typeText("RegUser"),
                 closeSoftKeyboard());
         onView(withId(R.id.register_user_button)).perform(click());

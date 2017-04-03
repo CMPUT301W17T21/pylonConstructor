@@ -33,7 +33,7 @@ public class FollowTest {
     public ActivityTestRule<LoginActivity> rule = new ActivityTestRule<>(LoginActivity.class);
 
     @Test
-    public void FollowTest() {
+    public void FollowerTest() {
         String userName;
         String secondUser = "FollowerTest";
 

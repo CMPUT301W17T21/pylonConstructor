@@ -27,43 +27,70 @@ import android.widget.Toast;
  * @see Profile
  */
 public class LoginActivity extends AppCompatActivity {
-    ElasticSearch elasticSearch;
-
+    private ElasticSearch elasticSearch = new ElasticSearch();
+    private Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        elasticSearch = new ElasticSearch();
+
+        Controller.getInstance().reset();
+
         SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
         final String user = sharedPreferences.getString("username", "");
 
+        /**
+         * When the app starts it checks if the user has used the app before. If the user has
+         * their username was saved and the app will attempt to login with the existing username.
+         *
+         * This can fail for any number of reasons, but two are most likely.
+         *
+         * The user is offline.
+         * The profile no longer exists.
+         *
+         */
         if (!user.equals("")) {
-            Log.i("Controller", "set a profile: " + user);
-            Log.i("Skip", "Attempting...");
+            Log.i("LoginActivity", "Pre-existing profile: " + user);
+            Log.i("LoginActivity", "Attempting Login with existing profile...");
             try {
-                Profile profile = elasticSearch.getProfile(user);
-                Log.i("Skip", "Profile exists!");
+                profile = elasticSearch.getProfile(user);
+                Log.i("LoginActivity", "Profile exists!");
+
                 if (profile.getUserName().equals(user)) {
-                    Log.i("Skip", "launching...");
+
                     Controller.getInstance().setProfile(profile);
-                    Log.d(Controller.getInstance().getProfile().getUserName(), "Controller: Username");
+
+                    Log.i("LoginActivity", "Starting App...");
                     Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
                     startActivity(intent);
                     finish();
+
+                } else {
+                    Log.i("LoginActivity", "The found profile username did not match.");
                 }
             } catch (Exception e) {
-                Log.i("Skip", "Failed Try!");
+                Log.i("LoginActivity", "ElasticSearch failed to retrieve the profile.");
                 Toast.makeText(LoginActivity.this, "You may be offline!", Toast.LENGTH_SHORT).show();
             }
+            Log.i("LoginActivity", "Failed to login with existing username.");
         }
-        Log.i("LoginActivity", "Proceeding to buttons...");
-        final ElasticSearch elasticSearch = new ElasticSearch();
+        Log.i("LoginActivity", "Proceeding to login screen...");
 
         Button register = (Button) findViewById(R.id.register_user_button);
         Button login = (Button) findViewById(R.id.login_button);
 
-        //TODO: ensure the username doesn't exist.
+        /**
+         * Register performs two checks.
+         *     The first is for valid user input.
+         *     The second that the profile does not exist already.
+         *
+         * If both pass the profile will be created and the user will be logged in.
+         * This could fail if the user is offline.
+         *
+         * If the first check fails the user will be guided through creating a valid username.
+         * If the second fails the user will be told to login.
+         */
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,86 +99,105 @@ public class LoginActivity extends AppCompatActivity {
                 Profile profile = new Profile();
 
                 if (username.isEmpty()) {
-                    Log.i("LoginRegister", "Empty Username");
+                    Log.i("LoginActivity", "User did not enter a username");
                     Toast.makeText(LoginActivity.this, "Username cannot be empty!", Toast.LENGTH_SHORT).show();
                 } else if (username.matches("[a-zA-Z]+")) {
+
                     try {
-                        if (elasticSearch.getProfile(username) != null) {
-                            Log.i("Login", "Found something!");
-                        }
-                        else {
-                            profile.setUserName(username);
-                        }
                         profile = elasticSearch.getProfile(username);
                     } catch (Exception e) {
                         Toast.makeText(LoginActivity.this, "You may be offline!", Toast.LENGTH_SHORT).show();
                         Log.i("LoginRegister", "Offline");
                     }
+
                     if (profile == null) {
                         boolean result = elasticSearch.addProfile(new Profile(username));
                         if (result) {
+<<<<<<< HEAD
+                            Log.i("LoginRegister", "Created the profile.");
+
+                            Controller.getInstance().setProfile(new Profile(username));
+
+=======
                             Log.i("LoginRegister", "Created the profile");
                             Log.i("Controller", "set a profile: " + username);
                             Controller.getInstance().setProfile(new Profile(username));
                             Log.d("Controller: Username = ", Controller.getInstance().getProfile().getUserName());
+>>>>>>> origin/NewMaps
                             SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("username", username);
                             editor.apply();
+
+                            Log.i("LoginActivity", "Proceeding to login screen...");
                             Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
-                            Log.i("LoginRegister", "Failed to create");
+                            Log.i("LoginRegister", "Failed to create profile.");
                             Toast.makeText(LoginActivity.this, "Failed to create a Profile. Try Again!", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                    Log.i("LoginRegister", "Profile Exists");
-                    Toast.makeText(LoginActivity.this, "Profile already exists. Log in!", Toast.LENGTH_SHORT).show();
+                        Log.i("LoginRegister", "Profile already exists.");
+                        Toast.makeText(LoginActivity.this, "Profile already exists. Log in!", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Username should only contain characters!", Toast.LENGTH_SHORT).show();
+                    Log.i("LoginActivity", "User used invalid characters.");
+                    Toast.makeText(LoginActivity.this, "Username should only contain letters!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+        /**
+         * Logging in performs two checks.
+         *     The first check is for valid user input.
+         *     The second check is part of the login process, that the profile exists.
+         *
+         * If both checks pass the user will be logged into the app.
+         *
+         * If the first fails the user will be guided through prompts to use proper input.
+         * If the second fails the user will be told to create a profile.
+         */
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText editText = (EditText) findViewById(R.id.userinp);
                 String username = editText.getText().toString();
-                Log.i("Login", "Attempting...");
+
+                Log.i("LoginActivity", "Attempting to login...");
                 if (username.isEmpty()) {
+                    Log.i("LoginActivity", "User did not enter a username.");
                     Toast.makeText(LoginActivity.this, "Please enter a username!", Toast.LENGTH_SHORT).show();
                 } else if (username.matches("[a-zA-Z]+")) {
                     try {
+                        //TODO: Check if this ever returns null instead of raising an exception.
                         Profile profile = elasticSearch.getProfile(username);
-                        Log.i("Login", "Profile found: "+profile.getUserName());
+                        Log.i("LoginActivity", "Profile exists!");
+
                         if (profile.getUserName().equals(username)) {
-                            Log.i("Login", "Profile exists!");
-                            Log.i("Controller", "set a profile: " + profile.getUserName());
+                            Log.i("LoginActivity", "Profile username matches!");
+
                             Controller.getInstance().setProfile(profile);
-                            Log.d("Controller: Username = ", Controller.getInstance().getProfile().getUserName());
 
                             SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("username", username);
                             editor.apply();
+
+                            Log.i("LoginActivity", "Proceeding to login screen...");
                             Intent intent = new Intent(LoginActivity.this, MoodHistoryActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
-                            Log.i("Login", "Profile doesn't exist!");
-                            Toast.makeText(LoginActivity.this, "Doesn't exist!", Toast.LENGTH_SHORT).show();
+                            Log.i("LoginActivity", "Found profile username doesn't match search.");
                         }
                     } catch (Exception e) {
-                        Log.i("Login", "Error Getting Profile");
-                        Toast.makeText(LoginActivity.this, "Profile does not exist! Please Register.", Toast.LENGTH_SHORT).show();
+                        Log.i("LoginActivity", "Error Getting Profile");
+                        Toast.makeText(LoginActivity.this, "Offline or profile doesn't exist!", Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
-                    Log.i("Login", "Must be only Characters");
-                    Toast.makeText(LoginActivity.this, "Username should only contain characters!", Toast.LENGTH_SHORT).show();
+                    Log.i("LoginActivity", "User used invalid characters.");
+                    Toast.makeText(LoginActivity.this, "Username should only contain letters!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

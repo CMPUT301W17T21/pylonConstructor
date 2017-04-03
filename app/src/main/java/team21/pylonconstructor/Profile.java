@@ -39,10 +39,12 @@ class Profile {
         requests = new ArrayList<>();
         followers = new ArrayList<>();
         following = new ArrayList<>();
-
     }
 
     public Profile (String userName) {
+        requests = new ArrayList<>();
+        followers = new ArrayList<>();
+        following = new ArrayList<>();
         this.userName = userName;
     }
 

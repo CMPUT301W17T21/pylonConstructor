@@ -126,6 +126,34 @@ public class TestHelper {
     }
 
     /**
+     * Find a non-existing user
+     */
+    public void newUser(String newName) {
+        this.username = newName;
+
+        onView(withId(R.id.userinp)).perform(typeText(this.username), closeSoftKeyboard());
+        onView(withId(R.id.register_user_button)).perform(click());
+
+        try {
+            //UserName exists
+            onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+
+            newUser(this.username + "a");
+        } catch (Exception NoMatchingViewException) {
+            //UserName does not exist and new account was created. Delete this new account and
+            //  account will no longer exist
+            //The next line of code is a modified version of the code from
+            //  http://stackoverflow.com/questions/27527988/how-do-i-test-the-home-button-on-the-action-bar-with-espresso
+            onView(withContentDescription(getInstrumentation().getTargetContext().
+                    getString(R.string.navigation_drawer_open))).perform(click());
+            onView(withText("Account Settings")).perform(click());
+            onView(withId(R.id.delete_account_option)).perform(click());
+            onView(withText("Delete")).perform(click());
+        }
+    }
+
+
+    /**
      * Custom click function for clicking invisible buttons
      */
     public static ViewAction customClick() {

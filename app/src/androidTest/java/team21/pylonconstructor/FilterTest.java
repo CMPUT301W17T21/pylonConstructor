@@ -173,13 +173,13 @@ public class FilterTest {
         onView(withId(R.id.filter)).check(matches(isDisplayed()));
         onView(withId(R.id.filter)).perform(click());
 
-        //Check correct mood (Sad was added)
+        //Check correct mood (Happy was added)
         //Code adapted from: https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
         onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.title))));
         onView(withId(R.id.recycler_view)).check(matches(hasDescendant
                 (withText(testHelper.getUsername() + " is feeling HAPPY"))));
         onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.dt))));
-        
+
         //Go back to mood history
         onView(withId(R.id.clearfilter)).check(matches(isDisplayed()));
         onView(withId(R.id.clearfilter)).perform(click());
