@@ -165,29 +165,13 @@ public class ElasticSearch {
         return mymoodsList;
     }
 
+
     /**
-     * Filters moods that are within 5km of the user
-     * @param user
-     * @return mymoodsList
+     * Adds a Profile to the Elastic Search Database only if it doesn't already exist
+     * @param profile
+     * @return true if the profile was successfully added
+     * false if unsuccessful
      */
-    public ArrayList<Mood> distancefilteredmoods(Profile user) throws ExecutionException, InterruptedException {
-        ElasticSearchController.FilterDistance getmyMoods = new ElasticSearchController.FilterDistance();
-        getmyMoods.execute(user.getUserName());
-        try {
-            mymoodsList = getmyMoods.get();
-        } catch (Exception e) {
-            Log.i("Error", "Failed to Filter Moods objects within 5km!");
-        }
-        return mymoodsList;
-    }
-
-
-        /**
-         * Adds a Profile to the Elastic Search Database only if it doesn't already exist
-         * @param profile
-         * @return true if the profile was successfully added
-         * false if unsuccessful
-         */
     public boolean addProfile(Profile profile){
         ElasticSearchController.AddProfileTask addProfileTask = new ElasticSearchController.AddProfileTask();
         addProfileTask.execute(profile);
