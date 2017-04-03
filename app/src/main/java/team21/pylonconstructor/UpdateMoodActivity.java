@@ -1,22 +1,13 @@
 package team21.pylonconstructor;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.PendingIntent;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.IntentSender;
 import android.graphics.Bitmap;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -25,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -32,12 +24,19 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationRequest;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -57,7 +56,8 @@ import java.util.Date;
  *
  * @version 1.0
  */
-public class UpdateMoodActivity extends AppCompatActivity {
+public class UpdateMoodActivity extends AppCompatActivity  implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+
     Button happyButton, sadButton, angryButton, confusedButton, disgustedButton,
             scaredButton, surpriseButton, shamefulButton, cancelButton, addMoodButton;
 
@@ -67,19 +67,37 @@ public class UpdateMoodActivity extends AppCompatActivity {
     DatePicker datePicker;
     ImageView selectedImage;
 
+
+    private RadioGroup radioGroup;
+    private RadioButton specifySocRdg;
+    private RadioButton tagUsersRdg;
+    private RadioButton rb;
+
+
+
     String username;
     Mood mood;
 
-    private TextView selectedMoodTextView;
+    private TextView selectedMoodTextView, socialSituationTextView;
     private EditText triggerEditText;
 
     Toast toast;
     Context context;
 
-    Boolean addLocation;
     CheckBox locationCheckBox;
 
     private boolean hasImg;
+    private boolean addLocation = false;
+
+    // Google client to interact with Google API
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private static final String TAG = UpdateMoodActivity.class.getSimpleName();
+    private LocationRequest mLocationRequest;
+    private ArrayList<String> socialSitList;
+    private boolean hasSocialSit;
+    private  int socialSitOp;
 
 
 
@@ -92,14 +110,29 @@ public class UpdateMoodActivity extends AppCompatActivity {
         triggerEditText = (EditText) findViewById(R.id.message);
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         selectedImage = (ImageView) findViewById(R.id.selected_photo);
+        socialSituationTextView = (TextView) findViewById(R.id.social_situation_list);
         hasImg = false;
+        hasSocialSit = false;
+
+        radioGroup = (RadioGroup) findViewById(R.id.rdg);
+        specifySocRdg = (RadioButton) findViewById(R.id.specify_soc_rb);
+        tagUsersRdg = (RadioButton) findViewById(R.id.tag_user_rb);
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        final Spinner spinner = (Spinner) findViewById(R.id.planets_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.planets_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
         Bitmap img;
         final int edt = getIntent().getExtras().getInt("EDIT");
-
 
         username = getIntent().getStringExtra("username");
         mood = new Mood(Controller.getInstance().getProfile());
@@ -113,12 +146,16 @@ public class UpdateMoodActivity extends AppCompatActivity {
             mood.setEmoji(getIntent().getExtras().getString("emoj"));
             selectedMoodTextView.setText(emoj);
             String trig = getIntent().getExtras().getString("trig");
+            boolean hasTag = getIntent().getExtras().getBoolean("has_tag");
 
             triggerEditText.setText(trig);
 
-            String situ = getIntent().getExtras().getString("situ");
-            //mood.setSituation(situ);
+            ArrayList<String> situ = getIntent().getStringArrayListExtra("situ");
+            mood.setSituation(situ);
 
+            if (situ != null && hasTag) {
+                setSocialSituationUsersList(situ);
+            }
 
             Date dt = new Date();
             dt.setTime(getIntent().getLongExtra("date",-1));
@@ -250,12 +287,26 @@ public class UpdateMoodActivity extends AppCompatActivity {
             }
         });
 
+        tagUsersRdg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            }
+        });
+
+        specifySocRdg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            }
+        });
+
 
         socialSituationButton = (ImageButton) findViewById(R.id.add_social_situation);
         socialSituationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: goto social user selector
+                FragmentManager fragmentManager = getFragmentManager();
+                SocialSituationPickerFragment dialogo = new SocialSituationPickerFragment();
+                dialogo.show(fragmentManager, "tagSelect");
 
             }
         });
@@ -269,7 +320,8 @@ public class UpdateMoodActivity extends AppCompatActivity {
                 } else {
                     addLocation = false;
                 }
-            }});
+            }}
+        );
 
         cancelButton = (Button) findViewById(R.id.cancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -324,27 +376,94 @@ public class UpdateMoodActivity extends AppCompatActivity {
                     toast.show();
                 }
 
-                /*
-                if (addLocation) {
-                    context = getApplicationContext();
-                    mood.setLocation(context);
+                if (socialSitOp == 2) {
+                    mood.setHasTag(true);
+                    if (hasSocialSit) {
+                        mood.setSituation(socialSitList);
+                    } else {
+                        mood.setSituation(null);
+                    }
                 }
-                */
+                if (socialSitOp == 1) {
 
+                    socialSitList = new ArrayList<String>();
+                    String socialSpec = spinner.getSelectedItem().toString();
+                    socialSitList.add(socialSpec);
+                    mood.setSituation(socialSitList);
+                    mood.setHasTag(false);
+                }
+                if (addLocation) {
+                    mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                    if (mLastLocation != null) {
+                        double latitude = mLastLocation.getLatitude();
+                        double longitude = mLastLocation.getLongitude();
+                        mood.setLocation(latitude, longitude);
+
+                    } else {
+                        CharSequence text = "Couldn't get the location. Make sure location is enabled on the device";
+                        int duration = Toast.LENGTH_LONG;
+                        toast = Toast.makeText(UpdateMoodActivity.this, text, duration);
+                        toast.show();
+                    }
+                }
                 if (validMood){
                     if( edt == 1){
                         Controller.getInstance().editMood(mood);
+                        if(mood.isHasTag()){
+                            for(String user : socialSitList){
+                                String prof = Controller.getInstance().getProfile().getUserName();
+                                Notification notification = new Notification(user, Controller.getInstance().getProfile().getUserName(),mood.getId());
+                                ElasticSearch elasticSearch = new ElasticSearch();
+                                elasticSearch.addNotification(notification);
+                                Log.i("UpdMoodAct", prof);
+                            }
+                        }
                         finish();
                     }
                     else {
                         Controller.getInstance().addMood(mood);
+                        Controller.getInstance().editMood(mood);
+                        if(mood.isHasTag()){
+                            String prof = Controller.getInstance().getProfile().getUserName();
+                            for(String user : socialSitList){
+                                Notification notification = new Notification(user, Controller.getInstance().getProfile().getUserName(),mood.getId());
+                                ElasticSearch elasticSearch = new ElasticSearch();
+                                elasticSearch.addNotification(notification);
+                            }
+                        }
                         finish();
                     }
                 }
             }
         });
+        // Create the LocationRequest object
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
+                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mGoogleApiClient.connect();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            mGoogleApiClient.disconnect();
+        }
+    }
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -353,6 +472,29 @@ public class UpdateMoodActivity extends AppCompatActivity {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
+    }
+
+    public void setSocialSituationUsersList(ArrayList<String> userNameList) {
+        int size = userNameList.size();
+        int i;
+        Log.i("UpdateMoodActivity:", "SocialSituation list:"+ userNameList.toString());
+
+        if (!userNameList.isEmpty()) {
+            hasSocialSit = true;
+            for (i = 0; i < size; i++) {
+                this.socialSitList = userNameList;
+                if (i == 0) {
+                    socialSituationTextView.setText(userNameList.get(i));
+                } else {
+                    socialSituationTextView.append(", " + userNameList.get(i));
+                }
+            }
+        }
+        else {
+            socialSituationTextView.setText("");
+            hasSocialSit = false;
+        }
+
     }
 
     @Override
@@ -382,28 +524,6 @@ public class UpdateMoodActivity extends AppCompatActivity {
 
         return calendar.getTime();
     }
-
-
-    /**
-     * from: https://developers.google.com/maps/documentation/android-api/location
-     * accessed on 20/03/2017
-     */
-    /*@Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (1 == 1) {//requestCode == MY_LOCATION_REQUEST_CODE) {
-            if (permissions.length == 1 &&
-                    permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //mMap.setMyLocationEnabled(true);
-            } else {
-                context = getApplicationContext();
-                CharSequence text = "Location permission denied.";
-                int duration = Toast.LENGTH_SHORT;
-                toast = Toast.makeText(context, text, duration);
-                toast.show();
-            }
-        }
-    }*/
 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -440,5 +560,58 @@ public class UpdateMoodActivity extends AppCompatActivity {
         else {
             removePhotoButton.setVisibility(View.GONE); //To set gone
         }
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (location == null) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
+        else {
+            handleNewLocation(location);
+        }
+    }
+    private void handleNewLocation(Location location) {
+        Log.d(TAG, location.toString());
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "Location services suspended. Please reconnect.");
+    }
+
+
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                // Start an Activity that tries to resolve the error
+                connectionResult.startResolutionForResult(this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
+        }
+    }
+
+    public void rbClick(View v) {
+        int rbId = radioGroup.getCheckedRadioButtonId();
+        rb = (RadioButton) findViewById(rbId);
+
+        if (rb.getText() == getResources().getString(R.string.specify_soc_label)) {
+            socialSitOp = 1;
+        }
+
+        if (rb.getText() == getResources().getString(R.string.tag_users_label)) {
+            socialSitOp = 2;
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        handleNewLocation(location);
     }
 }
