@@ -218,4 +218,8 @@ public class Controller {
     Date getFilterDate() {
         return this.getFilterDate();
     }
+
+    public void reset() {
+
+    }
 }
