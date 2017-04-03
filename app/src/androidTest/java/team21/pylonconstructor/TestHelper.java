@@ -28,7 +28,23 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * Created by Willi_000 on 2017-03-29.
+ * This is a support class. It contains methods that are reused in different tests
+ *
+ * Methods accessible are:
+ * - getUsername
+ * - setUserName
+ * - logUserIn
+ * - logout
+ * - ensureMood
+ * - addSimpleHappy
+ * - newUser
+ * - customClick
+ * - camera
+ *
+ * Assumptions:
+ *  1. Assume that all functions work
+ *
+ * @author William
  */
 public class TestHelper {
     private String username = "William";
@@ -87,7 +103,7 @@ public class TestHelper {
     /**
      * Log the user out of system
      */
-    public void logout () {
+    public void logout() {
         //The next line of code is a modified version of the code from
         //  http://stackoverflow.com/questions/27527988/how-do-i-test-the-home-button-on-the-action-bar-with-espresso
         onView(withContentDescription(getInstrumentation().getTargetContext().
