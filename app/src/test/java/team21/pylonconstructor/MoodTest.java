@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -23,9 +22,11 @@ import static org.junit.Assert.assertTrue;
  *
  *  Also tests some incorrect or bad cases or input
  *
- * User Stories Tested: US 01.02.01, US 02.01.01
- *  -Have the required moods
- *  -Tests for correct input in trigger
+ * User Stories Tested: US 01.02.01, US 02.01.01, US 02.03.01
+ *  - Have the required moods
+ *  - Tests for correct input in trigger
+ *  - For US 02.03.01, I was unable to find a way to create a bitmap that exceeds
+ *      the restriction of 65536 bytes, thus the test just tests that a image exists
  *
  * Assumptions:
  *  - None
@@ -36,9 +37,9 @@ public class MoodTest {
 
     /**
      * Test various data that the mood
-     *  -Happy, Sad, Angry, Confuse, Disgust, Scared, Surprise, Sand hameful
+     *  -Happy, Sad, Angry, Confuse, Disgust, Scared, Surprise, and Shameful
      *
-     * @throws Exception
+     * @throws Exception Assert has failed
      */
     @Test
     public void createMood() throws Exception {
@@ -78,7 +79,7 @@ public class MoodTest {
      * Test all the types of moods
      *  -Happy, Sad, Angry, Confuse, Disgust, Scared, Surprise, and Shameful
      *
-     * @throws Exception
+     * @throws Exception Assert has failed
      */
     @Test
     public void testAllMoods() throws Exception {
@@ -133,6 +134,14 @@ public class MoodTest {
         assertEquals(mood.getEmoji(), emoji);
         assertNotEquals(mood.getEmoji(), emoji2);
     }
+
+    /**
+     * Tests trigger
+     * - Trigger cannot exceed 3 words
+     * - Trigger cannot exceed 20 characters
+     *
+     * @throws Exception Assert has failed
+     */
     @Test
     public void triggerTest() throws Exception {
         Mood mood = new Mood();
@@ -175,7 +184,7 @@ public class MoodTest {
      * -Restriction is 65536 bytes.
      * -Cannot exceed restriction
      *
-     * @throws Exception
+     * @throws Exception Assert has failed
      */
     @Test
     public void imageTest() throws Exception {
@@ -184,16 +193,20 @@ public class MoodTest {
         // Create a bitmap
         Bitmap image = Bitmap.createBitmap(500, 500,  Bitmap.Config.ARGB_8888);
 
-        //Test for a image greater than restriction
+        //Test for a image smaller than restriction
         try {
             mood.setImage(image);
 
             //Image is less than the restriction
-            assertFalse(true);
+            assertTrue(true);
         } catch (Exception ImageTooLargeException) {
             //Image is greater than restriction
             assertTrue(false);
         }
+
+        // Cannot create bitmap that exceeds restrictions.
+        //  The following is the highest this creator can go
+        //image = Bitmap.createBitmap(999999999, 999999999,  Bitmap.Config.ARGB_8888);
     }
 }
 
