@@ -113,17 +113,10 @@ public class LoginActivity extends AppCompatActivity {
                     if (profile == null) {
                         boolean result = elasticSearch.addProfile(new Profile(username));
                         if (result) {
-<<<<<<< HEAD
                             Log.i("LoginRegister", "Created the profile.");
 
                             Controller.getInstance().setProfile(new Profile(username));
 
-=======
-                            Log.i("LoginRegister", "Created the profile");
-                            Log.i("Controller", "set a profile: " + username);
-                            Controller.getInstance().setProfile(new Profile(username));
-                            Log.d("Controller: Username = ", Controller.getInstance().getProfile().getUserName());
->>>>>>> origin/NewMaps
                             SharedPreferences sharedPreferences = getSharedPreferences("userinfo", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("username", username);
