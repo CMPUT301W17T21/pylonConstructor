@@ -54,7 +54,7 @@ public class SocialSituationPickerFragment extends DialogFragment {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 UpdateMoodActivity act = (UpdateMoodActivity) getActivity();
-                act.setSocialSituationUsersList(selectedUserList);
+                //act.setSocialSituationUsersList(selectedUserList);
             } });
 
 

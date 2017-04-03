@@ -1,9 +1,8 @@
 package team21.pylonconstructor;
 
-
 import android.support.test.rule.ActivityTestRule;
-
 import android.support.test.runner.AndroidJUnit4;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,122 +12,205 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
-import static android.support.test.espresso.matcher.ViewMatchers.isNotChecked;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-
-/**
- * Created by Willi_000 on 2017-03-07.
- */
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.not;
 
 /**
  * Tests the filter activity
+ *  1. Filter by Mood
+ *  2. Filter by Trigger
+ *  3. Filter by Most Recent Week
+ *  4. Tests the cancel button
  *
- * Assumes moods already exist with the needed values
+ * User Stories Tested: US 04.02.01, US 04.03.01, US 04.04.01
+ *  -User can filter mood events according to mood, trigger (word), or by most recent week
+ *
+ * Assumptions:
+ *  1. TestHelper functions works
+ *      @see TestHelper
+ *  2. All other functions are working correctly
+ *
+ * @author William
  */
 @RunWith(AndroidJUnit4.class)
 public class FilterTest {
+    private TestHelper testHelper = new TestHelper();
 
     @Rule
-    public ActivityTestRule<MoodFeedActivity> rule = new ActivityTestRule<>(MoodFeedActivity.class);
+    public ActivityTestRule<LoginActivity> rule = new ActivityTestRule<>(LoginActivity.class);
 
     /**
-     * Test cases for the single filter options
-     *
-     * For mood states, only test one.
+     * Test cases for mood filter
      */
     @Test
-    public void checkSingleFilters() {
+    public void moodFilterTest() {
+        //Login first
+        testHelper.logUserIn();
+        testHelper.ensureMood();
+        testHelper.addSimpleHappy();
 
-        //Check mood filter
+        //Click on the plus button
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
         onView(withId(R.id.fab_plus)).perform(click());
-        onView(withId(R.id.fab_filter)).perform(click());
+
+        //Click on the filter button
+        onView(withId(R.id.fab_filter)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fab_filter)).perform(testHelper.customClick());
+
+        //Click on mood radio button
+        onView(withId(R.id.filter_mood_radio_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.filter_mood_radio_button)).perform((click()));
+
+        //Select mood
+        onView(withId(R.id.happy_button)).check(matches(isDisplayed()));
         onView(withId(R.id.happy_button)).perform(click());
+
+        //Filter
+        onView(withId(R.id.filter)).check(matches(isDisplayed()));
+        onView(withId(R.id.filter)).perform(click());
+
+        //Check for a mood card, and the correct mood added
+        //Code adapted from: https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.title))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant
+                (withText(testHelper.getUsername() + " is feeling HAPPY"))));
+
+        //Ensure that another mood isn't showing up
+        onView(withId(R.id.recycler_view)).check(matches(not(hasDescendant
+                (withText(testHelper.getUsername() + " is feeling SAD")))));
+
+        //Go back to mood history
+        onView(withId(R.id.clearfilter)).check(matches(isDisplayed()));
+        onView(withId(R.id.clearfilter)).perform(click());
+    }
+
+    /**
+     * Test case for trigger filter
+     */
+    @Test
+    public void triggerFilterTest() {
+        String trigger = "Hello";
+
+        //Login first
+        testHelper.logUserIn();
+        testHelper.ensureMood();
+        testHelper.addSimpleHappy();
+
+        //Add mood with filter
+        onView(withId(R.id.fab_plus)).perform(click());
+        onView(withId(R.id.fab_updateMood)).perform(testHelper.customClick());
+        onView(withId(R.id.sad_button)).perform(click());
+        onView(withId(R.id.message)).perform(typeText(trigger), closeSoftKeyboard());
         onView(withId(R.id.add_mood_event)).perform(click());
 
-        //TODO: Check final output
 
-        //Check reason filter
+        //Click on the plus button
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
         onView(withId(R.id.fab_plus)).perform(click());
-        onView(withId(R.id.fab_filter)).perform(click());
-        onView(withId(R.id.message)).perform(typeText("Hello"),
+
+        //Click on the filter button
+        onView(withId(R.id.fab_filter)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fab_filter)).perform(testHelper.customClick());
+
+        //Click on trigger radio button and enter text
+        onView(withId(R.id.filter_trigger_radio_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.filter_trigger_radio_button)).perform(testHelper.customClick());
+        onView(withId(R.id.message)).perform(typeText(trigger),
                 closeSoftKeyboard());
-        onView(withId(R.id.fab_filter)).perform(click());
 
-        //TODO: Check final output
+        //Filter
+        onView(withId(R.id.filter)).check(matches(isDisplayed()));
+        onView(withId(R.id.filter)).perform(click());
 
-        //Check recent week filter
-        onView(withId(R.id.fab_plus)).perform(click());
-        onView(withId(R.id.fab_filter)).perform(click());
-        onView(withId(R.id.checkBox3)).check(matches(isNotChecked()));
-        onView(withId(R.id.checkBox3)).perform(click());
-        onView(withId(R.id.checkBox3)).check(matches(isChecked()));
-        onView(withId(R.id.fab_filter)).perform(click());
+        //Check correct mood (Sad was added)
+        //Code adapted from: https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.title))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant
+                (withText(testHelper.getUsername() + " is feeling SAD"))));
 
-        //TODO: Check final output
+        //Check for correct trigger
+        //Code adapted from: https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.trigger))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withText(trigger))));
+
+        //Ensure some other mood and trigger don't exists
+        //Code adapted from: https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
+        onView(withId(R.id.recycler_view)).check(matches(not(hasDescendant
+                (withText(testHelper.getUsername() + " is feeling HAPPY")))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(not(withText("Hello")))));
+
+        //Go back to mood history
+        onView(withId(R.id.clearfilter)).check(matches(isDisplayed()));
+        onView(withId(R.id.clearfilter)).perform(click());
     }
 
     /**
-     * Checks filters when two filters are applied at the same time
+     * Test case for most recent week filter
      */
-    public void doubleFilters() {
-        //Check mood and reason filters
+    @Test
+    public void weekFilterTest() {
+        //Login first
+        testHelper.logUserIn();
+        testHelper.ensureMood();
+        testHelper.addSimpleHappy();
+
+        //Click on the plus button
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
         onView(withId(R.id.fab_plus)).perform(click());
-        onView(withId(R.id.fab_filter)).perform(click());
-        onView(withId(R.id.sad_button)).perform(click());
-        onView(withId(R.id.message)).perform(typeText("Hello"),
-                closeSoftKeyboard());
-        onView(withId(R.id.checkBox3)).check(matches(isNotChecked()));
-        onView(withId(R.id.fab_filter)).perform(click());
 
-        //TODO: Check final output
+        //Click on the filter button
+        onView(withId(R.id.fab_filter)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fab_filter)).perform(testHelper.customClick());
 
-        //Check mood and recent week filters
-        onView(withId(R.id.fab_plus)).perform(click());
-        onView(withId(R.id.fab_filter)).perform(click());
-        onView(withId(R.id.angry_button)).perform(click());
-        onView(withId(R.id.checkBox3)).check(matches(isNotChecked()));
-        onView(withId(R.id.checkBox3)).perform(click());
-        onView(withId(R.id.checkBox3)).check(matches(isNotChecked()));
-        onView(withId(R.id.fab_filter)).perform(click());
+        //Click the Week Radio Button
+        onView(withId(R.id.filter_week_radio_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.filter_week_radio_button)).perform(click());
 
-        //TODO: Check final output
+        //Filter
+        onView(withId(R.id.filter)).check(matches(isDisplayed()));
+        onView(withId(R.id.filter)).perform(click());
 
-        //Check reason and recent week filters
-        onView(withId(R.id.fab_plus)).perform(click());
-        onView(withId(R.id.fab_filter)).perform(click());
-        onView(withId(R.id.message)).perform(typeText("Hello"),
-                closeSoftKeyboard());
-        onView(withId(R.id.checkBox3)).check(matches(isNotChecked()));
-        onView(withId(R.id.checkBox3)).perform(click());
-        onView(withId(R.id.checkBox3)).check(matches(isNotChecked()));
-        onView(withId(R.id.fab_filter)).perform(click());
+        //Check correct mood (Happy was added)
+        //Code adapted from: https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.title))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant
+                (withText(testHelper.getUsername() + " is feeling HAPPY"))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.dt))));
 
-        //TODO: Check final output
+        //Go back to mood history
+        onView(withId(R.id.clearfilter)).check(matches(isDisplayed()));
+        onView(withId(R.id.clearfilter)).perform(click());
     }
 
     /**
-     * Checks the mood list when all filters applied
+     * Test case for pressing cancel
      */
-    public void allFlters() {
-        onView(withId(R.id.fab_plus)).perform(click());
-        onView(withId(R.id.fab_filter)).perform(click());
-        onView(withId(R.id.angry_button)).perform(click());
-        onView(withId(R.id.message)).perform(typeText("Hello"),
-                closeSoftKeyboard());
-        onView(withId(R.id.checkBox3)).check(matches(isNotChecked()));
-        onView(withId(R.id.checkBox3)).perform(click());
-        onView(withId(R.id.fab_filter)).perform(click());
+    @Test
+    public void cancel() {
+        //Login first
+        testHelper.logUserIn();
+        testHelper.ensureMood();
 
-        //TODO: Check final output
-    }
-
-    public  void clear() {
+        //Click on the plus button
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
         onView(withId(R.id.fab_plus)).perform(click());
-        onView(withId(R.id.fab_filter)).perform(click());
-        onView(withId(R.id.shameful_button)).perform(click());
+
+        //Click on the filter button
+        onView(withId(R.id.fab_filter)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fab_filter)).perform(testHelper.customClick());
+
+        //Click on the mood filter button
+        onView(withId(R.id.filter_mood_radio_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.filter_mood_radio_button)).perform(click());
+
+        //Cancel the filter
+        onView(withId(R.id.cancel)).check(matches(isDisplayed()));
         onView(withId(R.id.cancel)).perform(click());
 
-        //TODO: Check final output
+        //If plus button exists, on the right activity
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
     }
 }

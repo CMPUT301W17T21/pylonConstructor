@@ -111,6 +111,7 @@ public class MoodFeedActivity extends MoodHistoryActivity
                     startActivity(intent);
                 }
             });
+
             // Apply the custom view
             actionBar.setCustomView(customView, params);
         }
