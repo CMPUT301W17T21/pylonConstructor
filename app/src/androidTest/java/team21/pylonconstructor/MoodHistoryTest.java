@@ -75,35 +75,4 @@ public class MoodHistoryTest
         //Ensure there is a date
         onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.dt))));
     }
-
-    /**
-     * Delete mood, and ensure it is deleted
-     */
-    @Test
-    public void deleteCheck() {
-        testHelper.logUserIn();
-        testHelper.addSimpleHappy();
-
-        //Press on the overflow button
-        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.overflow))));
-
-        //Code adapted from:
-        //  http://stackoverflow.com/questions/28476507/using-espresso-to-click-view-inside-recyclerview-item
-        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, CustomViewAction.clickChildViewWithId(R.id.overflow)));
-        //onView(withId(R.id.recycler_view)).perform(
-        //        RecyclerViewActions.actionOnItemAtPosition(
-        //                0, CustomViewAction.clickChildViewWithId(R.id.action_delete_mood)));
-        //onView(withId(R.id.action_delete_mood)).check(matches(isDisplayed()));
-        //onView(withText("Delete mood")).perform(testHelper.customClick());
-
-    }
-
-
-    /**
-     * Edit mood, and ensure it is changed
-     */
-    @Test
-    public void editCheck() {
-        //TODO Check Mood
-    }
 }
