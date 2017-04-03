@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -87,8 +88,7 @@ public class LoginTest {
             testHelper.logout();
         }
 
-        //Find an unregisterd/ new user
-        testHelper.newUser(userName);
+        //Get a registered user
         userName = testHelper.getUsername();
 
         //Attempt to log in with user
@@ -128,28 +128,28 @@ public class LoginTest {
      * Register a new user.
      * Delete new user.
      */
-    //@Test
+    @Test
     public void registerNewUser() {
-        //logout();
-        onView(withId(R.id.userinp)).perform(typeText("RegUser"),
-                closeSoftKeyboard());
+        //Check if logged in already, if so logout otherwise do nothing
+        try {
+            onView(withId(R.id.login_button)).check(matches(isDisplayed()));
+        } catch (Exception NoMatchingViewException) {
+            testHelper.logout();
+        }
+
+        //Find an unregisterd/ new user
+        testHelper.newUser(userName);
+        userName = testHelper.getUsername();
+
+        //Attempt to register
+        onView(withId(R.id.userinp)).check(matches(isDisplayed()));
+        onView(withId(R.id.userinp)).perform(clearText());
+        onView(withId(R.id.userinp)).perform(typeText(userName), closeSoftKeyboard());
+
+        onView(withId(R.id.register_user_button)).check(matches(isDisplayed()));
         onView(withId(R.id.register_user_button)).perform(click());
 
         //Ensure that MoodHistoryFeed is loaded by checking for button that exists in that activity
-        try {
-            onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
-        } catch (AssertionError e) {
-            Log.i("RegisterNewUser:", "Not on mood activity");
-        }
-
-
-        /*
-        //Ensure that LoginActivity is loaded by checking for button that exists in that activity
-        try {
-            onView(withId(R.id.login_button)).check(matches(isDisplayed()));
-        } catch (AssertionError e) {
-            Log.i("RegisterNewUser:", "Not on mood activity");
-        }
-        */
+        onView(withId(R.id.fab_plus)).check(matches(isDisplayed()));
     }
 }
