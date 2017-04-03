@@ -19,9 +19,7 @@ public class EditMoodCommand extends Command {
     public Boolean execute() {
         //TODO: below
         //return elasticSearch.editMood(mood);
-        elasticSearch.editMood(mood);
-        Log.d(mood.getTrigger(), "NewMood: Trigger = ");
-        return true;
+        return elasticSearch.editMood(mood);
     }
 
     @Override

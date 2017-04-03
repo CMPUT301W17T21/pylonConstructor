@@ -13,8 +13,6 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class Controller {
-
-
     //https://gist.github.com/Akayh/5566992
     //This is what I found for making singletons
     //March 17th 2017 Joshua did this.
@@ -54,9 +52,6 @@ public class Controller {
         filterTerm = null;
         filterOption = 0;
         filterDate = null;
-
-
-
     }
 
 
@@ -81,8 +76,7 @@ public class Controller {
     }
     Boolean addMood(Mood mood) {
         Command c = new NewMoodCommand(mood);
-        this.moodList.add(mood);
-        //TODO: Local Sort
+        smartInsert(mood);
         if (c.execute()) {
             this.update();
             Log.i("AddMood: ", "Added mood!");
@@ -98,8 +92,7 @@ public class Controller {
     Boolean editMood(Mood mood) {
         Command c = new EditMoodCommand(mood);
         this.moodList.remove(mood);
-        this.moodList.add(mood);
-        //TODO: Local Sort
+        smartInsert(mood);
         if (c.execute()) {
             this.update();
             Log.i("EditMood: ", "Edited mood!");
@@ -163,6 +156,7 @@ public class Controller {
     }
 
     ArrayList<Mood> getAllMoodsFeed() {
+        update();
         try {
 
             ArrayList<Mood> received = new ArrayList<>();
@@ -222,5 +216,21 @@ public class Controller {
 
     public void reset() {
 
+    }
+
+    void smartInsert(Mood mood) {
+        int i;
+        for (i = 0; i < this.moodList.size(); i++) {
+            // if the element you are looking at is smaller than x,
+            // go to the next element
+            if (this.moodList.get(i).getDate().after(mood.getDate())) {
+                continue;
+            } else {
+                break;
+            }
+        }
+        this.moodList.add(i, mood);
+        Log.i("Controller", "Added mood at: " + i );
+        return;
     }
 }
