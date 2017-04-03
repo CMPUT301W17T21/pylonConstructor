@@ -66,7 +66,7 @@ public class ElasticSearch {
      * @return true if mood exists
      * false otherwise
      */
-    public boolean checkmood(Mood mood){
+    public boolean checkmood(Mood mood) throws Exception {
         ElasticSearchController.CheckMoodExistence checkMoodExistence = new ElasticSearchController.CheckMoodExistence();
         checkMoodExistence.execute(mood);
         boolean result = false;
@@ -75,6 +75,7 @@ public class ElasticSearch {
         }
         catch (Exception e){
             Log.i("Error", "Failed to search for Moods objects for current user!");
+            throw new Exception();
         }
         return result;
     }
@@ -90,8 +91,7 @@ public class ElasticSearch {
         ElasticSearchController.DeleteMoodTask deleteMoodTask = new ElasticSearchController.DeleteMoodTask();
         deleteMoodTask.execute(mood);
         try {
-            deleteMoodTask.get();
-            return true;
+            return deleteMoodTask.get();
         }
         catch (Exception e){
             return false;
@@ -103,9 +103,15 @@ public class ElasticSearch {
      * @param mood
      */
 
-    public void editMood(Mood mood){
+    public boolean editMood(Mood mood){
         ElasticSearchController.EditMoodsTask editMoodsTask = new ElasticSearchController.EditMoodsTask();
         editMoodsTask.execute(mood);
+        try {
+            return editMoodsTask.get();
+        }
+        catch (Exception e){
+            return false;
+        }
     }
 
 

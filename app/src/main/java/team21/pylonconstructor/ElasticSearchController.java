@@ -95,10 +95,10 @@ public class ElasticSearchController {
     /**
      *  A function which edits moods stored on elastic search
      */
-    public static class EditMoodsTask extends AsyncTask<Mood, Void, Void> {
+    public static class EditMoodsTask extends AsyncTask<Mood, Void, Boolean> {
 
         @Override
-        protected Void doInBackground(Mood... moods) {
+        protected Boolean doInBackground(Mood... moods) {
             verifySettings();
             //Edit the mood
             Index index = new Index.Builder(moods[0]).index("g21").type("Mood").id(moods[0].getId()).build();
@@ -108,7 +108,7 @@ public class ElasticSearchController {
                 DocumentResult result = client.execute(index);
                 if(result.isSucceeded()){
                     Log.i("Success", "Edited your mood!");
-
+                    return true;
                 }
                 else{
                     Log.i("Error", "Elastic search was not able to edit mood!");
@@ -117,7 +117,7 @@ public class ElasticSearchController {
             catch (Exception e) {
                 Log.i("Error", "The application failed to build and edit the mood");
             }
-            return null;
+            return false;
         }
     }
 
@@ -173,7 +173,7 @@ public class ElasticSearchController {
                 if(result.isSucceeded()){
                     Mood foundmood = result.getSourceAsObject(Mood.class);
                     if(foundmood != null){
-                        Log.i("Found", "mood matched!");
+                        Log.i("Found", "mood matched: " + foundmood.getUser().getUserName());
                         return true;
                     }
                     else{
@@ -182,7 +182,6 @@ public class ElasticSearchController {
                 }
                 else{
                     Log.i("Error", "Search query failed to find any moods that matched!");
-
                 }
             }
             catch (Exception e) {
