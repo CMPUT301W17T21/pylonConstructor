@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.nio.channels.ConnectionPendingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutionException;
 
@@ -158,13 +159,29 @@ public class ElasticSearch {
         return mymoodsList;
     }
 
-
     /**
-     * Adds a Profile to the Elastic Search Database only if it doesn't already exist
-     * @param profile
-     * @return true if the profile was successfully added
-     * false if unsuccessful
+     * Filters moods that are within 5km of the user
+     * @param user
+     * @return mymoodsList
      */
+    public ArrayList<Mood> distancefilteredmoods(Profile user) throws ExecutionException, InterruptedException {
+        ElasticSearchController.FilterDistance getmyMoods = new ElasticSearchController.FilterDistance();
+        getmyMoods.execute(user.getUserName());
+        try {
+            mymoodsList = getmyMoods.get();
+        } catch (Exception e) {
+            Log.i("Error", "Failed to Filter Moods objects within 5km!");
+        }
+        return mymoodsList;
+    }
+
+
+        /**
+         * Adds a Profile to the Elastic Search Database only if it doesn't already exist
+         * @param profile
+         * @return true if the profile was successfully added
+         * false if unsuccessful
+         */
     public boolean addProfile(Profile profile){
         ElasticSearchController.AddProfileTask addProfileTask = new ElasticSearchController.AddProfileTask();
         addProfileTask.execute(profile);
@@ -408,6 +425,7 @@ public class ElasticSearch {
                 moodsList.add(mood);
             }
         }
+        Collections.sort(moodsList, Collections.<Mood>reverseOrder());
         return moodsList;
     }
 
@@ -430,6 +448,7 @@ public class ElasticSearch {
                 moodsList.add(mood);
             }
         }
+        Collections.sort(moodsList, Collections.<Mood>reverseOrder());
         return moodsList;
     }
 
@@ -456,6 +475,7 @@ public class ElasticSearch {
                 Log.i("Error", "Failed to Filter Moods objects for emotional state!");
             }
         }
+        Collections.sort(moodsList,Collections.<Mood>reverseOrder());
         return moodsList;
     }
 
@@ -510,10 +530,46 @@ public class ElasticSearch {
      * @param username
      * @return Profile object
      */
-    public Notification getNotification(String username) throws ExecutionException, InterruptedException {
+    public ArrayList<Notification> getNotification(String username) throws ExecutionException, InterruptedException {
         ElasticSearchController.GetNotificationTask getNotificationTask = new ElasticSearchController.GetNotificationTask();
         getNotificationTask.execute(username);
-        return getNotificationTask.get();
+        try{
+            ArrayList<Notification> notifications = getNotificationTask.get();
+            Collections.sort(notifications, Collections.<Notification>reverseOrder());
+            return notifications;
+        }
+        catch (Exception e){
+            Log.i("e", "notifications could not be received");
+        }
+        return null;
+    }
+
+    /**
+     *  Gets Mood from the Elastic Search Database with a given mood id
+     ** @param mood_id
+     * @return mymoodsList
+     */
+    public Mood getmoodfromid(String mood_id) throws ExecutionException, InterruptedException {
+        ElasticSearchController.FilterMoodFromId filterMoodFromId = new ElasticSearchController.FilterMoodFromId();
+        filterMoodFromId.execute(mood_id);
+        Mood mood = filterMoodFromId.get();
+        return mood;
+    }
+
+    /**
+     * Updates a notification in the Elastic Search Database
+     * @param notification
+     */
+
+    public boolean updateNotification(Notification notification){
+        ElasticSearchController.UpdateNotificationTask updateNotificationTask = new ElasticSearchController.UpdateNotificationTask();
+        updateNotificationTask.execute(notification);
+        try {
+            return updateNotificationTask.get();
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 
 }

@@ -20,6 +20,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.ByteArrayOutputStream;
 
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 
 import io.searchbox.annotations.JestId;
@@ -36,8 +38,10 @@ import io.searchbox.annotations.JestId;
  *
  */
 
-class Mood {
-    private String emoji, situation;
+class Mood implements Comparable<Mood> {
+    private String emoji;
+    private ArrayList<String> situation;
+    private boolean hasTag;
     private String trigger;
     private Date date;
     private Profile user;
@@ -53,6 +57,8 @@ class Mood {
         this.emoji = null;
         this.trigger = null;
         this.date = new Date();
+        this.situation = null;
+        this.hasTag = false;
     }
 
     public String getId() {
@@ -107,11 +113,11 @@ class Mood {
     }
 
 
-    public void setSituation(String situation) {
+    public void setSituation(ArrayList<String> situation) {
         //TODO: check for valid input
         this.situation = situation;
     }
-    public String getSituation() {
+    public ArrayList<String> getSituation() {
         return situation;
     }
 
@@ -135,7 +141,7 @@ class Mood {
 
         int bytecount = encoded.getBytes().length;
         Log.d("STATE", Integer.toString(bytecount));
-        if (bytecount > 66636) {
+        if (bytecount > 65536) {
             throw new ImageTooLargeException();
         } else {
             this.image = encoded;
@@ -202,6 +208,19 @@ class Mood {
     {
         byte[] decodedBytes = Base64.decode(input, 0);
         return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
+
+    @Override
+    public int compareTo(Mood mood) {
+        return getDate().compareTo(mood.getDate());
+    }
+
+    public boolean isHasTag() {
+        return hasTag;
+    }
+
+    public void setHasTag(boolean hasTag) {
+        this.hasTag = hasTag;
     }
 }
 

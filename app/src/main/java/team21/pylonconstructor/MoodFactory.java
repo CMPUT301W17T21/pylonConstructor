@@ -22,17 +22,17 @@ public class MoodFactory {
         return mood;
     }
 
-    private void setSituation(Mood mood) {
-        switch(rand.nextInt(4)) {
-            case(0): mood.setSituation("Alone");
-                break;
-            case(1): mood.setSituation("With one other person");
-                break;
-            case(2): mood.setSituation("With two to several people");
-                break;
-            case(3): mood.setSituation("With a crowd.");
-        }
-    }
+//    private void setSituation(Mood mood) {
+//        switch(rand.nextInt(4)) {
+//            case(0): mood.setSituation("Alone");
+//                break;
+//            case(1): mood.setSituation("With one other person");
+//                break;
+//            case(2): mood.setSituation("With two to several people");
+//                break;
+//            case(3): mood.setSituation("With a crowd.");
+//        }
+//    }
 
     private void setTrigger(Mood mood) {
         switch(rand.nextInt(3)) {
