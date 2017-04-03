@@ -17,10 +17,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static team21.pylonconstructor.TestHelper.customClick;
 
 /**
- * Created by Willi_000 on 2017-03-13.
- */
-
-/**
  * Tests map
  *
  * User Stories Tested: 06.01.01, 06.02.01, 06.03.01

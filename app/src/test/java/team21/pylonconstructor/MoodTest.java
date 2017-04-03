@@ -1,5 +1,6 @@
 package team21.pylonconstructor;
 
+import android.graphics.Bitmap;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -15,23 +16,22 @@ import static org.junit.Assert.assertTrue;
  *  2. Situation
  *  3. Tag
  *  4. Trigger
- *  5. Date
- *  6. User
- *  7. Image
- *  8. Latitude
- *  9. Longitude
+ *  5. User
+ *  6. Image
+ *  7. Latitude
+ *  8. Longitude
  *
  *  Also tests some incorrect or bad cases or input
  *
- * User Stories Tested: US 01.02.01
+ * User Stories Tested: US 01.02.01, US 02.01.01
  *  -Have the required moods
+ *  -Tests for correct input in trigger
  *
  * Assumptions:
  *  - None
  *
  * @author William
  */
-//TODO: Date
 public class MoodTest {
 
     /**
@@ -53,6 +53,7 @@ public class MoodTest {
         mood.setHasTag(true);
         mood.setUser(new Profile("Test"));
         mood.setId("TestID");
+        mood.setLocation(180.0, 140.0);
 
         //Test that the changes are stored
         assertEquals(mood.getEmoji(), "Happy");
@@ -61,6 +62,8 @@ public class MoodTest {
         assertEquals(mood.isHasTag(), true);
         assertEquals(mood.getUser().getUserName(), "Test");
         assertEquals(mood.getId(), "TestID");
+        assertEquals(mood.getLongitude(), 140.0, 0);
+        assertEquals(mood.getLatitude(), 180.0, 0);
 
         //Some invalid cases
         assertNotEquals(mood.getEmoji(), "Ha");
@@ -73,7 +76,7 @@ public class MoodTest {
 
     /**
      * Test all the types of moods
-     *  -Happy, Sad, Angry, Confuse, Disgust, Scared, Surprise, Sand hameful
+     *  -Happy, Sad, Angry, Confuse, Disgust, Scared, Surprise, and Shameful
      *
      * @throws Exception
      */
@@ -158,19 +161,40 @@ public class MoodTest {
         try {
             mood.setTrigger(trigger);
 
-            //Valid input (3 or less words inclusive)
+            //Valid input (Less than twenty characters)
             assertEquals(mood.getTrigger(), trigger);
             assertTrue(false);
         } catch (Exception ReasonTooLongException) {
-            //Invalid input (More than 3 words)
+            //Invalid input (More that 20 characters)
             assertTrue(true);
         }
     }
 
+    /**
+     * Tests if an image is stored, as well as the size of the image.
+     * -Restriction is 65536 bytes.
+     * -Cannot exceed restriction
+     *
+     * @throws Exception
+     */
     @Test
-    public void dateTest() throws Exception {}
-    @Test
-    public void imageTest() throws Exception {}
+    public void imageTest() throws Exception {
+        Mood mood = new Mood();
+
+        // Create a bitmap
+        Bitmap image = Bitmap.createBitmap(500, 500,  Bitmap.Config.ARGB_8888);
+
+        //Test for a image greater than restriction
+        try {
+            mood.setImage(image);
+
+            //Image is less than the restriction
+            assertFalse(true);
+        } catch (Exception ImageTooLargeException) {
+            //Image is greater than restriction
+            assertTrue(false);
+        }
+    }
 }
 
 
