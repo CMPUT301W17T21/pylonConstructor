@@ -21,10 +21,10 @@ import io.searchbox.annotations.JestId;
  */
 
 class Profile {
-    String userName;
-    ArrayList<String> requests;
-    ArrayList<String> followers;
-    ArrayList<String> following;
+    private String userName;
+    private ArrayList<String> requests;
+    private ArrayList<String> followers;
+    private ArrayList<String> following;
 
     @JestId
     private String id;

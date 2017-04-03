@@ -52,13 +52,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationListener {
 
     private GoogleMap mMap;
-    GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
-    Marker mCurrLocationMarker;
-    LocationRequest mLocationRequest;
-    ElasticSearch elasticSearch;
-    Profile profile;
-
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    private Marker mCurrLocationMarker;
+    private LocationRequest mLocationRequest;
+    private ElasticSearch elasticSearch;
+    private Profile profile;
+    private Double latitude;
+    private Double longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +72,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
 
@@ -86,6 +88,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         final String key = getIntent().getStringExtra("key");
         final String mapEntranceKey = getIntent().getStringExtra("mapEntranceKey");
+
+
         //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         //Initialize Google Play Services
@@ -117,23 +121,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
         else if (key.equals("nearMe")) {
+            latitude = getIntent().getDoubleExtra("lat",0.0);
+            longitude = getIntent().getDoubleExtra("lon",0.0);
+
             nearMeButton.setBackgroundColor(getResources().getColor(R.color.shameful_color));
             if (mapEntranceKey.equals("history")) {
                 fromFeedHistButton.setText("MOODS FROM MOOD HISTORY");
             } else if (mapEntranceKey.equals("feed")) {
                 fromFeedHistButton.setText("MOODS FROM MOOD FEED");
-                try {
-                    moodArrayList = elasticSearch.distancefilteredmoods(Controller.getInstance().getProfile());
-                } catch (ExecutionException ee) {
-                    Log.i("Error", "ExecutionException");
-                } catch (InterruptedException ie) {
-                    Log.i("Error", "InterruptedException");
-                }
-
-
-                //TODO: ESEARCH QUERY WITHIN 5 KM HERE
-
             }
+            try{
+                ElasticSearch elasticSearch = new ElasticSearch();
+                ArrayList<Mood> Following_Moods = elasticSearch.getfollowingmoods(Controller.getInstance().getProfile());
+                for(Mood moods : Following_Moods){
+                    Double distance = calculateDistance(moods.getLatitude(),moods.getLongitude());
+                    if((distance/1000) < 5){
+                        Log.i("I","Mood is found within 5 km");
+                        moodArrayList.add(moods);
+                    }
+                }
+            }
+            catch (Exception e){
+                Log.i("Error", "following moods not found");
+            }
+
         }
 
 
@@ -154,6 +165,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Intent intent = new Intent(MapsActivity.this, MapsActivity.class);
                 intent.putExtra("key", "nearMe");
                 intent.putExtra("mapEntranceKey", mapEntranceKey);
+                intent.putExtra("lat", mLastLocation.getLatitude());
+                intent.putExtra("lon", mLastLocation.getLongitude());
                 finish();
                 startActivity(intent);
 
@@ -198,6 +211,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    public double calculateDistance(Double moodLat, Double moodLong){
+        Location destination = new Location("");
+        destination.setLatitude(moodLat);
+        destination.setLongitude(moodLong);
+        //mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        Location start = new Location("");
+        start.setLatitude(latitude);
+        start.setLongitude(longitude);
+        double distance = start.distanceTo(destination);
+        Log.d("Distance",distance+"");
+        return distance;
+    }
+
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -237,6 +263,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
