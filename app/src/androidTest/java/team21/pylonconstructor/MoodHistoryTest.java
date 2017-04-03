@@ -15,7 +15,22 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * Created by Willi_000 on 2017-03-13.
+ * Tests the mood history activity
+ *  1. Check to ensure all parts of a mood event exist
+ *
+ * User Stories Tested: US 01.01.01, US 01.04.01
+ *  -Mood event shows all details of a mood
+ *
+ * TODO: US 01.03.01, US 01.05.01, US 01.06.01, US 04.01.01
+ *  -Cannot figure out how to click a menu inside a imageview
+ *      which is in a recycer view (US 01.05.01, US 01.06.01)
+ *
+ * Assumptions:
+ *  1. TestHelper functions works
+ *      @see TestHelper
+ *  2. All other functions are working correctly
+ *
+ * @author William
  */
 @RunWith(AndroidJUnit4.class)
 public class MoodHistoryTest

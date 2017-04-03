@@ -147,6 +147,7 @@ public class TestHelper {
     public void newUser(String newName) {
         this.username = newName;
 
+        onView(withId(R.id.userinp)).perform(clearText());
         onView(withId(R.id.userinp)).perform(typeText(this.username), closeSoftKeyboard());
         onView(withId(R.id.register_user_button)).perform(click());
 
