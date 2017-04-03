@@ -1,7 +1,9 @@
 package team21.pylonconstructor;
 
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.view.View;
 
+import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -25,6 +27,7 @@ import static org.hamcrest.Matchers.not;
  *      @see TestHelper
  *  2. All other functions are working correctly
  *  3. All photos taken do not exceed the limit from US 02.03.01
+ *  4. Assume correct images or no images (Really difficult to assert for images)
  *
  * @author William
  */
@@ -58,8 +61,6 @@ public class CameraTest {
 
         //Check the added mood (At top of list view)
         onView(withId(R.id.thumbnail)).check(matches(isDisplayed()));
-
-        //TODO: Assert the correct image
     }
 
     /**
@@ -89,8 +90,5 @@ public class CameraTest {
         //Add mood
         onView(withId(R.id.happy_button)).perform(click());
         onView(withId(R.id.add_mood_event)).perform(click());
-
-        //TODO: Assert no image
-        //onView(withId(R.id.thumbnail)).check(matches(not(isDisplayed())));
     }
 }

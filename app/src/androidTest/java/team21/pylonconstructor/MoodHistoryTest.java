@@ -1,21 +1,64 @@
 package team21.pylonconstructor;
 
+import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Created by Willi_000 on 2017-03-13.
  */
 @RunWith(AndroidJUnit4.class)
-public class MoodHistoryTest {
+public class MoodHistoryTest
+{
+    private TestHelper testHelper = new TestHelper();
+
+    @Rule
+    public ActivityTestRule<LoginActivity> rule = new ActivityTestRule<>(LoginActivity.class);
+
     /**
-     * Populate and check if moods exists
+     * Add a mood and ensure everything is in place
+     *  -Mood is happy
      */
     @Test
     public void checkMood() {
-        //TODO Check Mood
+        testHelper.logUserIn();
+        testHelper.addSimpleHappy();
+
+        //Ensures the right mood (happy)
+        //Code adapted from:
+        // https://medium.com/@_rpiel/recyclerview-and-espresso-a-complicated-story-3f6f4179652e
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.title))));
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant
+                (withText(testHelper.getUsername() + " is feeling HAPPY"))));
+
+        //Ensure the emoji is correct (happy)
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.emoji))));
+
+        //Ensure there is a spot for trigger
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.trigger))));
+
+        //Ensure room for social situation
+        onView(withId(R.id.recycler_view)).
+                check(matches(hasDescendant(withId(R.id.social_situation_mood_display))));
+
+        //Ensure room for image
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.thumbnail))));
+
+        //Ensure overflow
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.overflow))));
+
+        //Ensure there is a date
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.dt))));
     }
 
     /**
@@ -23,8 +66,23 @@ public class MoodHistoryTest {
      */
     @Test
     public void deleteCheck() {
-        //TODO Check Mood
+        testHelper.logUserIn();
+        testHelper.addSimpleHappy();
+
+        //Press on the overflow button
+        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withId(R.id.overflow))));
+
+        //Code adapted from:
+        //  http://stackoverflow.com/questions/28476507/using-espresso-to-click-view-inside-recyclerview-item
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, CustomViewAction.clickChildViewWithId(R.id.overflow)));
+        //onView(withId(R.id.recycler_view)).perform(
+        //        RecyclerViewActions.actionOnItemAtPosition(
+        //                0, CustomViewAction.clickChildViewWithId(R.id.action_delete_mood)));
+        //onView(withId(R.id.action_delete_mood)).check(matches(isDisplayed()));
+        //onView(withText("Delete mood")).perform(testHelper.customClick());
+
     }
+
 
     /**
      * Edit mood, and ensure it is changed
